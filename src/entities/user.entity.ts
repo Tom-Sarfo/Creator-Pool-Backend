@@ -8,6 +8,9 @@ import {
   OneToMany,
 } from "typeorm";
 import * as bcrypt from "bcrypt";
+import { Video } from "./video.entity";
+import { Pool } from "./pool.entity";
+import { Prediction } from "./prediction.entity";
 
 export enum UserRole {
   USER = "user", // Default role for all users (predictors)
@@ -66,15 +69,15 @@ export class User {
   @UpdateDateColumn()
   updatedAt: Date;
 
-  // Relations (will be added when entities are created)
-  // @OneToMany(() => Video, (video) => video.creator)
-  // videos: Video[];
+  // Relations
+  @OneToMany(() => Video, (video) => video.creator)
+  videos: Video[];
 
-  // @OneToMany(() => Pool, (pool) => pool.creator)
-  // pools: Pool[];
+  @OneToMany(() => Pool, (pool) => pool.creator)
+  pools: Pool[];
 
-  // @OneToMany(() => Prediction, (prediction) => prediction.predictor)
-  // predictions: Prediction[];
+  @OneToMany(() => Prediction, (prediction) => prediction.predictor)
+  predictions: Prediction[];
 
   // @OneToMany(() => Transaction, (transaction) => transaction.user)
   // transactions: Transaction[];
