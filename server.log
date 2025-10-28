@@ -1,0 +1,572 @@
+
+> creator-pool-backend@1.0.0 start:dev
+> tsx watch src/main.ts
+
+[Nest] 73577  - 10/27/2025, 4:53:50 PM     LOG [NestFactory] Starting Nest application...
+[Nest] 73577  - 10/27/2025, 4:53:50 PM     LOG [InstanceLoader] ConfigHostModule dependencies initialized +4ms
+[Nest] 73577  - 10/27/2025, 4:53:50 PM     LOG [InstanceLoader] AppModule dependencies initialized +0ms
+[Nest] 73577  - 10/27/2025, 4:53:50 PM     LOG [InstanceLoader] ConfigModule dependencies initialized +0ms
+[Nest] 73577  - 10/27/2025, 4:53:50 PM     LOG [RoutesResolver] AppController {/}: +2ms
+[Nest] 73577  - 10/27/2025, 4:53:50 PM     LOG [RouterExplorer] Mapped {/, GET} route +1ms
+[Nest] 73577  - 10/27/2025, 4:53:50 PM     LOG [RouterExplorer] Mapped {/health, GET} route +0ms
+[Nest] 73577  - 10/27/2025, 4:53:50 PM     LOG [NestApplication] Nest application successfully started +1ms
+🚀 Creator Pool API running on http://localhost:3000
+[Nest] 73577  - 10/27/2025, 4:54:00 PM   ERROR [ExceptionsHandler] TypeError: Cannot read properties of undefined (reading 'getHello')
+    at AppController.getHello (/Users/thomas/Backend/Creator-Pool-Backend/src/app.controller.ts:10:39)
+    at /Users/thomas/Backend/Creator-Pool-Backend/node_modules/@nestjs/core/router/router-execution-context.js:38:29
+    at InterceptorsConsumer.intercept (/Users/thomas/Backend/Creator-Pool-Backend/node_modules/@nestjs/core/interceptors/interceptors-consumer.js:12:20)
+    at /Users/thomas/Backend/Creator-Pool-Backend/node_modules/@nestjs/core/router/router-execution-context.js:46:60
+    at /Users/thomas/Backend/Creator-Pool-Backend/node_modules/@nestjs/core/router/router-proxy.js:9:23
+    at Layer.handleRequest (/Users/thomas/Backend/Creator-Pool-Backend/node_modules/router/lib/layer.js:152:17)
+    at next (/Users/thomas/Backend/Creator-Pool-Backend/node_modules/router/lib/route.js:157:13)
+    at Route.dispatch (/Users/thomas/Backend/Creator-Pool-Backend/node_modules/router/lib/route.js:117:3)
+    at handle (/Users/thomas/Backend/Creator-Pool-Backend/node_modules/router/index.js:435:11)
+    at Layer.handleRequest (/Users/thomas/Backend/Creator-Pool-Backend/node_modules/router/lib/layer.js:152:17)
+4:54:03 PM [tsx] change in ./src/app.controller.ts Restarting...
+c[Nest] 73823  - 10/27/2025, 4:54:04 PM     LOG [NestFactory] Starting Nest application...
+[Nest] 73823  - 10/27/2025, 4:54:04 PM     LOG [InstanceLoader] ConfigHostModule dependencies initialized +5ms
+[Nest] 73823  - 10/27/2025, 4:54:04 PM     LOG [InstanceLoader] AppModule dependencies initialized +0ms
+[Nest] 73823  - 10/27/2025, 4:54:04 PM     LOG [InstanceLoader] ConfigModule dependencies initialized +0ms
+[Nest] 73823  - 10/27/2025, 4:54:04 PM     LOG [RoutesResolver] AppController {/}: +2ms
+[Nest] 73823  - 10/27/2025, 4:54:04 PM     LOG [RouterExplorer] Mapped {/, GET} route +1ms
+[Nest] 73823  - 10/27/2025, 4:54:04 PM     LOG [RouterExplorer] Mapped {/health, GET} route +0ms
+[Nest] 73823  - 10/27/2025, 4:54:04 PM     LOG [NestApplication] Nest application successfully started +1ms
+🚀 Creator Pool API running on http://localhost:3000
+6:15:11 PM [tsx] change in ./src/app.module.ts Restarting...
+c[Nest] 58070  - 10/27/2025, 6:15:13 PM     LOG [NestFactory] Starting Nest application...
+[Nest] 58070  - 10/27/2025, 6:15:13 PM     LOG [InstanceLoader] TypeOrmModule dependencies initialized +5ms
+[Nest] 58070  - 10/27/2025, 6:15:13 PM     LOG [InstanceLoader] AppModule dependencies initialized +0ms
+[Nest] 58070  - 10/27/2025, 6:15:13 PM     LOG [InstanceLoader] ConfigHostModule dependencies initialized +0ms
+[Nest] 58070  - 10/27/2025, 6:15:13 PM     LOG [InstanceLoader] ConfigModule dependencies initialized +0ms
+[Nest] 58070  - 10/27/2025, 6:15:13 PM     LOG [InstanceLoader] ConfigModule dependencies initialized +0ms
+[Nest] 58070  - 10/27/2025, 6:15:14 PM   ERROR [TypeOrmModule] Unable to connect to the database. Retrying (1)...
+error: password authentication failed for user "postgres"
+    at Parser.parseErrorMessage (/Users/thomas/Backend/Creator-Pool-Backend/node_modules/pg-protocol/dist/parser.js:285:98)
+    at Parser.handlePacket (/Users/thomas/Backend/Creator-Pool-Backend/node_modules/pg-protocol/dist/parser.js:122:29)
+    at Parser.parse (/Users/thomas/Backend/Creator-Pool-Backend/node_modules/pg-protocol/dist/parser.js:35:38)
+    at Socket.<anonymous> (/Users/thomas/Backend/Creator-Pool-Backend/node_modules/pg-protocol/dist/index.js:11:42)
+    at Socket.emit (node:events:524:28)
+    at Socket.emit (node:domain:489:12)
+    at addChunk (node:internal/streams/readable:561:12)
+    at readableAddChunkPushByteMode (node:internal/streams/readable:512:3)
+    at Socket.Readable.push (node:internal/streams/readable:392:5)
+    at TCP.onStreamRead (node:internal/stream_base_commons:189:23)
+[Nest] 58070  - 10/27/2025, 6:15:17 PM   ERROR [TypeOrmModule] Unable to connect to the database. Retrying (2)...
+error: password authentication failed for user "postgres"
+    at Parser.parseErrorMessage (/Users/thomas/Backend/Creator-Pool-Backend/node_modules/pg-protocol/dist/parser.js:285:98)
+    at Parser.handlePacket (/Users/thomas/Backend/Creator-Pool-Backend/node_modules/pg-protocol/dist/parser.js:122:29)
+    at Parser.parse (/Users/thomas/Backend/Creator-Pool-Backend/node_modules/pg-protocol/dist/parser.js:35:38)
+    at Socket.<anonymous> (/Users/thomas/Backend/Creator-Pool-Backend/node_modules/pg-protocol/dist/index.js:11:42)
+    at Socket.emit (node:events:524:28)
+    at Socket.emit (node:domain:489:12)
+    at addChunk (node:internal/streams/readable:561:12)
+    at readableAddChunkPushByteMode (node:internal/streams/readable:512:3)
+    at Socket.Readable.push (node:internal/streams/readable:392:5)
+    at TCP.onStreamRead (node:internal/stream_base_commons:189:23)
+[Nest] 58070  - 10/27/2025, 6:15:20 PM   ERROR [TypeOrmModule] Unable to connect to the database. Retrying (3)...
+error: password authentication failed for user "postgres"
+    at Parser.parseErrorMessage (/Users/thomas/Backend/Creator-Pool-Backend/node_modules/pg-protocol/dist/parser.js:285:98)
+    at Parser.handlePacket (/Users/thomas/Backend/Creator-Pool-Backend/node_modules/pg-protocol/dist/parser.js:122:29)
+    at Parser.parse (/Users/thomas/Backend/Creator-Pool-Backend/node_modules/pg-protocol/dist/parser.js:35:38)
+    at Socket.<anonymous> (/Users/thomas/Backend/Creator-Pool-Backend/node_modules/pg-protocol/dist/index.js:11:42)
+    at Socket.emit (node:events:524:28)
+    at Socket.emit (node:domain:489:12)
+    at addChunk (node:internal/streams/readable:561:12)
+    at readableAddChunkPushByteMode (node:internal/streams/readable:512:3)
+    at Socket.Readable.push (node:internal/streams/readable:392:5)
+    at TCP.onStreamRead (node:internal/stream_base_commons:189:23)
+[Nest] 58070  - 10/27/2025, 6:15:23 PM   ERROR [TypeOrmModule] Unable to connect to the database. Retrying (4)...
+error: password authentication failed for user "postgres"
+    at Parser.parseErrorMessage (/Users/thomas/Backend/Creator-Pool-Backend/node_modules/pg-protocol/dist/parser.js:285:98)
+    at Parser.handlePacket (/Users/thomas/Backend/Creator-Pool-Backend/node_modules/pg-protocol/dist/parser.js:122:29)
+    at Parser.parse (/Users/thomas/Backend/Creator-Pool-Backend/node_modules/pg-protocol/dist/parser.js:35:38)
+    at Socket.<anonymous> (/Users/thomas/Backend/Creator-Pool-Backend/node_modules/pg-protocol/dist/index.js:11:42)
+    at Socket.emit (node:events:524:28)
+    at Socket.emit (node:domain:489:12)
+    at addChunk (node:internal/streams/readable:561:12)
+    at readableAddChunkPushByteMode (node:internal/streams/readable:512:3)
+    at Socket.Readable.push (node:internal/streams/readable:392:5)
+    at TCP.onStreamRead (node:internal/stream_base_commons:189:23)
+[Nest] 58070  - 10/27/2025, 6:15:26 PM   ERROR [TypeOrmModule] Unable to connect to the database. Retrying (5)...
+error: password authentication failed for user "postgres"
+    at Parser.parseErrorMessage (/Users/thomas/Backend/Creator-Pool-Backend/node_modules/pg-protocol/dist/parser.js:285:98)
+    at Parser.handlePacket (/Users/thomas/Backend/Creator-Pool-Backend/node_modules/pg-protocol/dist/parser.js:122:29)
+    at Parser.parse (/Users/thomas/Backend/Creator-Pool-Backend/node_modules/pg-protocol/dist/parser.js:35:38)
+    at Socket.<anonymous> (/Users/thomas/Backend/Creator-Pool-Backend/node_modules/pg-protocol/dist/index.js:11:42)
+    at Socket.emit (node:events:524:28)
+    at Socket.emit (node:domain:489:12)
+    at addChunk (node:internal/streams/readable:561:12)
+    at readableAddChunkPushByteMode (node:internal/streams/readable:512:3)
+    at Socket.Readable.push (node:internal/streams/readable:392:5)
+    at TCP.onStreamRead (node:internal/stream_base_commons:189:23)
+[Nest] 58070  - 10/27/2025, 6:15:29 PM   ERROR [TypeOrmModule] Unable to connect to the database. Retrying (6)...
+error: password authentication failed for user "postgres"
+    at Parser.parseErrorMessage (/Users/thomas/Backend/Creator-Pool-Backend/node_modules/pg-protocol/dist/parser.js:285:98)
+    at Parser.handlePacket (/Users/thomas/Backend/Creator-Pool-Backend/node_modules/pg-protocol/dist/parser.js:122:29)
+    at Parser.parse (/Users/thomas/Backend/Creator-Pool-Backend/node_modules/pg-protocol/dist/parser.js:35:38)
+    at Socket.<anonymous> (/Users/thomas/Backend/Creator-Pool-Backend/node_modules/pg-protocol/dist/index.js:11:42)
+    at Socket.emit (node:events:524:28)
+    at Socket.emit (node:domain:489:12)
+    at addChunk (node:internal/streams/readable:561:12)
+    at readableAddChunkPushByteMode (node:internal/streams/readable:512:3)
+    at Socket.Readable.push (node:internal/streams/readable:392:5)
+    at TCP.onStreamRead (node:internal/stream_base_commons:189:23)
+[Nest] 58070  - 10/27/2025, 6:15:32 PM   ERROR [TypeOrmModule] Unable to connect to the database. Retrying (7)...
+error: password authentication failed for user "postgres"
+    at Parser.parseErrorMessage (/Users/thomas/Backend/Creator-Pool-Backend/node_modules/pg-protocol/dist/parser.js:285:98)
+    at Parser.handlePacket (/Users/thomas/Backend/Creator-Pool-Backend/node_modules/pg-protocol/dist/parser.js:122:29)
+    at Parser.parse (/Users/thomas/Backend/Creator-Pool-Backend/node_modules/pg-protocol/dist/parser.js:35:38)
+    at Socket.<anonymous> (/Users/thomas/Backend/Creator-Pool-Backend/node_modules/pg-protocol/dist/index.js:11:42)
+    at Socket.emit (node:events:524:28)
+    at Socket.emit (node:domain:489:12)
+    at addChunk (node:internal/streams/readable:561:12)
+    at readableAddChunkPushByteMode (node:internal/streams/readable:512:3)
+    at Socket.Readable.push (node:internal/streams/readable:392:5)
+    at TCP.onStreamRead (node:internal/stream_base_commons:189:23)
+[Nest] 58070  - 10/27/2025, 6:15:35 PM   ERROR [TypeOrmModule] Unable to connect to the database. Retrying (8)...
+error: password authentication failed for user "postgres"
+    at Parser.parseErrorMessage (/Users/thomas/Backend/Creator-Pool-Backend/node_modules/pg-protocol/dist/parser.js:285:98)
+    at Parser.handlePacket (/Users/thomas/Backend/Creator-Pool-Backend/node_modules/pg-protocol/dist/parser.js:122:29)
+    at Parser.parse (/Users/thomas/Backend/Creator-Pool-Backend/node_modules/pg-protocol/dist/parser.js:35:38)
+    at Socket.<anonymous> (/Users/thomas/Backend/Creator-Pool-Backend/node_modules/pg-protocol/dist/index.js:11:42)
+    at Socket.emit (node:events:524:28)
+    at Socket.emit (node:domain:489:12)
+    at addChunk (node:internal/streams/readable:561:12)
+    at readableAddChunkPushByteMode (node:internal/streams/readable:512:3)
+    at Socket.Readable.push (node:internal/streams/readable:392:5)
+    at TCP.onStreamRead (node:internal/stream_base_commons:189:23)
+[Nest] 58070  - 10/27/2025, 6:15:38 PM   ERROR [TypeOrmModule] Unable to connect to the database. Retrying (9)...
+error: password authentication failed for user "postgres"
+    at Parser.parseErrorMessage (/Users/thomas/Backend/Creator-Pool-Backend/node_modules/pg-protocol/dist/parser.js:285:98)
+    at Parser.handlePacket (/Users/thomas/Backend/Creator-Pool-Backend/node_modules/pg-protocol/dist/parser.js:122:29)
+    at Parser.parse (/Users/thomas/Backend/Creator-Pool-Backend/node_modules/pg-protocol/dist/parser.js:35:38)
+    at Socket.<anonymous> (/Users/thomas/Backend/Creator-Pool-Backend/node_modules/pg-protocol/dist/index.js:11:42)
+    at Socket.emit (node:events:524:28)
+    at Socket.emit (node:domain:489:12)
+    at addChunk (node:internal/streams/readable:561:12)
+    at readableAddChunkPushByteMode (node:internal/streams/readable:512:3)
+    at Socket.Readable.push (node:internal/streams/readable:392:5)
+    at TCP.onStreamRead (node:internal/stream_base_commons:189:23)
+[Nest] 58070  - 10/27/2025, 6:15:38 PM   ERROR [ExceptionHandler] password authentication failed for user "postgres"
+error: password authentication failed for user "postgres"
+    at Parser.parseErrorMessage (/Users/thomas/Backend/Creator-Pool-Backend/node_modules/pg-protocol/dist/parser.js:285:98)
+    at Parser.handlePacket (/Users/thomas/Backend/Creator-Pool-Backend/node_modules/pg-protocol/dist/parser.js:122:29)
+    at Parser.parse (/Users/thomas/Backend/Creator-Pool-Backend/node_modules/pg-protocol/dist/parser.js:35:38)
+    at Socket.<anonymous> (/Users/thomas/Backend/Creator-Pool-Backend/node_modules/pg-protocol/dist/index.js:11:42)
+    at Socket.emit (node:events:524:28)
+    at Socket.emit (node:domain:489:12)
+    at addChunk (node:internal/streams/readable:561:12)
+    at readableAddChunkPushByteMode (node:internal/streams/readable:512:3)
+    at Socket.Readable.push (node:internal/streams/readable:392:5)
+    at TCP.onStreamRead (node:internal/stream_base_commons:189:23)
+6:16:52 PM [tsx] change in ./src/app.module.ts Rerunning...
+c[Nest] 60012  - 10/27/2025, 6:16:53 PM     LOG [NestFactory] Starting Nest application...
+[Nest] 60012  - 10/27/2025, 6:16:53 PM     LOG [InstanceLoader] TypeOrmModule dependencies initialized +5ms
+[Nest] 60012  - 10/27/2025, 6:16:53 PM     LOG [InstanceLoader] AppModule dependencies initialized +0ms
+[Nest] 60012  - 10/27/2025, 6:16:53 PM     LOG [InstanceLoader] ConfigHostModule dependencies initialized +0ms
+[Nest] 60012  - 10/27/2025, 6:16:53 PM     LOG [InstanceLoader] ConfigModule dependencies initialized +0ms
+[Nest] 60012  - 10/27/2025, 6:16:53 PM     LOG [InstanceLoader] ConfigModule dependencies initialized +0ms
+[Nest] 60012  - 10/27/2025, 6:16:53 PM   ERROR [TypeOrmModule] Unable to connect to the database. Retrying (1)...
+error: password authentication failed for user "postgres"
+    at Parser.parseErrorMessage (/Users/thomas/Backend/Creator-Pool-Backend/node_modules/pg-protocol/dist/parser.js:285:98)
+    at Parser.handlePacket (/Users/thomas/Backend/Creator-Pool-Backend/node_modules/pg-protocol/dist/parser.js:122:29)
+    at Parser.parse (/Users/thomas/Backend/Creator-Pool-Backend/node_modules/pg-protocol/dist/parser.js:35:38)
+    at Socket.<anonymous> (/Users/thomas/Backend/Creator-Pool-Backend/node_modules/pg-protocol/dist/index.js:11:42)
+    at Socket.emit (node:events:524:28)
+    at Socket.emit (node:domain:489:12)
+    at addChunk (node:internal/streams/readable:561:12)
+    at readableAddChunkPushByteMode (node:internal/streams/readable:512:3)
+    at Socket.Readable.push (node:internal/streams/readable:392:5)
+    at TCP.onStreamRead (node:internal/stream_base_commons:189:23)
+[Nest] 60012  - 10/27/2025, 6:16:56 PM   ERROR [TypeOrmModule] Unable to connect to the database. Retrying (2)...
+error: password authentication failed for user "postgres"
+    at Parser.parseErrorMessage (/Users/thomas/Backend/Creator-Pool-Backend/node_modules/pg-protocol/dist/parser.js:285:98)
+    at Parser.handlePacket (/Users/thomas/Backend/Creator-Pool-Backend/node_modules/pg-protocol/dist/parser.js:122:29)
+    at Parser.parse (/Users/thomas/Backend/Creator-Pool-Backend/node_modules/pg-protocol/dist/parser.js:35:38)
+    at Socket.<anonymous> (/Users/thomas/Backend/Creator-Pool-Backend/node_modules/pg-protocol/dist/index.js:11:42)
+    at Socket.emit (node:events:524:28)
+    at Socket.emit (node:domain:489:12)
+    at addChunk (node:internal/streams/readable:561:12)
+    at readableAddChunkPushByteMode (node:internal/streams/readable:512:3)
+    at Socket.Readable.push (node:internal/streams/readable:392:5)
+    at TCP.onStreamRead (node:internal/stream_base_commons:189:23)
+6:16:58 PM [tsx] change in ./src/app.module.ts Restarting...
+c
+/Users/thomas/Backend/Creator-Pool-Backend/src/entities/user.entity.ts:2
+  Entity,
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               ^
+ColumnTypeUndefinedError: Column type for User#email is not defined and cannot be guessed. Make sure you have turned on an "emitDecoratorMetadata": true option in tsconfig.json. Also make sure you have imported "reflect-metadata" on top of the main entry file in your application (before any entity imported).If you are using JavaScript instead of TypeScript you must explicitly provide a column type.
+    at /Users/thomas/Backend/Creator-Pool-Backend/node_modules/typeorm/decorator/columns/Column.js:52:23
+    at __decorateClass (/Users/thomas/Backend/Creator-Pool-Backend/src/entities/user.entity.ts:2:1216)
+    at /Users/thomas/Backend/Creator-Pool-Backend/src/entities/user.entity.ts:23:3
+    at Object.<anonymous> (/Users/thomas/Backend/Creator-Pool-Backend/src/entities/user.entity.ts:3:3)
+    at Module._compile (node:internal/modules/cjs/loader:1562:14)
+    at Object.j (/Users/thomas/Backend/Creator-Pool-Backend/node_modules/tsx/dist/cjs/index.cjs:1:1197)
+    at Module.load (node:internal/modules/cjs/loader:1313:32)
+    at Function._load (node:internal/modules/cjs/loader:1123:12)
+    at TracingChannel.traceSync (node:diagnostics_channel:322:14)
+    at wrapModuleLoad (node:internal/modules/cjs/loader:217:24)
+6:17:23 PM [tsx] change in ./src/app.module.ts Rerunning...
+c
+/Users/thomas/Backend/Creator-Pool-Backend/src/entities/user.entity.ts:2
+  Entity,
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               ^
+ColumnTypeUndefinedError: Column type for User#email is not defined and cannot be guessed. Make sure you have turned on an "emitDecoratorMetadata": true option in tsconfig.json. Also make sure you have imported "reflect-metadata" on top of the main entry file in your application (before any entity imported).If you are using JavaScript instead of TypeScript you must explicitly provide a column type.
+    at /Users/thomas/Backend/Creator-Pool-Backend/node_modules/typeorm/decorator/columns/Column.js:52:23
+    at __decorateClass (/Users/thomas/Backend/Creator-Pool-Backend/src/entities/user.entity.ts:2:1216)
+    at /Users/thomas/Backend/Creator-Pool-Backend/src/entities/user.entity.ts:23:3
+    at Object.<anonymous> (/Users/thomas/Backend/Creator-Pool-Backend/src/entities/user.entity.ts:3:3)
+    at Module._compile (node:internal/modules/cjs/loader:1562:14)
+    at Object.j (/Users/thomas/Backend/Creator-Pool-Backend/node_modules/tsx/dist/cjs/index.cjs:1:1197)
+    at Module.load (node:internal/modules/cjs/loader:1313:32)
+    at Function._load (node:internal/modules/cjs/loader:1123:12)
+    at TracingChannel.traceSync (node:diagnostics_channel:322:14)
+    at wrapModuleLoad (node:internal/modules/cjs/loader:217:24)
+6:37:34 PM [tsx] change in ./src/app.module.ts Rerunning...
+c
+/Users/thomas/Backend/Creator-Pool-Backend/src/entities/user.entity.ts:2
+  Entity,
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               ^
+ColumnTypeUndefinedError: Column type for User#email is not defined and cannot be guessed. Make sure you have turned on an "emitDecoratorMetadata": true option in tsconfig.json. Also make sure you have imported "reflect-metadata" on top of the main entry file in your application (before any entity imported).If you are using JavaScript instead of TypeScript you must explicitly provide a column type.
+    at /Users/thomas/Backend/Creator-Pool-Backend/node_modules/typeorm/decorator/columns/Column.js:52:23
+    at __decorateClass (/Users/thomas/Backend/Creator-Pool-Backend/src/entities/user.entity.ts:2:1216)
+    at /Users/thomas/Backend/Creator-Pool-Backend/src/entities/user.entity.ts:23:3
+    at Object.<anonymous> (/Users/thomas/Backend/Creator-Pool-Backend/src/entities/user.entity.ts:3:3)
+    at Module._compile (node:internal/modules/cjs/loader:1562:14)
+    at Object.j (/Users/thomas/Backend/Creator-Pool-Backend/node_modules/tsx/dist/cjs/index.cjs:1:1197)
+    at Module.load (node:internal/modules/cjs/loader:1313:32)
+    at Function._load (node:internal/modules/cjs/loader:1123:12)
+    at TracingChannel.traceSync (node:diagnostics_channel:322:14)
+    at wrapModuleLoad (node:internal/modules/cjs/loader:217:24)
+6:44:43 PM [tsx] change in ./src/app.service.ts Rerunning...
+c
+/Users/thomas/Backend/Creator-Pool-Backend/src/entities/user.entity.ts:2
+  Entity,
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               ^
+ColumnTypeUndefinedError: Column type for User#email is not defined and cannot be guessed. Make sure you have turned on an "emitDecoratorMetadata": true option in tsconfig.json. Also make sure you have imported "reflect-metadata" on top of the main entry file in your application (before any entity imported).If you are using JavaScript instead of TypeScript you must explicitly provide a column type.
+    at /Users/thomas/Backend/Creator-Pool-Backend/node_modules/typeorm/decorator/columns/Column.js:52:23
+    at __decorateClass (/Users/thomas/Backend/Creator-Pool-Backend/src/entities/user.entity.ts:2:1216)
+    at /Users/thomas/Backend/Creator-Pool-Backend/src/entities/user.entity.ts:23:3
+    at Object.<anonymous> (/Users/thomas/Backend/Creator-Pool-Backend/src/entities/user.entity.ts:3:3)
+    at Module._compile (node:internal/modules/cjs/loader:1562:14)
+    at Object.j (/Users/thomas/Backend/Creator-Pool-Backend/node_modules/tsx/dist/cjs/index.cjs:1:1197)
+    at Module.load (node:internal/modules/cjs/loader:1313:32)
+    at Function._load (node:internal/modules/cjs/loader:1123:12)
+    at TracingChannel.traceSync (node:diagnostics_channel:322:14)
+    at wrapModuleLoad (node:internal/modules/cjs/loader:217:24)
+6:45:58 PM [tsx] change in ./src/app.service.ts Rerunning...
+c6:45:58 PM [tsx] change in ./src/app.service.ts Restarting...
+c
+/Users/thomas/Backend/Creator-Pool-Backend/src/entities/user.entity.ts:2
+  Entity,
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               ^
+ColumnTypeUndefinedError: Column type for User#email is not defined and cannot be guessed. Make sure you have turned on an "emitDecoratorMetadata": true option in tsconfig.json. Also make sure you have imported "reflect-metadata" on top of the main entry file in your application (before any entity imported).If you are using JavaScript instead of TypeScript you must explicitly provide a column type.
+    at /Users/thomas/Backend/Creator-Pool-Backend/node_modules/typeorm/decorator/columns/Column.js:52:23
+    at __decorateClass (/Users/thomas/Backend/Creator-Pool-Backend/src/entities/user.entity.ts:2:1216)
+    at /Users/thomas/Backend/Creator-Pool-Backend/src/entities/user.entity.ts:23:3
+    at Object.<anonymous> (/Users/thomas/Backend/Creator-Pool-Backend/src/entities/user.entity.ts:3:3)
+    at Module._compile (node:internal/modules/cjs/loader:1562:14)
+    at Object.j (/Users/thomas/Backend/Creator-Pool-Backend/node_modules/tsx/dist/cjs/index.cjs:1:1197)
+    at Module.load (node:internal/modules/cjs/loader:1313:32)
+    at Function._load (node:internal/modules/cjs/loader:1123:12)
+    at TracingChannel.traceSync (node:diagnostics_channel:322:14)
+    at wrapModuleLoad (node:internal/modules/cjs/loader:217:24)
+6:50:53 PM [tsx] change in ./src/main.ts Rerunning...
+c
+/Users/thomas/Backend/Creator-Pool-Backend/src/entities/user.entity.ts:2
+  Entity,
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               ^
+ColumnTypeUndefinedError: Column type for User#email is not defined and cannot be guessed. Make sure you have turned on an "emitDecoratorMetadata": true option in tsconfig.json. Also make sure you have imported "reflect-metadata" on top of the main entry file in your application (before any entity imported).If you are using JavaScript instead of TypeScript you must explicitly provide a column type.
+    at /Users/thomas/Backend/Creator-Pool-Backend/node_modules/typeorm/decorator/columns/Column.js:52:23
+    at __decorateClass (/Users/thomas/Backend/Creator-Pool-Backend/src/entities/user.entity.ts:2:1216)
+    at /Users/thomas/Backend/Creator-Pool-Backend/src/entities/user.entity.ts:24:3
+    at Object.<anonymous> (/Users/thomas/Backend/Creator-Pool-Backend/src/entities/user.entity.ts:3:3)
+    at Module._compile (node:internal/modules/cjs/loader:1562:14)
+    at Object.j (/Users/thomas/Backend/Creator-Pool-Backend/node_modules/tsx/dist/cjs/index.cjs:1:1197)
+    at Module.load (node:internal/modules/cjs/loader:1313:32)
+    at Function._load (node:internal/modules/cjs/loader:1123:12)
+    at TracingChannel.traceSync (node:diagnostics_channel:322:14)
+    at wrapModuleLoad (node:internal/modules/cjs/loader:217:24)
+2:41:32 AM [tsx] change in ./src/app.module.ts Rerunning...
+c
+/Users/thomas/Backend/Creator-Pool-Backend/node_modules/esbuild/lib/main.js:1649
+  let error = new Error(`${text}${summary}`);
+              ^
+Error: Transform failed with 1 error:
+/Users/thomas/Backend/Creator-Pool-Backend/src/app.module.ts:19:12: ERROR: Expected ")" but found ":"
+    at failureErrorWithLog (/Users/thomas/Backend/Creator-Pool-Backend/node_modules/esbuild/lib/main.js:1649:15)
+    at /Users/thomas/Backend/Creator-Pool-Backend/node_modules/esbuild/lib/main.js:847:29
+    at responseCallbacks.<computed> (/Users/thomas/Backend/Creator-Pool-Backend/node_modules/esbuild/lib/main.js:703:9)
+    at handleIncomingPacket (/Users/thomas/Backend/Creator-Pool-Backend/node_modules/esbuild/lib/main.js:762:9)
+    at Socket.readFromStdout (/Users/thomas/Backend/Creator-Pool-Backend/node_modules/esbuild/lib/main.js:679:7)
+    at Socket.emit (node:events:524:28)
+    at addChunk (node:internal/streams/readable:561:12)
+    at readableAddChunkPushByteMode (node:internal/streams/readable:512:3)
+    at Readable.push (node:internal/streams/readable:392:5)
+    at Pipe.onStreamRead (node:internal/stream_base_commons:189:23)
+2:41:43 AM [tsx] change in ./src/app.module.ts Rerunning...
+c
+/Users/thomas/Backend/Creator-Pool-Backend/src/entities/user.entity.ts:2
+  Entity,
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               ^
+ColumnTypeUndefinedError: Column type for User#email is not defined and cannot be guessed. Make sure you have turned on an "emitDecoratorMetadata": true option in tsconfig.json. Also make sure you have imported "reflect-metadata" on top of the main entry file in your application (before any entity imported).If you are using JavaScript instead of TypeScript you must explicitly provide a column type.
+    at /Users/thomas/Backend/Creator-Pool-Backend/node_modules/typeorm/decorator/columns/Column.js:52:23
+    at __decorateClass (/Users/thomas/Backend/Creator-Pool-Backend/src/entities/user.entity.ts:2:1216)
+    at /Users/thomas/Backend/Creator-Pool-Backend/src/entities/user.entity.ts:24:3
+    at Object.<anonymous> (/Users/thomas/Backend/Creator-Pool-Backend/src/entities/user.entity.ts:3:3)
+    at Module._compile (node:internal/modules/cjs/loader:1562:14)
+    at Object.j (/Users/thomas/Backend/Creator-Pool-Backend/node_modules/tsx/dist/cjs/index.cjs:1:1197)
+    at Module.load (node:internal/modules/cjs/loader:1313:32)
+    at Function._load (node:internal/modules/cjs/loader:1123:12)
+    at TracingChannel.traceSync (node:diagnostics_channel:322:14)
+    at wrapModuleLoad (node:internal/modules/cjs/loader:217:24)
+2:41:54 AM [tsx] change in ./src/app.module.ts Rerunning...
+c
+/Users/thomas/Backend/Creator-Pool-Backend/node_modules/esbuild/lib/main.js:1649
+  let error = new Error(`${text}${summary}`);
+              ^
+Error: Transform failed with 1 error:
+/Users/thomas/Backend/Creator-Pool-Backend/src/app.module.ts:19:12: ERROR: Expected ")" but found ":"
+    at failureErrorWithLog (/Users/thomas/Backend/Creator-Pool-Backend/node_modules/esbuild/lib/main.js:1649:15)
+    at /Users/thomas/Backend/Creator-Pool-Backend/node_modules/esbuild/lib/main.js:847:29
+    at responseCallbacks.<computed> (/Users/thomas/Backend/Creator-Pool-Backend/node_modules/esbuild/lib/main.js:703:9)
+    at handleIncomingPacket (/Users/thomas/Backend/Creator-Pool-Backend/node_modules/esbuild/lib/main.js:762:9)
+    at Socket.readFromStdout (/Users/thomas/Backend/Creator-Pool-Backend/node_modules/esbuild/lib/main.js:679:7)
+    at Socket.emit (node:events:524:28)
+    at addChunk (node:internal/streams/readable:561:12)
+    at readableAddChunkPushByteMode (node:internal/streams/readable:512:3)
+    at Readable.push (node:internal/streams/readable:392:5)
+    at Pipe.onStreamRead (node:internal/stream_base_commons:189:23)
+2:42:04 AM [tsx] change in ./src/app.module.ts Rerunning...
+c
+/Users/thomas/Backend/Creator-Pool-Backend/node_modules/esbuild/lib/main.js:1649
+  let error = new Error(`${text}${summary}`);
+              ^
+Error: Transform failed with 1 error:
+/Users/thomas/Backend/Creator-Pool-Backend/src/app.module.ts:19:12: ERROR: Expected ")" but found ":"
+    at failureErrorWithLog (/Users/thomas/Backend/Creator-Pool-Backend/node_modules/esbuild/lib/main.js:1649:15)
+    at /Users/thomas/Backend/Creator-Pool-Backend/node_modules/esbuild/lib/main.js:847:29
+    at responseCallbacks.<computed> (/Users/thomas/Backend/Creator-Pool-Backend/node_modules/esbuild/lib/main.js:703:9)
+    at handleIncomingPacket (/Users/thomas/Backend/Creator-Pool-Backend/node_modules/esbuild/lib/main.js:762:9)
+    at Socket.readFromStdout (/Users/thomas/Backend/Creator-Pool-Backend/node_modules/esbuild/lib/main.js:679:7)
+    at Socket.emit (node:events:524:28)
+    at addChunk (node:internal/streams/readable:561:12)
+    at readableAddChunkPushByteMode (node:internal/streams/readable:512:3)
+    at Readable.push (node:internal/streams/readable:392:5)
+    at Pipe.onStreamRead (node:internal/stream_base_commons:189:23)
+2:42:11 AM [tsx] change in ./src/app.module.ts Rerunning...
+c
+/Users/thomas/Backend/Creator-Pool-Backend/src/entities/user.entity.ts:2
+  Entity,
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               ^
+ColumnTypeUndefinedError: Column type for User#email is not defined and cannot be guessed. Make sure you have turned on an "emitDecoratorMetadata": true option in tsconfig.json. Also make sure you have imported "reflect-metadata" on top of the main entry file in your application (before any entity imported).If you are using JavaScript instead of TypeScript you must explicitly provide a column type.
+    at /Users/thomas/Backend/Creator-Pool-Backend/node_modules/typeorm/decorator/columns/Column.js:52:23
+    at __decorateClass (/Users/thomas/Backend/Creator-Pool-Backend/src/entities/user.entity.ts:2:1216)
+    at /Users/thomas/Backend/Creator-Pool-Backend/src/entities/user.entity.ts:24:3
+    at Object.<anonymous> (/Users/thomas/Backend/Creator-Pool-Backend/src/entities/user.entity.ts:3:3)
+    at Module._compile (node:internal/modules/cjs/loader:1562:14)
+    at Object.j (/Users/thomas/Backend/Creator-Pool-Backend/node_modules/tsx/dist/cjs/index.cjs:1:1197)
+    at Module.load (node:internal/modules/cjs/loader:1313:32)
+    at Function._load (node:internal/modules/cjs/loader:1123:12)
+    at TracingChannel.traceSync (node:diagnostics_channel:322:14)
+    at wrapModuleLoad (node:internal/modules/cjs/loader:217:24)
+3:04:19 AM [tsx] change in ./src/app.module.ts Rerunning...
+c
+/Users/thomas/Backend/Creator-Pool-Backend/node_modules/esbuild/lib/main.js:1649
+  let error = new Error(`${text}${summary}`);
+              ^
+Error: Transform failed with 1 error:
+/Users/thomas/Backend/Creator-Pool-Backend/src/app.module.ts:18:44: ERROR: Unterminated string literal
+    at failureErrorWithLog (/Users/thomas/Backend/Creator-Pool-Backend/node_modules/esbuild/lib/main.js:1649:15)
+    at /Users/thomas/Backend/Creator-Pool-Backend/node_modules/esbuild/lib/main.js:847:29
+    at responseCallbacks.<computed> (/Users/thomas/Backend/Creator-Pool-Backend/node_modules/esbuild/lib/main.js:703:9)
+    at handleIncomingPacket (/Users/thomas/Backend/Creator-Pool-Backend/node_modules/esbuild/lib/main.js:762:9)
+    at Socket.readFromStdout (/Users/thomas/Backend/Creator-Pool-Backend/node_modules/esbuild/lib/main.js:679:7)
+    at Socket.emit (node:events:524:28)
+    at addChunk (node:internal/streams/readable:561:12)
+    at readableAddChunkPushByteMode (node:internal/streams/readable:512:3)
+    at Readable.push (node:internal/streams/readable:392:5)
+    at Pipe.onStreamRead (node:internal/stream_base_commons:189:23)
+3:04:32 AM [tsx] change in ./src/app.module.ts Rerunning...
+c
+/Users/thomas/Backend/Creator-Pool-Backend/node_modules/esbuild/lib/main.js:1649
+  let error = new Error(`${text}${summary}`);
+              ^
+Error: Transform failed with 1 error:
+/Users/thomas/Backend/Creator-Pool-Backend/src/app.module.ts:18:44: ERROR: Unterminated string literal
+    at failureErrorWithLog (/Users/thomas/Backend/Creator-Pool-Backend/node_modules/esbuild/lib/main.js:1649:15)
+    at /Users/thomas/Backend/Creator-Pool-Backend/node_modules/esbuild/lib/main.js:847:29
+    at responseCallbacks.<computed> (/Users/thomas/Backend/Creator-Pool-Backend/node_modules/esbuild/lib/main.js:703:9)
+    at handleIncomingPacket (/Users/thomas/Backend/Creator-Pool-Backend/node_modules/esbuild/lib/main.js:762:9)
+    at Socket.readFromStdout (/Users/thomas/Backend/Creator-Pool-Backend/node_modules/esbuild/lib/main.js:679:7)
+    at Socket.emit (node:events:524:28)
+    at addChunk (node:internal/streams/readable:561:12)
+    at readableAddChunkPushByteMode (node:internal/streams/readable:512:3)
+    at Readable.push (node:internal/streams/readable:392:5)
+    at Pipe.onStreamRead (node:internal/stream_base_commons:189:23)
+3:04:37 AM [tsx] change in ./src/app.module.ts Rerunning...
+c
+/Users/thomas/Backend/Creator-Pool-Backend/node_modules/esbuild/lib/main.js:1649
+  let error = new Error(`${text}${summary}`);
+              ^
+Error: Transform failed with 1 error:
+/Users/thomas/Backend/Creator-Pool-Backend/src/app.module.ts:18:44: ERROR: Unterminated string literal
+    at failureErrorWithLog (/Users/thomas/Backend/Creator-Pool-Backend/node_modules/esbuild/lib/main.js:1649:15)
+    at /Users/thomas/Backend/Creator-Pool-Backend/node_modules/esbuild/lib/main.js:847:29
+    at responseCallbacks.<computed> (/Users/thomas/Backend/Creator-Pool-Backend/node_modules/esbuild/lib/main.js:703:9)
+    at handleIncomingPacket (/Users/thomas/Backend/Creator-Pool-Backend/node_modules/esbuild/lib/main.js:762:9)
+    at Socket.readFromStdout (/Users/thomas/Backend/Creator-Pool-Backend/node_modules/esbuild/lib/main.js:679:7)
+    at Socket.emit (node:events:524:28)
+    at addChunk (node:internal/streams/readable:561:12)
+    at readableAddChunkPushByteMode (node:internal/streams/readable:512:3)
+    at Readable.push (node:internal/streams/readable:392:5)
+    at Pipe.onStreamRead (node:internal/stream_base_commons:189:23)
+3:04:42 AM [tsx] change in ./src/app.module.ts Rerunning...
+c
+/Users/thomas/Backend/Creator-Pool-Backend/node_modules/esbuild/lib/main.js:1649
+  let error = new Error(`${text}${summary}`);
+              ^
+Error: Transform failed with 1 error:
+/Users/thomas/Backend/Creator-Pool-Backend/src/app.module.ts:18:44: ERROR: Unterminated string literal
+    at failureErrorWithLog (/Users/thomas/Backend/Creator-Pool-Backend/node_modules/esbuild/lib/main.js:1649:15)
+    at /Users/thomas/Backend/Creator-Pool-Backend/node_modules/esbuild/lib/main.js:847:29
+    at responseCallbacks.<computed> (/Users/thomas/Backend/Creator-Pool-Backend/node_modules/esbuild/lib/main.js:703:9)
+    at handleIncomingPacket (/Users/thomas/Backend/Creator-Pool-Backend/node_modules/esbuild/lib/main.js:762:9)
+    at Socket.readFromStdout (/Users/thomas/Backend/Creator-Pool-Backend/node_modules/esbuild/lib/main.js:679:7)
+    at Socket.emit (node:events:524:28)
+    at addChunk (node:internal/streams/readable:561:12)
+    at readableAddChunkPushByteMode (node:internal/streams/readable:512:3)
+    at Readable.push (node:internal/streams/readable:392:5)
+    at Pipe.onStreamRead (node:internal/stream_base_commons:189:23)
+3:04:49 AM [tsx] change in ./src/app.module.ts Rerunning...
+c
+/Users/thomas/Backend/Creator-Pool-Backend/node_modules/esbuild/lib/main.js:1649
+  let error = new Error(`${text}${summary}`);
+              ^
+Error: Transform failed with 1 error:
+/Users/thomas/Backend/Creator-Pool-Backend/src/app.module.ts:18:44: ERROR: Unterminated string literal
+    at failureErrorWithLog (/Users/thomas/Backend/Creator-Pool-Backend/node_modules/esbuild/lib/main.js:1649:15)
+    at /Users/thomas/Backend/Creator-Pool-Backend/node_modules/esbuild/lib/main.js:847:29
+    at responseCallbacks.<computed> (/Users/thomas/Backend/Creator-Pool-Backend/node_modules/esbuild/lib/main.js:703:9)
+    at handleIncomingPacket (/Users/thomas/Backend/Creator-Pool-Backend/node_modules/esbuild/lib/main.js:762:9)
+    at Socket.readFromStdout (/Users/thomas/Backend/Creator-Pool-Backend/node_modules/esbuild/lib/main.js:679:7)
+    at Socket.emit (node:events:524:28)
+    at addChunk (node:internal/streams/readable:561:12)
+    at readableAddChunkPushByteMode (node:internal/streams/readable:512:3)
+    at Readable.push (node:internal/streams/readable:392:5)
+    at Pipe.onStreamRead (node:internal/stream_base_commons:189:23)
+3:04:58 AM [tsx] change in ./src/app.module.ts Rerunning...
+c
+/Users/thomas/Backend/Creator-Pool-Backend/node_modules/esbuild/lib/main.js:1649
+  let error = new Error(`${text}${summary}`);
+              ^
+Error: Transform failed with 1 error:
+/Users/thomas/Backend/Creator-Pool-Backend/src/app.module.ts:21:52: ERROR: Unterminated string literal
+    at failureErrorWithLog (/Users/thomas/Backend/Creator-Pool-Backend/node_modules/esbuild/lib/main.js:1649:15)
+    at /Users/thomas/Backend/Creator-Pool-Backend/node_modules/esbuild/lib/main.js:847:29
+    at responseCallbacks.<computed> (/Users/thomas/Backend/Creator-Pool-Backend/node_modules/esbuild/lib/main.js:703:9)
+    at handleIncomingPacket (/Users/thomas/Backend/Creator-Pool-Backend/node_modules/esbuild/lib/main.js:762:9)
+    at Socket.readFromStdout (/Users/thomas/Backend/Creator-Pool-Backend/node_modules/esbuild/lib/main.js:679:7)
+    at Socket.emit (node:events:524:28)
+    at addChunk (node:internal/streams/readable:561:12)
+    at readableAddChunkPushByteMode (node:internal/streams/readable:512:3)
+    at Readable.push (node:internal/streams/readable:392:5)
+    at Pipe.onStreamRead (node:internal/stream_base_commons:189:23)
+3:05:01 AM [tsx] change in ./src/app.module.ts Rerunning...
+c
+/Users/thomas/Backend/Creator-Pool-Backend/src/entities/user.entity.ts:2
+  Entity,
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               ^
+ColumnTypeUndefinedError: Column type for User#email is not defined and cannot be guessed. Make sure you have turned on an "emitDecoratorMetadata": true option in tsconfig.json. Also make sure you have imported "reflect-metadata" on top of the main entry file in your application (before any entity imported).If you are using JavaScript instead of TypeScript you must explicitly provide a column type.
+    at /Users/thomas/Backend/Creator-Pool-Backend/node_modules/typeorm/decorator/columns/Column.js:52:23
+    at __decorateClass (/Users/thomas/Backend/Creator-Pool-Backend/src/entities/user.entity.ts:2:1216)
+    at /Users/thomas/Backend/Creator-Pool-Backend/src/entities/user.entity.ts:24:3
+    at Object.<anonymous> (/Users/thomas/Backend/Creator-Pool-Backend/src/entities/user.entity.ts:3:3)
+    at Module._compile (node:internal/modules/cjs/loader:1562:14)
+    at Object.j (/Users/thomas/Backend/Creator-Pool-Backend/node_modules/tsx/dist/cjs/index.cjs:1:1197)
+    at Module.load (node:internal/modules/cjs/loader:1313:32)
+    at Function._load (node:internal/modules/cjs/loader:1123:12)
+    at TracingChannel.traceSync (node:diagnostics_channel:322:14)
+    at wrapModuleLoad (node:internal/modules/cjs/loader:217:24)
+3:05:07 AM [tsx] change in ./src/app.module.ts Rerunning...
+c
+/Users/thomas/Backend/Creator-Pool-Backend/src/entities/user.entity.ts:2
+  Entity,
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               ^
+ColumnTypeUndefinedError: Column type for User#email is not defined and cannot be guessed. Make sure you have turned on an "emitDecoratorMetadata": true option in tsconfig.json. Also make sure you have imported "reflect-metadata" on top of the main entry file in your application (before any entity imported).If you are using JavaScript instead of TypeScript you must explicitly provide a column type.
+    at /Users/thomas/Backend/Creator-Pool-Backend/node_modules/typeorm/decorator/columns/Column.js:52:23
+    at __decorateClass (/Users/thomas/Backend/Creator-Pool-Backend/src/entities/user.entity.ts:2:1216)
+    at /Users/thomas/Backend/Creator-Pool-Backend/src/entities/user.entity.ts:24:3
+    at Object.<anonymous> (/Users/thomas/Backend/Creator-Pool-Backend/src/entities/user.entity.ts:3:3)
+    at Module._compile (node:internal/modules/cjs/loader:1562:14)
+    at Object.j (/Users/thomas/Backend/Creator-Pool-Backend/node_modules/tsx/dist/cjs/index.cjs:1:1197)
+    at Module.load (node:internal/modules/cjs/loader:1313:32)
+    at Function._load (node:internal/modules/cjs/loader:1123:12)
+    at TracingChannel.traceSync (node:diagnostics_channel:322:14)
+    at wrapModuleLoad (node:internal/modules/cjs/loader:217:24)
+3:05:11 AM [tsx] change in ./src/app.module.ts Rerunning...
+c
+/Users/thomas/Backend/Creator-Pool-Backend/node_modules/esbuild/lib/main.js:1649
+  let error = new Error(`${text}${summary}`);
+              ^
+Error: Transform failed with 1 error:
+/Users/thomas/Backend/Creator-Pool-Backend/src/app.module.ts:22:51: ERROR: Unterminated string literal
+    at failureErrorWithLog (/Users/thomas/Backend/Creator-Pool-Backend/node_modules/esbuild/lib/main.js:1649:15)
+    at /Users/thomas/Backend/Creator-Pool-Backend/node_modules/esbuild/lib/main.js:847:29
+    at responseCallbacks.<computed> (/Users/thomas/Backend/Creator-Pool-Backend/node_modules/esbuild/lib/main.js:703:9)
+    at handleIncomingPacket (/Users/thomas/Backend/Creator-Pool-Backend/node_modules/esbuild/lib/main.js:762:9)
+    at Socket.readFromStdout (/Users/thomas/Backend/Creator-Pool-Backend/node_modules/esbuild/lib/main.js:679:7)
+    at Socket.emit (node:events:524:28)
+    at addChunk (node:internal/streams/readable:561:12)
+    at readableAddChunkPushByteMode (node:internal/streams/readable:512:3)
+    at Readable.push (node:internal/streams/readable:392:5)
+    at Pipe.onStreamRead (node:internal/stream_base_commons:189:23)
+3:05:12 AM [tsx] change in ./src/app.module.ts Rerunning...
+c
+/Users/thomas/Backend/Creator-Pool-Backend/node_modules/esbuild/lib/main.js:1649
+  let error = new Error(`${text}${summary}`);
+              ^
+Error: Transform failed with 1 error:
+/Users/thomas/Backend/Creator-Pool-Backend/src/app.module.ts:22:48: ERROR: Unterminated string literal
+    at failureErrorWithLog (/Users/thomas/Backend/Creator-Pool-Backend/node_modules/esbuild/lib/main.js:1649:15)
+    at /Users/thomas/Backend/Creator-Pool-Backend/node_modules/esbuild/lib/main.js:847:29
+    at responseCallbacks.<computed> (/Users/thomas/Backend/Creator-Pool-Backend/node_modules/esbuild/lib/main.js:703:9)
+    at handleIncomingPacket (/Users/thomas/Backend/Creator-Pool-Backend/node_modules/esbuild/lib/main.js:762:9)
+    at Socket.readFromStdout (/Users/thomas/Backend/Creator-Pool-Backend/node_modules/esbuild/lib/main.js:679:7)
+    at Socket.emit (node:events:524:28)
+    at addChunk (node:internal/streams/readable:561:12)
+    at readableAddChunkPushByteMode (node:internal/streams/readable:512:3)
+    at Readable.push (node:internal/streams/readable:392:5)
+    at Pipe.onStreamRead (node:internal/stream_base_commons:189:23)
+3:05:17 AM [tsx] change in ./src/app.module.ts Rerunning...
+c
+/Users/thomas/Backend/Creator-Pool-Backend/src/entities/user.entity.ts:2
+  Entity,
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               ^
+ColumnTypeUndefinedError: Column type for User#email is not defined and cannot be guessed. Make sure you have turned on an "emitDecoratorMetadata": true option in tsconfig.json. Also make sure you have imported "reflect-metadata" on top of the main entry file in your application (before any entity imported).If you are using JavaScript instead of TypeScript you must explicitly provide a column type.
+    at /Users/thomas/Backend/Creator-Pool-Backend/node_modules/typeorm/decorator/columns/Column.js:52:23
+    at __decorateClass (/Users/thomas/Backend/Creator-Pool-Backend/src/entities/user.entity.ts:2:1216)
+    at /Users/thomas/Backend/Creator-Pool-Backend/src/entities/user.entity.ts:24:3
+    at Object.<anonymous> (/Users/thomas/Backend/Creator-Pool-Backend/src/entities/user.entity.ts:3:3)
+    at Module._compile (node:internal/modules/cjs/loader:1562:14)
+    at Object.j (/Users/thomas/Backend/Creator-Pool-Backend/node_modules/tsx/dist/cjs/index.cjs:1:1197)
+    at Module.load (node:internal/modules/cjs/loader:1313:32)
+    at Function._load (node:internal/modules/cjs/loader:1123:12)
+    at TracingChannel.traceSync (node:diagnostics_channel:322:14)
+    at wrapModuleLoad (node:internal/modules/cjs/loader:217:24)
+3:18:38 AM [tsx] change in ./src/main.ts Rerunning...
+c
+/Users/thomas/Backend/Creator-Pool-Backend/src/entities/user.entity.ts:2
+  Entity,
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               ^
+ColumnTypeUndefinedError: Column type for User#email is not defined and cannot be guessed. Make sure you have turned on an "emitDecoratorMetadata": true option in tsconfig.json. Also make sure you have imported "reflect-metadata" on top of the main entry file in your application (before any entity imported).If you are using JavaScript instead of TypeScript you must explicitly provide a column type.
+    at /Users/thomas/Backend/Creator-Pool-Backend/node_modules/typeorm/decorator/columns/Column.js:52:23
+    at __decorateClass (/Users/thomas/Backend/Creator-Pool-Backend/src/entities/user.entity.ts:2:1216)
+    at /Users/thomas/Backend/Creator-Pool-Backend/src/entities/user.entity.ts:24:3
+    at Object.<anonymous> (/Users/thomas/Backend/Creator-Pool-Backend/src/entities/user.entity.ts:3:3)
+    at Module._compile (node:internal/modules/cjs/loader:1562:14)
+    at Object.j (/Users/thomas/Backend/Creator-Pool-Backend/node_modules/tsx/dist/cjs/index.cjs:1:1197)
+    at Module.load (node:internal/modules/cjs/loader:1313:32)
+    at Function._load (node:internal/modules/cjs/loader:1123:12)
+    at TracingChannel.traceSync (node:diagnostics_channel:322:14)
+    at wrapModuleLoad (node:internal/modules/cjs/loader:217:24)

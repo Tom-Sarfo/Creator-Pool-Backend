@@ -1,0 +1,7 @@
+lines below
+node_modules
+.env
+.cursor
+dist
+.DS_Store
+coverage
