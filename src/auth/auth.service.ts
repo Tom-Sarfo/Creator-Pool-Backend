@@ -204,4 +204,95 @@ export class AuthService {
       updatedAt: user.updatedAt,
     };
   }
+
+  // ===== ROLE-BASED METHODS =====
+
+  async getAllUsers(): Promise<PublicUser[]> {
+    const users = await this.userRepository.find({
+      select: [
+        "id",
+        "email",
+        "name",
+        "role",
+        "walletBalance",
+        "googleId",
+        "youtubeChannelId",
+        "createdAt",
+        "updatedAt",
+      ],
+    });
+    return users.map((user) => this.sanitizeUser(user));
+  }
+
+  async getUserById(id: string): Promise<PublicUser> {
+    const user = await this.userRepository.findOne({
+      where: { id },
+      select: [
+        "id",
+        "email",
+        "name",
+        "role",
+        "walletBalance",
+        "googleId",
+        "youtubeChannelId",
+        "createdAt",
+        "updatedAt",
+      ],
+    });
+    if (!user) {
+      throw new NotFoundException("User not found");
+    }
+    return this.sanitizeUser(user);
+  }
+
+  async updateYouTubeIntegration(
+    userId: string,
+    data: {
+      youtubeChannelId: string;
+      accessToken: string;
+      refreshToken: string;
+    }
+  ): Promise<PublicUser> {
+    const user = await this.userRepository.findOne({
+      where: { id: userId },
+    });
+    if (!user) {
+      throw new NotFoundException("User not found");
+    }
+
+    user.youtubeChannelId = data.youtubeChannelId;
+    user.youtubeAccessToken = data.accessToken;
+    user.youtubeRefreshToken = data.refreshToken;
+    user.youtubeTokenExpiresAt = new Date(Date.now() + 3600 * 1000); // 1 hour from now
+
+    const updatedUser = await this.userRepository.save(user);
+    return this.sanitizeUser(updatedUser);
+  }
+
+  async getPublicProfile(id: string): Promise<Partial<PublicUser>> {
+    const user = await this.userRepository.findOne({
+      where: { id },
+      select: [
+        "id",
+        "name",
+        "role",
+        "walletBalance",
+        "youtubeChannelId",
+        "createdAt",
+      ],
+    });
+    if (!user) {
+      throw new NotFoundException("User not found");
+    }
+
+    // Return only public information
+    return {
+      id: user.id,
+      name: user.name,
+      role: user.role,
+      walletBalance: Number(user.walletBalance),
+      youtubeChannelId: user.youtubeChannelId,
+      createdAt: user.createdAt,
+    };
+  }
 }
