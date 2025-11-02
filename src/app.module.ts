@@ -11,6 +11,10 @@ import { Video } from "./entities/video.entity";
 import { Pool } from "./entities/pool.entity";
 import { Prediction } from "./entities/prediction.entity";
 import { AuthModule } from "./auth/auth.module";
+import { YouTubeModule } from "./youtube/youtube.module";
+import { PoolModule } from "./pools/pool.module";
+import { PredictionModule } from "./predictions/prediction.module";
+import { VideoModule } from "./videos/video.module";
 
 @Module({
   imports: [
@@ -51,6 +55,10 @@ import { AuthModule } from "./auth/auth.module";
       inject: [ConfigService],
     }),
     AuthModule,
+    YouTubeModule,
+    PoolModule,
+    PredictionModule,
+    VideoModule,
   ],
   controllers: [AppController],
   providers: [

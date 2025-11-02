@@ -24,7 +24,6 @@ import { User } from "../entities/user.entity";
     //   max: 1000, // Maximum number of items in cache
     // }),
   ],
-  controllers: [AuthController],
   providers: [
     AuthService,
     JwtStrategy,
@@ -32,6 +31,7 @@ import { User } from "../entities/user.entity";
     // RefreshTokenService,
     // TokenBlacklistService,
   ],
+  controllers: [AuthController],
   exports: [AuthService],
 })
 export class AuthModule {}

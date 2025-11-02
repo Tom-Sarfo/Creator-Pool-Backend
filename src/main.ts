@@ -1,12 +1,29 @@
 import "reflect-metadata";
 import { NestFactory } from "@nestjs/core";
 import { ValidationPipe } from "@nestjs/common";
-import { DocumentBuilder, SwaggerModule } from "@nestjs/swagger";
 import helmet from "helmet";
 import { AppModule } from "./app.module";
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
+
+  // Set global prefix for all routes
+  app.setGlobalPrefix("api", {
+    exclude: ["/health"], // Exclude health check from prefix if needed
+  });
+
+  // Backward compatibility: Rewrite old routes to /api routes (works for all HTTP methods)
+  app.use((req, res, next) => {
+    // Only rewrite if request doesn't already start with /api and isn't /health
+    if (
+      !req.path.startsWith("/api") &&
+      req.path !== "/health" &&
+      req.path !== "/"
+    ) {
+      req.url = `/api${req.path}`;
+    }
+    next();
+  });
 
   // Security middleware
   app.use(
@@ -30,14 +47,29 @@ async function bootstrap() {
         process.env.FRONTEND_URL || "http://localhost:3001",
         "http://localhost:3000",
         "http://localhost:3001",
+        "http://127.0.0.1:3000",
+        "http://127.0.0.1:3001",
+        "http://127.0.0.1:5173", // Vite default
+        "http://localhost:5173", // Vite default
+        "http://127.0.0.1:8080", // Common dev port
+        "http://localhost:8080", // Common dev port
       ];
 
       // Allow requests with no origin (mobile apps, Postman, etc.)
       if (!origin) return callback(null, true);
 
+      // In development, be more permissive
+      if (process.env.NODE_ENV === "development") {
+        // Allow any localhost or 127.0.0.1 origin in development
+        if (origin.includes("localhost") || origin.includes("127.0.0.1")) {
+          return callback(null, true);
+        }
+      }
+
       if (allowedOrigins.includes(origin)) {
         callback(null, true);
       } else {
+        console.log(`CORS blocked origin: ${origin}`);
         callback(new Error("Not allowed by CORS"), false);
       }
     },
@@ -60,42 +92,11 @@ async function bootstrap() {
     })
   );
 
-  // Swagger configuration
-  const config = new DocumentBuilder()
-    .setTitle("Creator Pool API")
-    .setDescription(
-      "API for Creator Pool - A prediction platform for content creators"
-    )
-    .setVersion("1.0")
-    .addBearerAuth(
-      {
-        type: "http",
-        scheme: "bearer",
-        bearerFormat: "JWT",
-        name: "JWT",
-        description: "Enter JWT token",
-        in: "header",
-      },
-      "JWT-auth"
-    )
-    .addTag("Authentication", "User authentication and authorization")
-    .addTag("Users", "User management endpoints")
-    .build();
-
-  const document = SwaggerModule.createDocument(app, config);
-  SwaggerModule.setup("api", app, document, {
-    swaggerOptions: {
-      persistAuthorization: true,
-    },
-  });
-
   const port = process.env.PORT || 3000;
   await app.listen(port);
 
   console.log(`🚀 Creator Pool API running on http://localhost:${port}`);
-  console.log(
-    `📚 Swagger documentation available at http://localhost:${port}/api`
-  );
+  console.log(`📚 API endpoints available at http://localhost:${port}/api`);
 }
 
 bootstrap();

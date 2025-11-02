@@ -6,4 +6,3 @@ export class AppService {
     return "Welcome to Creator Pool API!";
   }
 }
-

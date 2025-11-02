@@ -46,7 +46,7 @@ export class Pool {
   @Column({ type: "int", default: 7 })
   trackingDurationDays: number; // How long to track after publication
 
-  @Column({ type: "int", default: 10 })
+  @Column({ type: "int", default: 15 })
   predictionWindowMinutes: number; // How long predictions are accepted
 
   @Column({

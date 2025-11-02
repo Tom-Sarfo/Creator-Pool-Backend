@@ -85,7 +85,6 @@ Build a NestJS backend API for Creator Pool - a prediction platform where fans p
 - [x] Health endpoint working
 - [ ] JWT auth setup
 - [ ] Redis configuration
-- [ ] Swagger docs
 - [ ] Sentry monitoring
 
 **Deliverables:** ✅ Working server, ✅ User entity, ⏳ Auth endpoints
@@ -283,7 +282,6 @@ Build a NestJS backend API for Creator Pool - a prediction platform where fans p
 
 [ ] Unit tests (Jest)
 [ ] Integration tests
-[ ] Swagger documentation
 [ ] CI/CD setup
 [ ] 80%+ coverage
 

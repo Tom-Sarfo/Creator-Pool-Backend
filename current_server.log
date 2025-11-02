@@ -1,0 +1,763 @@
+
+> creator-pool-backend@1.0.0 start:dev
+> tsx watch src/main.ts
+
+5:44:18 AM [tsx] rerunning
+c[Nest] 27136  - 10/29/2025, 5:44:19 AM     LOG [NestFactory] Starting Nest application...
+[Nest] 27136  - 10/29/2025, 5:44:19 AM     LOG [InstanceLoader] TypeOrmModule dependencies initialized +8ms
+[Nest] 27136  - 10/29/2025, 5:44:19 AM     LOG [InstanceLoader] PassportModule dependencies initialized +0ms
+[Nest] 27136  - 10/29/2025, 5:44:19 AM     LOG [InstanceLoader] ThrottlerModule dependencies initialized +0ms
+[Nest] 27136  - 10/29/2025, 5:44:19 AM     LOG [InstanceLoader] JwtModule dependencies initialized +0ms
+[Nest] 27136  - 10/29/2025, 5:44:19 AM     LOG [InstanceLoader] ConfigHostModule dependencies initialized +0ms
+[Nest] 27136  - 10/29/2025, 5:44:19 AM     LOG [InstanceLoader] ConfigModule dependencies initialized +0ms
+[Nest] 27136  - 10/29/2025, 5:44:19 AM     LOG [InstanceLoader] ConfigModule dependencies initialized +0ms
+[Nest] 27136  - 10/29/2025, 5:44:19 AM     LOG [InstanceLoader] AppModule dependencies initialized +1ms
+query: SELECT version()
+query: SELECT * FROM current_schema()
+query: CREATE EXTENSION IF NOT EXISTS "uuid-ossp"
+query: START TRANSACTION
+query: SELECT * FROM current_schema()
+query: SELECT * FROM current_database()
+query: SELECT "table_schema", "table_name", obj_description(('"' || "table_schema" || '"."' || "table_name" || '"')::regclass, 'pg_class') AS table_comment FROM "information_schema"."tables" WHERE ("table_schema" = 'public' AND "table_name" = 'predictions') OR ("table_schema" = 'public' AND "table_name" = 'pools') OR ("table_schema" = 'public' AND "table_name" = 'videos') OR ("table_schema" = 'public' AND "table_name" = 'users')
+query: SELECT TRUE FROM information_schema.columns WHERE table_name = 'pg_class' and column_name = 'relispartition'
+query: SELECT columns.*, pg_catalog.col_description(('"' || table_catalog || '"."' || table_schema || '"."' || table_name || '"')::regclass::oid, ordinal_position) AS description, ('"' || "udt_schema" || '"."' || "udt_name" || '"')::"regtype"::text AS "regtype", pg_catalog.format_type("col_attr"."atttypid", "col_attr"."atttypmod") AS "format_type" FROM "information_schema"."columns" LEFT JOIN "pg_catalog"."pg_attribute" AS "col_attr" ON "col_attr"."attname" = "columns"."column_name" AND "col_attr"."attrelid" = ( SELECT "cls"."oid" FROM "pg_catalog"."pg_class" AS "cls" LEFT JOIN "pg_catalog"."pg_namespace" AS "ns" ON "ns"."oid" = "cls"."relnamespace" WHERE "cls"."relname" = "columns"."table_name" AND "ns"."nspname" = "columns"."table_schema" ) WHERE ("table_schema" = 'public' AND "table_name" = 'pools') OR ("table_schema" = 'public' AND "table_name" = 'predictions') OR ("table_schema" = 'public' AND "table_name" = 'users') OR ("table_schema" = 'public' AND "table_name" = 'videos')
+query: SELECT "ns"."nspname" AS "table_schema", "t"."relname" AS "table_name", "cnst"."conname" AS "constraint_name", pg_get_constraintdef("cnst"."oid") AS "expression", CASE "cnst"."contype" WHEN 'p' THEN 'PRIMARY' WHEN 'u' THEN 'UNIQUE' WHEN 'c' THEN 'CHECK' WHEN 'x' THEN 'EXCLUDE' END AS "constraint_type", "a"."attname" AS "column_name" FROM "pg_constraint" "cnst" INNER JOIN "pg_class" "t" ON "t"."oid" = "cnst"."conrelid" INNER JOIN "pg_namespace" "ns" ON "ns"."oid" = "cnst"."connamespace" LEFT JOIN "pg_attribute" "a" ON "a"."attrelid" = "cnst"."conrelid" AND "a"."attnum" = ANY ("cnst"."conkey") WHERE "t"."relkind" IN ('r', 'p') AND (("ns"."nspname" = 'public' AND "t"."relname" = 'pools') OR ("ns"."nspname" = 'public' AND "t"."relname" = 'predictions') OR ("ns"."nspname" = 'public' AND "t"."relname" = 'users') OR ("ns"."nspname" = 'public' AND "t"."relname" = 'videos'))
+query: SELECT "ns"."nspname" AS "table_schema", "t"."relname" AS "table_name", "i"."relname" AS "constraint_name", "a"."attname" AS "column_name", CASE "ix"."indisunique" WHEN 't' THEN 'TRUE' ELSE'FALSE' END AS "is_unique", pg_get_expr("ix"."indpred", "ix"."indrelid") AS "condition", "types"."typname" AS "type_name", "am"."amname" AS "index_type" FROM "pg_class" "t" INNER JOIN "pg_index" "ix" ON "ix"."indrelid" = "t"."oid" INNER JOIN "pg_attribute" "a" ON "a"."attrelid" = "t"."oid"  AND "a"."attnum" = ANY ("ix"."indkey") INNER JOIN "pg_namespace" "ns" ON "ns"."oid" = "t"."relnamespace" INNER JOIN "pg_class" "i" ON "i"."oid" = "ix"."indexrelid" INNER JOIN "pg_type" "types" ON "types"."oid" = "a"."atttypid" INNER JOIN "pg_am" "am" ON "i"."relam" = "am"."oid" LEFT JOIN "pg_constraint" "cnst" ON "cnst"."conname" = "i"."relname" WHERE "t"."relkind" IN ('r', 'p') AND "cnst"."contype" IS NULL AND (("ns"."nspname" = 'public' AND "t"."relname" = 'pools') OR ("ns"."nspname" = 'public' AND "t"."relname" = 'predictions') OR ("ns"."nspname" = 'public' AND "t"."relname" = 'users') OR ("ns"."nspname" = 'public' AND "t"."relname" = 'videos'))
+query: SELECT "con"."conname" AS "constraint_name", "con"."nspname" AS "table_schema", "con"."relname" AS "table_name", "att2"."attname" AS "column_name", "ns"."nspname" AS "referenced_table_schema", "cl"."relname" AS "referenced_table_name", "att"."attname" AS "referenced_column_name", "con"."confdeltype" AS "on_delete", "con"."confupdtype" AS "on_update", "con"."condeferrable" AS "deferrable", "con"."condeferred" AS "deferred" FROM ( SELECT UNNEST ("con1"."conkey") AS "parent", UNNEST ("con1"."confkey") AS "child", "con1"."confrelid", "con1"."conrelid", "con1"."conname", "con1"."contype", "ns"."nspname", "cl"."relname", "con1"."condeferrable", CASE WHEN "con1"."condeferred" THEN 'INITIALLY DEFERRED' ELSE 'INITIALLY IMMEDIATE' END as condeferred, CASE "con1"."confdeltype" WHEN 'a' THEN 'NO ACTION' WHEN 'r' THEN 'RESTRICT' WHEN 'c' THEN 'CASCADE' WHEN 'n' THEN 'SET NULL' WHEN 'd' THEN 'SET DEFAULT' END as "confdeltype", CASE "con1"."confupdtype" WHEN 'a' THEN 'NO ACTION' WHEN 'r' THEN 'RESTRICT' WHEN 'c' THEN 'CASCADE' WHEN 'n' THEN 'SET NULL' WHEN 'd' THEN 'SET DEFAULT' END as "confupdtype" FROM "pg_class" "cl" INNER JOIN "pg_namespace" "ns" ON "cl"."relnamespace" = "ns"."oid" INNER JOIN "pg_constraint" "con1" ON "con1"."conrelid" = "cl"."oid" WHERE "con1"."contype" = 'f' AND (("ns"."nspname" = 'public' AND "cl"."relname" = 'pools') OR ("ns"."nspname" = 'public' AND "cl"."relname" = 'predictions') OR ("ns"."nspname" = 'public' AND "cl"."relname" = 'users') OR ("ns"."nspname" = 'public' AND "cl"."relname" = 'videos')) ) "con" INNER JOIN "pg_attribute" "att" ON "att"."attrelid" = "con"."confrelid" AND "att"."attnum" = "con"."child" INNER JOIN "pg_class" "cl" ON "cl"."oid" = "con"."confrelid"  AND "cl"."relispartition" = 'f'INNER JOIN "pg_namespace" "ns" ON "cl"."relnamespace" = "ns"."oid" INNER JOIN "pg_attribute" "att2" ON "att2"."attrelid" = "con"."conrelid" AND "att2"."attnum" = "con"."parent"
+query: SELECT "udt_schema", "udt_name" FROM "information_schema"."columns" WHERE "table_schema" = 'public' AND "table_name" = 'pools' AND "column_name"='status'
+query: SELECT "udt_schema", "udt_name" FROM "information_schema"."columns" WHERE "table_schema" = 'public' AND "table_name" = 'pools' AND "column_name"='result'
+query: SELECT "udt_schema", "udt_name" FROM "information_schema"."columns" WHERE "table_schema" = 'public' AND "table_name" = 'predictions' AND "column_name"='choice'
+query: SELECT "udt_schema", "udt_name" FROM "information_schema"."columns" WHERE "table_schema" = 'public' AND "table_name" = 'predictions' AND "column_name"='result'
+query: SELECT "udt_schema", "udt_name" FROM "information_schema"."columns" WHERE "table_schema" = 'public' AND "table_name" = 'users' AND "column_name"='role'
+query: SELECT "udt_schema", "udt_name" FROM "information_schema"."columns" WHERE "table_schema" = 'public' AND "table_name" = 'videos' AND "column_name"='status'
+query: SELECT "udt_schema", "udt_name" FROM "information_schema"."columns" WHERE "table_schema" = 'public' AND "table_name" = 'videos' AND "column_name"='visibility'
+query: SELECT "e"."enumlabel" AS "value" FROM "pg_enum" "e" INNER JOIN "pg_type" "t" ON "t"."oid" = "e"."enumtypid" INNER JOIN "pg_namespace" "n" ON "n"."oid" = "t"."typnamespace" WHERE "n"."nspname" = 'public' AND "t"."typname" = 'pools_status_enum'
+query: SELECT "e"."enumlabel" AS "value" FROM "pg_enum" "e" INNER JOIN "pg_type" "t" ON "t"."oid" = "e"."enumtypid" INNER JOIN "pg_namespace" "n" ON "n"."oid" = "t"."typnamespace" WHERE "n"."nspname" = 'public' AND "t"."typname" = 'pools_result_enum'
+query: SELECT "e"."enumlabel" AS "value" FROM "pg_enum" "e" INNER JOIN "pg_type" "t" ON "t"."oid" = "e"."enumtypid" INNER JOIN "pg_namespace" "n" ON "n"."oid" = "t"."typnamespace" WHERE "n"."nspname" = 'public' AND "t"."typname" = 'predictions_choice_enum'
+query: SELECT "e"."enumlabel" AS "value" FROM "pg_enum" "e" INNER JOIN "pg_type" "t" ON "t"."oid" = "e"."enumtypid" INNER JOIN "pg_namespace" "n" ON "n"."oid" = "t"."typnamespace" WHERE "n"."nspname" = 'public' AND "t"."typname" = 'predictions_result_enum'
+query: SELECT "e"."enumlabel" AS "value" FROM "pg_enum" "e" INNER JOIN "pg_type" "t" ON "t"."oid" = "e"."enumtypid" INNER JOIN "pg_namespace" "n" ON "n"."oid" = "t"."typnamespace" WHERE "n"."nspname" = 'public' AND "t"."typname" = 'users_role_enum'
+query: SELECT "e"."enumlabel" AS "value" FROM "pg_enum" "e" INNER JOIN "pg_type" "t" ON "t"."oid" = "e"."enumtypid" INNER JOIN "pg_namespace" "n" ON "n"."oid" = "t"."typnamespace" WHERE "n"."nspname" = 'public' AND "t"."typname" = 'videos_status_enum'
+query: SELECT "e"."enumlabel" AS "value" FROM "pg_enum" "e" INNER JOIN "pg_type" "t" ON "t"."oid" = "e"."enumtypid" INNER JOIN "pg_namespace" "n" ON "n"."oid" = "t"."typnamespace" WHERE "n"."nspname" = 'public' AND "t"."typname" = 'videos_visibility_enum'
+query: SELECT * FROM "information_schema"."tables" WHERE "table_schema" = 'public' AND "table_name" = 'typeorm_metadata'
+query: COMMIT
+[Nest] 27136  - 10/29/2025, 5:44:19 AM     LOG [InstanceLoader] TypeOrmCoreModule dependencies initialized +125ms
+[Nest] 27136  - 10/29/2025, 5:44:19 AM     LOG [InstanceLoader] TypeOrmModule dependencies initialized +0ms
+AuthController constructor called, authService: false
+[Nest] 27136  - 10/29/2025, 5:44:19 AM     LOG [InstanceLoader] AuthModule dependencies initialized +1ms
+[Nest] 27136  - 10/29/2025, 5:44:20 AM     LOG [RoutesResolver] AppController {/}: +215ms
+[Nest] 27136  - 10/29/2025, 5:44:20 AM     LOG [RouterExplorer] Mapped {/, GET} route +1ms
+[Nest] 27136  - 10/29/2025, 5:44:20 AM     LOG [RouterExplorer] Mapped {/health, GET} route +0ms
+[Nest] 27136  - 10/29/2025, 5:44:20 AM     LOG [RoutesResolver] AuthController {/auth}: +0ms
+[Nest] 27136  - 10/29/2025, 5:44:20 AM     LOG [RouterExplorer] Mapped {/auth/register, POST} route +1ms
+[Nest] 27136  - 10/29/2025, 5:44:20 AM     LOG [RouterExplorer] Mapped {/auth/login, POST} route +0ms
+[Nest] 27136  - 10/29/2025, 5:44:20 AM     LOG [RouterExplorer] Mapped {/auth/refresh, POST} route +0ms
+[Nest] 27136  - 10/29/2025, 5:44:20 AM     LOG [RouterExplorer] Mapped {/auth/logout, POST} route +0ms
+[Nest] 27136  - 10/29/2025, 5:44:20 AM     LOG [RouterExplorer] Mapped {/auth/logout-all, POST} route +0ms
+[Nest] 27136  - 10/29/2025, 5:44:20 AM     LOG [RouterExplorer] Mapped {/auth/profile, GET} route +0ms
+[Nest] 27136  - 10/29/2025, 5:44:20 AM     LOG [RouterExplorer] Mapped {/auth/profile, PUT} route +1ms
+[Nest] 27136  - 10/29/2025, 5:44:20 AM     LOG [RouterExplorer] Mapped {/auth/admin/users, GET} route +0ms
+[Nest] 27136  - 10/29/2025, 5:44:20 AM     LOG [RouterExplorer] Mapped {/auth/admin/users/:id, GET} route +0ms
+[Nest] 27136  - 10/29/2025, 5:44:20 AM     LOG [RouterExplorer] Mapped {/auth/creator/dashboard, GET} route +0ms
+[Nest] 27136  - 10/29/2025, 5:44:20 AM     LOG [RouterExplorer] Mapped {/auth/creator/youtube, PUT} route +0ms
+[Nest] 27136  - 10/29/2025, 5:44:20 AM     LOG [RouterExplorer] Mapped {/auth/creator/analytics, GET} route +0ms
+[Nest] 27136  - 10/29/2025, 5:44:20 AM     LOG [RouterExplorer] Mapped {/auth/public/:id, GET} route +0ms
+[Nest] 27136  - 10/29/2025, 5:44:20 AM     LOG [NestApplication] Nest application successfully started +1ms
+🚀 Creator Pool API running on http://localhost:3000
+5:44:49 AM [tsx] restarting
+c[Nest] 27700  - 10/29/2025, 5:44:51 AM     LOG [NestFactory] Starting Nest application...
+[Nest] 27700  - 10/29/2025, 5:44:51 AM     LOG [InstanceLoader] TypeOrmModule dependencies initialized +8ms
+[Nest] 27700  - 10/29/2025, 5:44:51 AM     LOG [InstanceLoader] PassportModule dependencies initialized +0ms
+[Nest] 27700  - 10/29/2025, 5:44:51 AM     LOG [InstanceLoader] ThrottlerModule dependencies initialized +0ms
+[Nest] 27700  - 10/29/2025, 5:44:51 AM     LOG [InstanceLoader] JwtModule dependencies initialized +0ms
+[Nest] 27700  - 10/29/2025, 5:44:51 AM     LOG [InstanceLoader] ConfigHostModule dependencies initialized +0ms
+[Nest] 27700  - 10/29/2025, 5:44:51 AM     LOG [InstanceLoader] ConfigModule dependencies initialized +1ms
+[Nest] 27700  - 10/29/2025, 5:44:51 AM     LOG [InstanceLoader] ConfigModule dependencies initialized +0ms
+[Nest] 27700  - 10/29/2025, 5:44:51 AM     LOG [InstanceLoader] AppModule dependencies initialized +0ms
+query: SELECT version()
+query: SELECT * FROM current_schema()
+query: CREATE EXTENSION IF NOT EXISTS "uuid-ossp"
+query: START TRANSACTION
+query: SELECT * FROM current_schema()
+query: SELECT * FROM current_database()
+query: SELECT "table_schema", "table_name", obj_description(('"' || "table_schema" || '"."' || "table_name" || '"')::regclass, 'pg_class') AS table_comment FROM "information_schema"."tables" WHERE ("table_schema" = 'public' AND "table_name" = 'predictions') OR ("table_schema" = 'public' AND "table_name" = 'pools') OR ("table_schema" = 'public' AND "table_name" = 'videos') OR ("table_schema" = 'public' AND "table_name" = 'users')
+query: SELECT TRUE FROM information_schema.columns WHERE table_name = 'pg_class' and column_name = 'relispartition'
+query: SELECT columns.*, pg_catalog.col_description(('"' || table_catalog || '"."' || table_schema || '"."' || table_name || '"')::regclass::oid, ordinal_position) AS description, ('"' || "udt_schema" || '"."' || "udt_name" || '"')::"regtype"::text AS "regtype", pg_catalog.format_type("col_attr"."atttypid", "col_attr"."atttypmod") AS "format_type" FROM "information_schema"."columns" LEFT JOIN "pg_catalog"."pg_attribute" AS "col_attr" ON "col_attr"."attname" = "columns"."column_name" AND "col_attr"."attrelid" = ( SELECT "cls"."oid" FROM "pg_catalog"."pg_class" AS "cls" LEFT JOIN "pg_catalog"."pg_namespace" AS "ns" ON "ns"."oid" = "cls"."relnamespace" WHERE "cls"."relname" = "columns"."table_name" AND "ns"."nspname" = "columns"."table_schema" ) WHERE ("table_schema" = 'public' AND "table_name" = 'pools') OR ("table_schema" = 'public' AND "table_name" = 'predictions') OR ("table_schema" = 'public' AND "table_name" = 'users') OR ("table_schema" = 'public' AND "table_name" = 'videos')
+query: SELECT "ns"."nspname" AS "table_schema", "t"."relname" AS "table_name", "cnst"."conname" AS "constraint_name", pg_get_constraintdef("cnst"."oid") AS "expression", CASE "cnst"."contype" WHEN 'p' THEN 'PRIMARY' WHEN 'u' THEN 'UNIQUE' WHEN 'c' THEN 'CHECK' WHEN 'x' THEN 'EXCLUDE' END AS "constraint_type", "a"."attname" AS "column_name" FROM "pg_constraint" "cnst" INNER JOIN "pg_class" "t" ON "t"."oid" = "cnst"."conrelid" INNER JOIN "pg_namespace" "ns" ON "ns"."oid" = "cnst"."connamespace" LEFT JOIN "pg_attribute" "a" ON "a"."attrelid" = "cnst"."conrelid" AND "a"."attnum" = ANY ("cnst"."conkey") WHERE "t"."relkind" IN ('r', 'p') AND (("ns"."nspname" = 'public' AND "t"."relname" = 'pools') OR ("ns"."nspname" = 'public' AND "t"."relname" = 'predictions') OR ("ns"."nspname" = 'public' AND "t"."relname" = 'users') OR ("ns"."nspname" = 'public' AND "t"."relname" = 'videos'))
+query: SELECT "ns"."nspname" AS "table_schema", "t"."relname" AS "table_name", "i"."relname" AS "constraint_name", "a"."attname" AS "column_name", CASE "ix"."indisunique" WHEN 't' THEN 'TRUE' ELSE'FALSE' END AS "is_unique", pg_get_expr("ix"."indpred", "ix"."indrelid") AS "condition", "types"."typname" AS "type_name", "am"."amname" AS "index_type" FROM "pg_class" "t" INNER JOIN "pg_index" "ix" ON "ix"."indrelid" = "t"."oid" INNER JOIN "pg_attribute" "a" ON "a"."attrelid" = "t"."oid"  AND "a"."attnum" = ANY ("ix"."indkey") INNER JOIN "pg_namespace" "ns" ON "ns"."oid" = "t"."relnamespace" INNER JOIN "pg_class" "i" ON "i"."oid" = "ix"."indexrelid" INNER JOIN "pg_type" "types" ON "types"."oid" = "a"."atttypid" INNER JOIN "pg_am" "am" ON "i"."relam" = "am"."oid" LEFT JOIN "pg_constraint" "cnst" ON "cnst"."conname" = "i"."relname" WHERE "t"."relkind" IN ('r', 'p') AND "cnst"."contype" IS NULL AND (("ns"."nspname" = 'public' AND "t"."relname" = 'pools') OR ("ns"."nspname" = 'public' AND "t"."relname" = 'predictions') OR ("ns"."nspname" = 'public' AND "t"."relname" = 'users') OR ("ns"."nspname" = 'public' AND "t"."relname" = 'videos'))
+query: SELECT "con"."conname" AS "constraint_name", "con"."nspname" AS "table_schema", "con"."relname" AS "table_name", "att2"."attname" AS "column_name", "ns"."nspname" AS "referenced_table_schema", "cl"."relname" AS "referenced_table_name", "att"."attname" AS "referenced_column_name", "con"."confdeltype" AS "on_delete", "con"."confupdtype" AS "on_update", "con"."condeferrable" AS "deferrable", "con"."condeferred" AS "deferred" FROM ( SELECT UNNEST ("con1"."conkey") AS "parent", UNNEST ("con1"."confkey") AS "child", "con1"."confrelid", "con1"."conrelid", "con1"."conname", "con1"."contype", "ns"."nspname", "cl"."relname", "con1"."condeferrable", CASE WHEN "con1"."condeferred" THEN 'INITIALLY DEFERRED' ELSE 'INITIALLY IMMEDIATE' END as condeferred, CASE "con1"."confdeltype" WHEN 'a' THEN 'NO ACTION' WHEN 'r' THEN 'RESTRICT' WHEN 'c' THEN 'CASCADE' WHEN 'n' THEN 'SET NULL' WHEN 'd' THEN 'SET DEFAULT' END as "confdeltype", CASE "con1"."confupdtype" WHEN 'a' THEN 'NO ACTION' WHEN 'r' THEN 'RESTRICT' WHEN 'c' THEN 'CASCADE' WHEN 'n' THEN 'SET NULL' WHEN 'd' THEN 'SET DEFAULT' END as "confupdtype" FROM "pg_class" "cl" INNER JOIN "pg_namespace" "ns" ON "cl"."relnamespace" = "ns"."oid" INNER JOIN "pg_constraint" "con1" ON "con1"."conrelid" = "cl"."oid" WHERE "con1"."contype" = 'f' AND (("ns"."nspname" = 'public' AND "cl"."relname" = 'pools') OR ("ns"."nspname" = 'public' AND "cl"."relname" = 'predictions') OR ("ns"."nspname" = 'public' AND "cl"."relname" = 'users') OR ("ns"."nspname" = 'public' AND "cl"."relname" = 'videos')) ) "con" INNER JOIN "pg_attribute" "att" ON "att"."attrelid" = "con"."confrelid" AND "att"."attnum" = "con"."child" INNER JOIN "pg_class" "cl" ON "cl"."oid" = "con"."confrelid"  AND "cl"."relispartition" = 'f'INNER JOIN "pg_namespace" "ns" ON "cl"."relnamespace" = "ns"."oid" INNER JOIN "pg_attribute" "att2" ON "att2"."attrelid" = "con"."conrelid" AND "att2"."attnum" = "con"."parent"
+query: SELECT "udt_schema", "udt_name" FROM "information_schema"."columns" WHERE "table_schema" = 'public' AND "table_name" = 'pools' AND "column_name"='status'
+query: SELECT "udt_schema", "udt_name" FROM "information_schema"."columns" WHERE "table_schema" = 'public' AND "table_name" = 'pools' AND "column_name"='result'
+query: SELECT "udt_schema", "udt_name" FROM "information_schema"."columns" WHERE "table_schema" = 'public' AND "table_name" = 'predictions' AND "column_name"='choice'
+query: SELECT "udt_schema", "udt_name" FROM "information_schema"."columns" WHERE "table_schema" = 'public' AND "table_name" = 'predictions' AND "column_name"='result'
+query: SELECT "udt_schema", "udt_name" FROM "information_schema"."columns" WHERE "table_schema" = 'public' AND "table_name" = 'users' AND "column_name"='role'
+query: SELECT "udt_schema", "udt_name" FROM "information_schema"."columns" WHERE "table_schema" = 'public' AND "table_name" = 'videos' AND "column_name"='status'
+query: SELECT "udt_schema", "udt_name" FROM "information_schema"."columns" WHERE "table_schema" = 'public' AND "table_name" = 'videos' AND "column_name"='visibility'
+query: SELECT "e"."enumlabel" AS "value" FROM "pg_enum" "e" INNER JOIN "pg_type" "t" ON "t"."oid" = "e"."enumtypid" INNER JOIN "pg_namespace" "n" ON "n"."oid" = "t"."typnamespace" WHERE "n"."nspname" = 'public' AND "t"."typname" = 'pools_status_enum'
+query: SELECT "e"."enumlabel" AS "value" FROM "pg_enum" "e" INNER JOIN "pg_type" "t" ON "t"."oid" = "e"."enumtypid" INNER JOIN "pg_namespace" "n" ON "n"."oid" = "t"."typnamespace" WHERE "n"."nspname" = 'public' AND "t"."typname" = 'pools_result_enum'
+query: SELECT "e"."enumlabel" AS "value" FROM "pg_enum" "e" INNER JOIN "pg_type" "t" ON "t"."oid" = "e"."enumtypid" INNER JOIN "pg_namespace" "n" ON "n"."oid" = "t"."typnamespace" WHERE "n"."nspname" = 'public' AND "t"."typname" = 'predictions_choice_enum'
+query: SELECT "e"."enumlabel" AS "value" FROM "pg_enum" "e" INNER JOIN "pg_type" "t" ON "t"."oid" = "e"."enumtypid" INNER JOIN "pg_namespace" "n" ON "n"."oid" = "t"."typnamespace" WHERE "n"."nspname" = 'public' AND "t"."typname" = 'predictions_result_enum'
+query: SELECT "e"."enumlabel" AS "value" FROM "pg_enum" "e" INNER JOIN "pg_type" "t" ON "t"."oid" = "e"."enumtypid" INNER JOIN "pg_namespace" "n" ON "n"."oid" = "t"."typnamespace" WHERE "n"."nspname" = 'public' AND "t"."typname" = 'users_role_enum'
+query: SELECT "e"."enumlabel" AS "value" FROM "pg_enum" "e" INNER JOIN "pg_type" "t" ON "t"."oid" = "e"."enumtypid" INNER JOIN "pg_namespace" "n" ON "n"."oid" = "t"."typnamespace" WHERE "n"."nspname" = 'public' AND "t"."typname" = 'videos_status_enum'
+query: SELECT "e"."enumlabel" AS "value" FROM "pg_enum" "e" INNER JOIN "pg_type" "t" ON "t"."oid" = "e"."enumtypid" INNER JOIN "pg_namespace" "n" ON "n"."oid" = "t"."typnamespace" WHERE "n"."nspname" = 'public' AND "t"."typname" = 'videos_visibility_enum'
+query: SELECT * FROM "information_schema"."tables" WHERE "table_schema" = 'public' AND "table_name" = 'typeorm_metadata'
+query: COMMIT
+[Nest] 27700  - 10/29/2025, 5:44:51 AM     LOG [InstanceLoader] TypeOrmCoreModule dependencies initialized +118ms
+[Nest] 27700  - 10/29/2025, 5:44:51 AM     LOG [InstanceLoader] TypeOrmModule dependencies initialized +0ms
+[Nest] 27700  - 10/29/2025, 5:44:51 AM     LOG [InstanceLoader] AuthModule dependencies initialized +0ms
+[Nest] 27700  - 10/29/2025, 5:44:51 AM     LOG [RoutesResolver] AppController {/}: +195ms
+[Nest] 27700  - 10/29/2025, 5:44:51 AM     LOG [RouterExplorer] Mapped {/, GET} route +1ms
+[Nest] 27700  - 10/29/2025, 5:44:51 AM     LOG [RouterExplorer] Mapped {/health, GET} route +1ms
+[Nest] 27700  - 10/29/2025, 5:44:51 AM     LOG [RoutesResolver] AuthController {/auth}: +0ms
+[Nest] 27700  - 10/29/2025, 5:44:51 AM     LOG [RouterExplorer] Mapped {/auth/register, POST} route +0ms
+[Nest] 27700  - 10/29/2025, 5:44:51 AM     LOG [RouterExplorer] Mapped {/auth/login, POST} route +0ms
+[Nest] 27700  - 10/29/2025, 5:44:51 AM     LOG [RouterExplorer] Mapped {/auth/refresh, POST} route +0ms
+[Nest] 27700  - 10/29/2025, 5:44:51 AM     LOG [RouterExplorer] Mapped {/auth/logout, POST} route +0ms
+[Nest] 27700  - 10/29/2025, 5:44:51 AM     LOG [RouterExplorer] Mapped {/auth/logout-all, POST} route +0ms
+[Nest] 27700  - 10/29/2025, 5:44:51 AM     LOG [RouterExplorer] Mapped {/auth/profile, GET} route +0ms
+[Nest] 27700  - 10/29/2025, 5:44:51 AM     LOG [RouterExplorer] Mapped {/auth/profile, PUT} route +1ms
+[Nest] 27700  - 10/29/2025, 5:44:51 AM     LOG [RouterExplorer] Mapped {/auth/admin/users, GET} route +0ms
+[Nest] 27700  - 10/29/2025, 5:44:51 AM     LOG [RouterExplorer] Mapped {/auth/admin/users/:id, GET} route +0ms
+[Nest] 27700  - 10/29/2025, 5:44:51 AM     LOG [RouterExplorer] Mapped {/auth/creator/dashboard, GET} route +0ms
+[Nest] 27700  - 10/29/2025, 5:44:51 AM     LOG [RouterExplorer] Mapped {/auth/creator/youtube, PUT} route +0ms
+[Nest] 27700  - 10/29/2025, 5:44:51 AM     LOG [RouterExplorer] Mapped {/auth/creator/analytics, GET} route +0ms
+[Nest] 27700  - 10/29/2025, 5:44:51 AM     LOG [RouterExplorer] Mapped {/auth/public/:id, GET} route +0ms
+[Nest] 27700  - 10/29/2025, 5:44:51 AM     LOG [NestApplication] Nest application successfully started +1ms
+🚀 Creator Pool API running on http://localhost:3000
+[Nest] 27700  - 10/29/2025, 5:45:04 AM   ERROR [ExceptionsHandler] Cannot read properties of undefined (reading 'register')
+TypeError: Cannot read properties of undefined (reading 'register')
+    at AuthController.register (/Users/thomas/Backend/Creator-Pool-Backend/src/auth/auth.controller.ts:31:29)
+    at /Users/thomas/Backend/Creator-Pool-Backend/node_modules/@nestjs/core/router/router-execution-context.js:38:29
+    at processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at /Users/thomas/Backend/Creator-Pool-Backend/node_modules/@nestjs/core/router/router-execution-context.js:46:28
+    at /Users/thomas/Backend/Creator-Pool-Backend/node_modules/@nestjs/core/router/router-proxy.js:9:17
+5:45:31 AM [tsx] restarting
+c[Nest] 28508  - 10/29/2025, 5:45:33 AM     LOG [NestFactory] Starting Nest application...
+[Nest] 28508  - 10/29/2025, 5:45:33 AM     LOG [InstanceLoader] TypeOrmModule dependencies initialized +7ms
+[Nest] 28508  - 10/29/2025, 5:45:33 AM     LOG [InstanceLoader] PassportModule dependencies initialized +0ms
+[Nest] 28508  - 10/29/2025, 5:45:33 AM     LOG [InstanceLoader] ThrottlerModule dependencies initialized +0ms
+[Nest] 28508  - 10/29/2025, 5:45:33 AM     LOG [InstanceLoader] JwtModule dependencies initialized +0ms
+[Nest] 28508  - 10/29/2025, 5:45:33 AM     LOG [InstanceLoader] ConfigHostModule dependencies initialized +0ms
+[Nest] 28508  - 10/29/2025, 5:45:33 AM     LOG [InstanceLoader] ConfigModule dependencies initialized +1ms
+[Nest] 28508  - 10/29/2025, 5:45:33 AM     LOG [InstanceLoader] ConfigModule dependencies initialized +0ms
+[Nest] 28508  - 10/29/2025, 5:45:33 AM     LOG [InstanceLoader] AppModule dependencies initialized +0ms
+query: SELECT version()
+query: SELECT * FROM current_schema()
+query: CREATE EXTENSION IF NOT EXISTS "uuid-ossp"
+query: START TRANSACTION
+query: SELECT * FROM current_schema()
+query: SELECT * FROM current_database()
+query: SELECT "table_schema", "table_name", obj_description(('"' || "table_schema" || '"."' || "table_name" || '"')::regclass, 'pg_class') AS table_comment FROM "information_schema"."tables" WHERE ("table_schema" = 'public' AND "table_name" = 'predictions') OR ("table_schema" = 'public' AND "table_name" = 'pools') OR ("table_schema" = 'public' AND "table_name" = 'videos') OR ("table_schema" = 'public' AND "table_name" = 'users')
+query: SELECT TRUE FROM information_schema.columns WHERE table_name = 'pg_class' and column_name = 'relispartition'
+query: SELECT columns.*, pg_catalog.col_description(('"' || table_catalog || '"."' || table_schema || '"."' || table_name || '"')::regclass::oid, ordinal_position) AS description, ('"' || "udt_schema" || '"."' || "udt_name" || '"')::"regtype"::text AS "regtype", pg_catalog.format_type("col_attr"."atttypid", "col_attr"."atttypmod") AS "format_type" FROM "information_schema"."columns" LEFT JOIN "pg_catalog"."pg_attribute" AS "col_attr" ON "col_attr"."attname" = "columns"."column_name" AND "col_attr"."attrelid" = ( SELECT "cls"."oid" FROM "pg_catalog"."pg_class" AS "cls" LEFT JOIN "pg_catalog"."pg_namespace" AS "ns" ON "ns"."oid" = "cls"."relnamespace" WHERE "cls"."relname" = "columns"."table_name" AND "ns"."nspname" = "columns"."table_schema" ) WHERE ("table_schema" = 'public' AND "table_name" = 'pools') OR ("table_schema" = 'public' AND "table_name" = 'predictions') OR ("table_schema" = 'public' AND "table_name" = 'users') OR ("table_schema" = 'public' AND "table_name" = 'videos')
+query: SELECT "ns"."nspname" AS "table_schema", "t"."relname" AS "table_name", "cnst"."conname" AS "constraint_name", pg_get_constraintdef("cnst"."oid") AS "expression", CASE "cnst"."contype" WHEN 'p' THEN 'PRIMARY' WHEN 'u' THEN 'UNIQUE' WHEN 'c' THEN 'CHECK' WHEN 'x' THEN 'EXCLUDE' END AS "constraint_type", "a"."attname" AS "column_name" FROM "pg_constraint" "cnst" INNER JOIN "pg_class" "t" ON "t"."oid" = "cnst"."conrelid" INNER JOIN "pg_namespace" "ns" ON "ns"."oid" = "cnst"."connamespace" LEFT JOIN "pg_attribute" "a" ON "a"."attrelid" = "cnst"."conrelid" AND "a"."attnum" = ANY ("cnst"."conkey") WHERE "t"."relkind" IN ('r', 'p') AND (("ns"."nspname" = 'public' AND "t"."relname" = 'pools') OR ("ns"."nspname" = 'public' AND "t"."relname" = 'predictions') OR ("ns"."nspname" = 'public' AND "t"."relname" = 'users') OR ("ns"."nspname" = 'public' AND "t"."relname" = 'videos'))
+query: SELECT "ns"."nspname" AS "table_schema", "t"."relname" AS "table_name", "i"."relname" AS "constraint_name", "a"."attname" AS "column_name", CASE "ix"."indisunique" WHEN 't' THEN 'TRUE' ELSE'FALSE' END AS "is_unique", pg_get_expr("ix"."indpred", "ix"."indrelid") AS "condition", "types"."typname" AS "type_name", "am"."amname" AS "index_type" FROM "pg_class" "t" INNER JOIN "pg_index" "ix" ON "ix"."indrelid" = "t"."oid" INNER JOIN "pg_attribute" "a" ON "a"."attrelid" = "t"."oid"  AND "a"."attnum" = ANY ("ix"."indkey") INNER JOIN "pg_namespace" "ns" ON "ns"."oid" = "t"."relnamespace" INNER JOIN "pg_class" "i" ON "i"."oid" = "ix"."indexrelid" INNER JOIN "pg_type" "types" ON "types"."oid" = "a"."atttypid" INNER JOIN "pg_am" "am" ON "i"."relam" = "am"."oid" LEFT JOIN "pg_constraint" "cnst" ON "cnst"."conname" = "i"."relname" WHERE "t"."relkind" IN ('r', 'p') AND "cnst"."contype" IS NULL AND (("ns"."nspname" = 'public' AND "t"."relname" = 'pools') OR ("ns"."nspname" = 'public' AND "t"."relname" = 'predictions') OR ("ns"."nspname" = 'public' AND "t"."relname" = 'users') OR ("ns"."nspname" = 'public' AND "t"."relname" = 'videos'))
+query: SELECT "con"."conname" AS "constraint_name", "con"."nspname" AS "table_schema", "con"."relname" AS "table_name", "att2"."attname" AS "column_name", "ns"."nspname" AS "referenced_table_schema", "cl"."relname" AS "referenced_table_name", "att"."attname" AS "referenced_column_name", "con"."confdeltype" AS "on_delete", "con"."confupdtype" AS "on_update", "con"."condeferrable" AS "deferrable", "con"."condeferred" AS "deferred" FROM ( SELECT UNNEST ("con1"."conkey") AS "parent", UNNEST ("con1"."confkey") AS "child", "con1"."confrelid", "con1"."conrelid", "con1"."conname", "con1"."contype", "ns"."nspname", "cl"."relname", "con1"."condeferrable", CASE WHEN "con1"."condeferred" THEN 'INITIALLY DEFERRED' ELSE 'INITIALLY IMMEDIATE' END as condeferred, CASE "con1"."confdeltype" WHEN 'a' THEN 'NO ACTION' WHEN 'r' THEN 'RESTRICT' WHEN 'c' THEN 'CASCADE' WHEN 'n' THEN 'SET NULL' WHEN 'd' THEN 'SET DEFAULT' END as "confdeltype", CASE "con1"."confupdtype" WHEN 'a' THEN 'NO ACTION' WHEN 'r' THEN 'RESTRICT' WHEN 'c' THEN 'CASCADE' WHEN 'n' THEN 'SET NULL' WHEN 'd' THEN 'SET DEFAULT' END as "confupdtype" FROM "pg_class" "cl" INNER JOIN "pg_namespace" "ns" ON "cl"."relnamespace" = "ns"."oid" INNER JOIN "pg_constraint" "con1" ON "con1"."conrelid" = "cl"."oid" WHERE "con1"."contype" = 'f' AND (("ns"."nspname" = 'public' AND "cl"."relname" = 'pools') OR ("ns"."nspname" = 'public' AND "cl"."relname" = 'predictions') OR ("ns"."nspname" = 'public' AND "cl"."relname" = 'users') OR ("ns"."nspname" = 'public' AND "cl"."relname" = 'videos')) ) "con" INNER JOIN "pg_attribute" "att" ON "att"."attrelid" = "con"."confrelid" AND "att"."attnum" = "con"."child" INNER JOIN "pg_class" "cl" ON "cl"."oid" = "con"."confrelid"  AND "cl"."relispartition" = 'f'INNER JOIN "pg_namespace" "ns" ON "cl"."relnamespace" = "ns"."oid" INNER JOIN "pg_attribute" "att2" ON "att2"."attrelid" = "con"."conrelid" AND "att2"."attnum" = "con"."parent"
+query: SELECT "udt_schema", "udt_name" FROM "information_schema"."columns" WHERE "table_schema" = 'public' AND "table_name" = 'pools' AND "column_name"='status'
+query: SELECT "udt_schema", "udt_name" FROM "information_schema"."columns" WHERE "table_schema" = 'public' AND "table_name" = 'pools' AND "column_name"='result'
+query: SELECT "udt_schema", "udt_name" FROM "information_schema"."columns" WHERE "table_schema" = 'public' AND "table_name" = 'predictions' AND "column_name"='choice'
+query: SELECT "udt_schema", "udt_name" FROM "information_schema"."columns" WHERE "table_schema" = 'public' AND "table_name" = 'predictions' AND "column_name"='result'
+query: SELECT "udt_schema", "udt_name" FROM "information_schema"."columns" WHERE "table_schema" = 'public' AND "table_name" = 'users' AND "column_name"='role'
+query: SELECT "udt_schema", "udt_name" FROM "information_schema"."columns" WHERE "table_schema" = 'public' AND "table_name" = 'videos' AND "column_name"='status'
+query: SELECT "udt_schema", "udt_name" FROM "information_schema"."columns" WHERE "table_schema" = 'public' AND "table_name" = 'videos' AND "column_name"='visibility'
+query: SELECT "e"."enumlabel" AS "value" FROM "pg_enum" "e" INNER JOIN "pg_type" "t" ON "t"."oid" = "e"."enumtypid" INNER JOIN "pg_namespace" "n" ON "n"."oid" = "t"."typnamespace" WHERE "n"."nspname" = 'public' AND "t"."typname" = 'pools_status_enum'
+query: SELECT "e"."enumlabel" AS "value" FROM "pg_enum" "e" INNER JOIN "pg_type" "t" ON "t"."oid" = "e"."enumtypid" INNER JOIN "pg_namespace" "n" ON "n"."oid" = "t"."typnamespace" WHERE "n"."nspname" = 'public' AND "t"."typname" = 'pools_result_enum'
+query: SELECT "e"."enumlabel" AS "value" FROM "pg_enum" "e" INNER JOIN "pg_type" "t" ON "t"."oid" = "e"."enumtypid" INNER JOIN "pg_namespace" "n" ON "n"."oid" = "t"."typnamespace" WHERE "n"."nspname" = 'public' AND "t"."typname" = 'predictions_choice_enum'
+query: SELECT "e"."enumlabel" AS "value" FROM "pg_enum" "e" INNER JOIN "pg_type" "t" ON "t"."oid" = "e"."enumtypid" INNER JOIN "pg_namespace" "n" ON "n"."oid" = "t"."typnamespace" WHERE "n"."nspname" = 'public' AND "t"."typname" = 'predictions_result_enum'
+query: SELECT "e"."enumlabel" AS "value" FROM "pg_enum" "e" INNER JOIN "pg_type" "t" ON "t"."oid" = "e"."enumtypid" INNER JOIN "pg_namespace" "n" ON "n"."oid" = "t"."typnamespace" WHERE "n"."nspname" = 'public' AND "t"."typname" = 'users_role_enum'
+query: SELECT "e"."enumlabel" AS "value" FROM "pg_enum" "e" INNER JOIN "pg_type" "t" ON "t"."oid" = "e"."enumtypid" INNER JOIN "pg_namespace" "n" ON "n"."oid" = "t"."typnamespace" WHERE "n"."nspname" = 'public' AND "t"."typname" = 'videos_status_enum'
+query: SELECT "e"."enumlabel" AS "value" FROM "pg_enum" "e" INNER JOIN "pg_type" "t" ON "t"."oid" = "e"."enumtypid" INNER JOIN "pg_namespace" "n" ON "n"."oid" = "t"."typnamespace" WHERE "n"."nspname" = 'public' AND "t"."typname" = 'videos_visibility_enum'
+query: SELECT * FROM "information_schema"."tables" WHERE "table_schema" = 'public' AND "table_name" = 'typeorm_metadata'
+query: COMMIT
+[Nest] 28508  - 10/29/2025, 5:45:33 AM     LOG [InstanceLoader] TypeOrmCoreModule dependencies initialized +138ms
+[Nest] 28508  - 10/29/2025, 5:45:33 AM     LOG [InstanceLoader] TypeOrmModule dependencies initialized +0ms
+AuthService constructor called
+[Nest] 28508  - 10/29/2025, 5:45:33 AM     LOG [InstanceLoader] AuthModule dependencies initialized +1ms
+[Nest] 28508  - 10/29/2025, 5:45:33 AM     LOG [RoutesResolver] AppController {/}: +190ms
+[Nest] 28508  - 10/29/2025, 5:45:33 AM     LOG [RouterExplorer] Mapped {/, GET} route +2ms
+[Nest] 28508  - 10/29/2025, 5:45:33 AM     LOG [RouterExplorer] Mapped {/health, GET} route +0ms
+[Nest] 28508  - 10/29/2025, 5:45:33 AM     LOG [RoutesResolver] AuthController {/auth}: +0ms
+[Nest] 28508  - 10/29/2025, 5:45:33 AM     LOG [RouterExplorer] Mapped {/auth/register, POST} route +0ms
+[Nest] 28508  - 10/29/2025, 5:45:33 AM     LOG [RouterExplorer] Mapped {/auth/login, POST} route +0ms
+[Nest] 28508  - 10/29/2025, 5:45:33 AM     LOG [RouterExplorer] Mapped {/auth/refresh, POST} route +0ms
+[Nest] 28508  - 10/29/2025, 5:45:33 AM     LOG [RouterExplorer] Mapped {/auth/logout, POST} route +1ms
+[Nest] 28508  - 10/29/2025, 5:45:33 AM     LOG [RouterExplorer] Mapped {/auth/logout-all, POST} route +0ms
+[Nest] 28508  - 10/29/2025, 5:45:33 AM     LOG [RouterExplorer] Mapped {/auth/profile, GET} route +0ms
+[Nest] 28508  - 10/29/2025, 5:45:33 AM     LOG [RouterExplorer] Mapped {/auth/profile, PUT} route +0ms
+[Nest] 28508  - 10/29/2025, 5:45:33 AM     LOG [RouterExplorer] Mapped {/auth/admin/users, GET} route +0ms
+[Nest] 28508  - 10/29/2025, 5:45:33 AM     LOG [RouterExplorer] Mapped {/auth/admin/users/:id, GET} route +0ms
+[Nest] 28508  - 10/29/2025, 5:45:33 AM     LOG [RouterExplorer] Mapped {/auth/creator/dashboard, GET} route +0ms
+[Nest] 28508  - 10/29/2025, 5:45:33 AM     LOG [RouterExplorer] Mapped {/auth/creator/youtube, PUT} route +0ms
+[Nest] 28508  - 10/29/2025, 5:45:33 AM     LOG [RouterExplorer] Mapped {/auth/creator/analytics, GET} route +0ms
+[Nest] 28508  - 10/29/2025, 5:45:33 AM     LOG [RouterExplorer] Mapped {/auth/public/:id, GET} route +1ms
+[Nest] 28508  - 10/29/2025, 5:45:33 AM     LOG [NestApplication] Nest application successfully started +1ms
+🚀 Creator Pool API running on http://localhost:3000
+5:46:02 AM [tsx] restarting
+c[Nest] 29086  - 10/29/2025, 5:46:04 AM     LOG [NestFactory] Starting Nest application...
+[Nest] 29086  - 10/29/2025, 5:46:04 AM     LOG [InstanceLoader] TypeOrmModule dependencies initialized +7ms
+[Nest] 29086  - 10/29/2025, 5:46:04 AM     LOG [InstanceLoader] PassportModule dependencies initialized +0ms
+[Nest] 29086  - 10/29/2025, 5:46:04 AM     LOG [InstanceLoader] ThrottlerModule dependencies initialized +1ms
+[Nest] 29086  - 10/29/2025, 5:46:04 AM     LOG [InstanceLoader] JwtModule dependencies initialized +0ms
+[Nest] 29086  - 10/29/2025, 5:46:04 AM     LOG [InstanceLoader] ConfigHostModule dependencies initialized +0ms
+[Nest] 29086  - 10/29/2025, 5:46:04 AM     LOG [InstanceLoader] ConfigModule dependencies initialized +0ms
+[Nest] 29086  - 10/29/2025, 5:46:04 AM     LOG [InstanceLoader] ConfigModule dependencies initialized +0ms
+[Nest] 29086  - 10/29/2025, 5:46:04 AM     LOG [InstanceLoader] AppModule dependencies initialized +0ms
+query: SELECT version()
+query: SELECT * FROM current_schema()
+query: CREATE EXTENSION IF NOT EXISTS "uuid-ossp"
+query: START TRANSACTION
+query: SELECT * FROM current_schema()
+query: SELECT * FROM current_database()
+query: SELECT "table_schema", "table_name", obj_description(('"' || "table_schema" || '"."' || "table_name" || '"')::regclass, 'pg_class') AS table_comment FROM "information_schema"."tables" WHERE ("table_schema" = 'public' AND "table_name" = 'predictions') OR ("table_schema" = 'public' AND "table_name" = 'pools') OR ("table_schema" = 'public' AND "table_name" = 'videos') OR ("table_schema" = 'public' AND "table_name" = 'users')
+query: SELECT TRUE FROM information_schema.columns WHERE table_name = 'pg_class' and column_name = 'relispartition'
+query: SELECT columns.*, pg_catalog.col_description(('"' || table_catalog || '"."' || table_schema || '"."' || table_name || '"')::regclass::oid, ordinal_position) AS description, ('"' || "udt_schema" || '"."' || "udt_name" || '"')::"regtype"::text AS "regtype", pg_catalog.format_type("col_attr"."atttypid", "col_attr"."atttypmod") AS "format_type" FROM "information_schema"."columns" LEFT JOIN "pg_catalog"."pg_attribute" AS "col_attr" ON "col_attr"."attname" = "columns"."column_name" AND "col_attr"."attrelid" = ( SELECT "cls"."oid" FROM "pg_catalog"."pg_class" AS "cls" LEFT JOIN "pg_catalog"."pg_namespace" AS "ns" ON "ns"."oid" = "cls"."relnamespace" WHERE "cls"."relname" = "columns"."table_name" AND "ns"."nspname" = "columns"."table_schema" ) WHERE ("table_schema" = 'public' AND "table_name" = 'pools') OR ("table_schema" = 'public' AND "table_name" = 'predictions') OR ("table_schema" = 'public' AND "table_name" = 'users') OR ("table_schema" = 'public' AND "table_name" = 'videos')
+query: SELECT "ns"."nspname" AS "table_schema", "t"."relname" AS "table_name", "cnst"."conname" AS "constraint_name", pg_get_constraintdef("cnst"."oid") AS "expression", CASE "cnst"."contype" WHEN 'p' THEN 'PRIMARY' WHEN 'u' THEN 'UNIQUE' WHEN 'c' THEN 'CHECK' WHEN 'x' THEN 'EXCLUDE' END AS "constraint_type", "a"."attname" AS "column_name" FROM "pg_constraint" "cnst" INNER JOIN "pg_class" "t" ON "t"."oid" = "cnst"."conrelid" INNER JOIN "pg_namespace" "ns" ON "ns"."oid" = "cnst"."connamespace" LEFT JOIN "pg_attribute" "a" ON "a"."attrelid" = "cnst"."conrelid" AND "a"."attnum" = ANY ("cnst"."conkey") WHERE "t"."relkind" IN ('r', 'p') AND (("ns"."nspname" = 'public' AND "t"."relname" = 'pools') OR ("ns"."nspname" = 'public' AND "t"."relname" = 'predictions') OR ("ns"."nspname" = 'public' AND "t"."relname" = 'users') OR ("ns"."nspname" = 'public' AND "t"."relname" = 'videos'))
+query: SELECT "ns"."nspname" AS "table_schema", "t"."relname" AS "table_name", "i"."relname" AS "constraint_name", "a"."attname" AS "column_name", CASE "ix"."indisunique" WHEN 't' THEN 'TRUE' ELSE'FALSE' END AS "is_unique", pg_get_expr("ix"."indpred", "ix"."indrelid") AS "condition", "types"."typname" AS "type_name", "am"."amname" AS "index_type" FROM "pg_class" "t" INNER JOIN "pg_index" "ix" ON "ix"."indrelid" = "t"."oid" INNER JOIN "pg_attribute" "a" ON "a"."attrelid" = "t"."oid"  AND "a"."attnum" = ANY ("ix"."indkey") INNER JOIN "pg_namespace" "ns" ON "ns"."oid" = "t"."relnamespace" INNER JOIN "pg_class" "i" ON "i"."oid" = "ix"."indexrelid" INNER JOIN "pg_type" "types" ON "types"."oid" = "a"."atttypid" INNER JOIN "pg_am" "am" ON "i"."relam" = "am"."oid" LEFT JOIN "pg_constraint" "cnst" ON "cnst"."conname" = "i"."relname" WHERE "t"."relkind" IN ('r', 'p') AND "cnst"."contype" IS NULL AND (("ns"."nspname" = 'public' AND "t"."relname" = 'pools') OR ("ns"."nspname" = 'public' AND "t"."relname" = 'predictions') OR ("ns"."nspname" = 'public' AND "t"."relname" = 'users') OR ("ns"."nspname" = 'public' AND "t"."relname" = 'videos'))
+query: SELECT "con"."conname" AS "constraint_name", "con"."nspname" AS "table_schema", "con"."relname" AS "table_name", "att2"."attname" AS "column_name", "ns"."nspname" AS "referenced_table_schema", "cl"."relname" AS "referenced_table_name", "att"."attname" AS "referenced_column_name", "con"."confdeltype" AS "on_delete", "con"."confupdtype" AS "on_update", "con"."condeferrable" AS "deferrable", "con"."condeferred" AS "deferred" FROM ( SELECT UNNEST ("con1"."conkey") AS "parent", UNNEST ("con1"."confkey") AS "child", "con1"."confrelid", "con1"."conrelid", "con1"."conname", "con1"."contype", "ns"."nspname", "cl"."relname", "con1"."condeferrable", CASE WHEN "con1"."condeferred" THEN 'INITIALLY DEFERRED' ELSE 'INITIALLY IMMEDIATE' END as condeferred, CASE "con1"."confdeltype" WHEN 'a' THEN 'NO ACTION' WHEN 'r' THEN 'RESTRICT' WHEN 'c' THEN 'CASCADE' WHEN 'n' THEN 'SET NULL' WHEN 'd' THEN 'SET DEFAULT' END as "confdeltype", CASE "con1"."confupdtype" WHEN 'a' THEN 'NO ACTION' WHEN 'r' THEN 'RESTRICT' WHEN 'c' THEN 'CASCADE' WHEN 'n' THEN 'SET NULL' WHEN 'd' THEN 'SET DEFAULT' END as "confupdtype" FROM "pg_class" "cl" INNER JOIN "pg_namespace" "ns" ON "cl"."relnamespace" = "ns"."oid" INNER JOIN "pg_constraint" "con1" ON "con1"."conrelid" = "cl"."oid" WHERE "con1"."contype" = 'f' AND (("ns"."nspname" = 'public' AND "cl"."relname" = 'pools') OR ("ns"."nspname" = 'public' AND "cl"."relname" = 'predictions') OR ("ns"."nspname" = 'public' AND "cl"."relname" = 'users') OR ("ns"."nspname" = 'public' AND "cl"."relname" = 'videos')) ) "con" INNER JOIN "pg_attribute" "att" ON "att"."attrelid" = "con"."confrelid" AND "att"."attnum" = "con"."child" INNER JOIN "pg_class" "cl" ON "cl"."oid" = "con"."confrelid"  AND "cl"."relispartition" = 'f'INNER JOIN "pg_namespace" "ns" ON "cl"."relnamespace" = "ns"."oid" INNER JOIN "pg_attribute" "att2" ON "att2"."attrelid" = "con"."conrelid" AND "att2"."attnum" = "con"."parent"
+query: SELECT "udt_schema", "udt_name" FROM "information_schema"."columns" WHERE "table_schema" = 'public' AND "table_name" = 'pools' AND "column_name"='status'
+query: SELECT "udt_schema", "udt_name" FROM "information_schema"."columns" WHERE "table_schema" = 'public' AND "table_name" = 'pools' AND "column_name"='result'
+query: SELECT "udt_schema", "udt_name" FROM "information_schema"."columns" WHERE "table_schema" = 'public' AND "table_name" = 'predictions' AND "column_name"='choice'
+query: SELECT "udt_schema", "udt_name" FROM "information_schema"."columns" WHERE "table_schema" = 'public' AND "table_name" = 'predictions' AND "column_name"='result'
+query: SELECT "udt_schema", "udt_name" FROM "information_schema"."columns" WHERE "table_schema" = 'public' AND "table_name" = 'users' AND "column_name"='role'
+query: SELECT "udt_schema", "udt_name" FROM "information_schema"."columns" WHERE "table_schema" = 'public' AND "table_name" = 'videos' AND "column_name"='status'
+query: SELECT "udt_schema", "udt_name" FROM "information_schema"."columns" WHERE "table_schema" = 'public' AND "table_name" = 'videos' AND "column_name"='visibility'
+query: SELECT "e"."enumlabel" AS "value" FROM "pg_enum" "e" INNER JOIN "pg_type" "t" ON "t"."oid" = "e"."enumtypid" INNER JOIN "pg_namespace" "n" ON "n"."oid" = "t"."typnamespace" WHERE "n"."nspname" = 'public' AND "t"."typname" = 'pools_status_enum'
+query: SELECT "e"."enumlabel" AS "value" FROM "pg_enum" "e" INNER JOIN "pg_type" "t" ON "t"."oid" = "e"."enumtypid" INNER JOIN "pg_namespace" "n" ON "n"."oid" = "t"."typnamespace" WHERE "n"."nspname" = 'public' AND "t"."typname" = 'pools_result_enum'
+query: SELECT "e"."enumlabel" AS "value" FROM "pg_enum" "e" INNER JOIN "pg_type" "t" ON "t"."oid" = "e"."enumtypid" INNER JOIN "pg_namespace" "n" ON "n"."oid" = "t"."typnamespace" WHERE "n"."nspname" = 'public' AND "t"."typname" = 'predictions_choice_enum'
+query: SELECT "e"."enumlabel" AS "value" FROM "pg_enum" "e" INNER JOIN "pg_type" "t" ON "t"."oid" = "e"."enumtypid" INNER JOIN "pg_namespace" "n" ON "n"."oid" = "t"."typnamespace" WHERE "n"."nspname" = 'public' AND "t"."typname" = 'predictions_result_enum'
+query: SELECT "e"."enumlabel" AS "value" FROM "pg_enum" "e" INNER JOIN "pg_type" "t" ON "t"."oid" = "e"."enumtypid" INNER JOIN "pg_namespace" "n" ON "n"."oid" = "t"."typnamespace" WHERE "n"."nspname" = 'public' AND "t"."typname" = 'users_role_enum'
+query: SELECT "e"."enumlabel" AS "value" FROM "pg_enum" "e" INNER JOIN "pg_type" "t" ON "t"."oid" = "e"."enumtypid" INNER JOIN "pg_namespace" "n" ON "n"."oid" = "t"."typnamespace" WHERE "n"."nspname" = 'public' AND "t"."typname" = 'videos_status_enum'
+query: SELECT "e"."enumlabel" AS "value" FROM "pg_enum" "e" INNER JOIN "pg_type" "t" ON "t"."oid" = "e"."enumtypid" INNER JOIN "pg_namespace" "n" ON "n"."oid" = "t"."typnamespace" WHERE "n"."nspname" = 'public' AND "t"."typname" = 'videos_visibility_enum'
+query: SELECT * FROM "information_schema"."tables" WHERE "table_schema" = 'public' AND "table_name" = 'typeorm_metadata'
+query: COMMIT
+[Nest] 29086  - 10/29/2025, 5:46:04 AM     LOG [InstanceLoader] TypeOrmCoreModule dependencies initialized +107ms
+[Nest] 29086  - 10/29/2025, 5:46:04 AM     LOG [InstanceLoader] TypeOrmModule dependencies initialized +0ms
+AuthService constructor called
+⚠️ AuthController constructor - authService: UNDEFINED
+[Nest] 29086  - 10/29/2025, 5:46:04 AM     LOG [InstanceLoader] AuthModule dependencies initialized +1ms
+[Nest] 29086  - 10/29/2025, 5:46:04 AM     LOG [RoutesResolver] AppController {/}: +177ms
+[Nest] 29086  - 10/29/2025, 5:46:04 AM     LOG [RouterExplorer] Mapped {/, GET} route +1ms
+[Nest] 29086  - 10/29/2025, 5:46:04 AM     LOG [RouterExplorer] Mapped {/health, GET} route +0ms
+[Nest] 29086  - 10/29/2025, 5:46:04 AM     LOG [RoutesResolver] AuthController {/auth}: +0ms
+[Nest] 29086  - 10/29/2025, 5:46:04 AM     LOG [RouterExplorer] Mapped {/auth/register, POST} route +1ms
+[Nest] 29086  - 10/29/2025, 5:46:04 AM     LOG [RouterExplorer] Mapped {/auth/login, POST} route +0ms
+[Nest] 29086  - 10/29/2025, 5:46:04 AM     LOG [RouterExplorer] Mapped {/auth/refresh, POST} route +0ms
+[Nest] 29086  - 10/29/2025, 5:46:04 AM     LOG [RouterExplorer] Mapped {/auth/logout, POST} route +0ms
+[Nest] 29086  - 10/29/2025, 5:46:04 AM     LOG [RouterExplorer] Mapped {/auth/logout-all, POST} route +0ms
+[Nest] 29086  - 10/29/2025, 5:46:04 AM     LOG [RouterExplorer] Mapped {/auth/profile, GET} route +0ms
+[Nest] 29086  - 10/29/2025, 5:46:04 AM     LOG [RouterExplorer] Mapped {/auth/profile, PUT} route +1ms
+[Nest] 29086  - 10/29/2025, 5:46:04 AM     LOG [RouterExplorer] Mapped {/auth/admin/users, GET} route +0ms
+[Nest] 29086  - 10/29/2025, 5:46:04 AM     LOG [RouterExplorer] Mapped {/auth/admin/users/:id, GET} route +0ms
+[Nest] 29086  - 10/29/2025, 5:46:04 AM     LOG [RouterExplorer] Mapped {/auth/creator/dashboard, GET} route +0ms
+[Nest] 29086  - 10/29/2025, 5:46:04 AM     LOG [RouterExplorer] Mapped {/auth/creator/youtube, PUT} route +0ms
+[Nest] 29086  - 10/29/2025, 5:46:04 AM     LOG [RouterExplorer] Mapped {/auth/creator/analytics, GET} route +0ms
+[Nest] 29086  - 10/29/2025, 5:46:04 AM     LOG [RouterExplorer] Mapped {/auth/public/:id, GET} route +0ms
+[Nest] 29086  - 10/29/2025, 5:46:04 AM     LOG [NestApplication] Nest application successfully started +1ms
+🚀 Creator Pool API running on http://localhost:3000
+5:46:22 AM [tsx] restarting
+c[Nest] 29444  - 10/29/2025, 5:46:23 AM     LOG [NestFactory] Starting Nest application...
+[Nest] 29444  - 10/29/2025, 5:46:23 AM     LOG [InstanceLoader] TypeOrmModule dependencies initialized +7ms
+[Nest] 29444  - 10/29/2025, 5:46:23 AM     LOG [InstanceLoader] PassportModule dependencies initialized +0ms
+[Nest] 29444  - 10/29/2025, 5:46:23 AM     LOG [InstanceLoader] ThrottlerModule dependencies initialized +0ms
+[Nest] 29444  - 10/29/2025, 5:46:23 AM     LOG [InstanceLoader] JwtModule dependencies initialized +0ms
+[Nest] 29444  - 10/29/2025, 5:46:23 AM     LOG [InstanceLoader] ConfigHostModule dependencies initialized +1ms
+[Nest] 29444  - 10/29/2025, 5:46:23 AM     LOG [InstanceLoader] ConfigModule dependencies initialized +0ms
+[Nest] 29444  - 10/29/2025, 5:46:23 AM     LOG [InstanceLoader] ConfigModule dependencies initialized +0ms
+[Nest] 29444  - 10/29/2025, 5:46:23 AM     LOG [InstanceLoader] AppModule dependencies initialized +0ms
+query: SELECT version()
+query: SELECT * FROM current_schema()
+query: CREATE EXTENSION IF NOT EXISTS "uuid-ossp"
+query: START TRANSACTION
+query: SELECT * FROM current_schema()
+query: SELECT * FROM current_database()
+query: SELECT "table_schema", "table_name", obj_description(('"' || "table_schema" || '"."' || "table_name" || '"')::regclass, 'pg_class') AS table_comment FROM "information_schema"."tables" WHERE ("table_schema" = 'public' AND "table_name" = 'predictions') OR ("table_schema" = 'public' AND "table_name" = 'pools') OR ("table_schema" = 'public' AND "table_name" = 'videos') OR ("table_schema" = 'public' AND "table_name" = 'users')
+query: SELECT TRUE FROM information_schema.columns WHERE table_name = 'pg_class' and column_name = 'relispartition'
+query: SELECT columns.*, pg_catalog.col_description(('"' || table_catalog || '"."' || table_schema || '"."' || table_name || '"')::regclass::oid, ordinal_position) AS description, ('"' || "udt_schema" || '"."' || "udt_name" || '"')::"regtype"::text AS "regtype", pg_catalog.format_type("col_attr"."atttypid", "col_attr"."atttypmod") AS "format_type" FROM "information_schema"."columns" LEFT JOIN "pg_catalog"."pg_attribute" AS "col_attr" ON "col_attr"."attname" = "columns"."column_name" AND "col_attr"."attrelid" = ( SELECT "cls"."oid" FROM "pg_catalog"."pg_class" AS "cls" LEFT JOIN "pg_catalog"."pg_namespace" AS "ns" ON "ns"."oid" = "cls"."relnamespace" WHERE "cls"."relname" = "columns"."table_name" AND "ns"."nspname" = "columns"."table_schema" ) WHERE ("table_schema" = 'public' AND "table_name" = 'pools') OR ("table_schema" = 'public' AND "table_name" = 'predictions') OR ("table_schema" = 'public' AND "table_name" = 'users') OR ("table_schema" = 'public' AND "table_name" = 'videos')
+query: SELECT "ns"."nspname" AS "table_schema", "t"."relname" AS "table_name", "cnst"."conname" AS "constraint_name", pg_get_constraintdef("cnst"."oid") AS "expression", CASE "cnst"."contype" WHEN 'p' THEN 'PRIMARY' WHEN 'u' THEN 'UNIQUE' WHEN 'c' THEN 'CHECK' WHEN 'x' THEN 'EXCLUDE' END AS "constraint_type", "a"."attname" AS "column_name" FROM "pg_constraint" "cnst" INNER JOIN "pg_class" "t" ON "t"."oid" = "cnst"."conrelid" INNER JOIN "pg_namespace" "ns" ON "ns"."oid" = "cnst"."connamespace" LEFT JOIN "pg_attribute" "a" ON "a"."attrelid" = "cnst"."conrelid" AND "a"."attnum" = ANY ("cnst"."conkey") WHERE "t"."relkind" IN ('r', 'p') AND (("ns"."nspname" = 'public' AND "t"."relname" = 'pools') OR ("ns"."nspname" = 'public' AND "t"."relname" = 'predictions') OR ("ns"."nspname" = 'public' AND "t"."relname" = 'users') OR ("ns"."nspname" = 'public' AND "t"."relname" = 'videos'))
+query: SELECT "ns"."nspname" AS "table_schema", "t"."relname" AS "table_name", "i"."relname" AS "constraint_name", "a"."attname" AS "column_name", CASE "ix"."indisunique" WHEN 't' THEN 'TRUE' ELSE'FALSE' END AS "is_unique", pg_get_expr("ix"."indpred", "ix"."indrelid") AS "condition", "types"."typname" AS "type_name", "am"."amname" AS "index_type" FROM "pg_class" "t" INNER JOIN "pg_index" "ix" ON "ix"."indrelid" = "t"."oid" INNER JOIN "pg_attribute" "a" ON "a"."attrelid" = "t"."oid"  AND "a"."attnum" = ANY ("ix"."indkey") INNER JOIN "pg_namespace" "ns" ON "ns"."oid" = "t"."relnamespace" INNER JOIN "pg_class" "i" ON "i"."oid" = "ix"."indexrelid" INNER JOIN "pg_type" "types" ON "types"."oid" = "a"."atttypid" INNER JOIN "pg_am" "am" ON "i"."relam" = "am"."oid" LEFT JOIN "pg_constraint" "cnst" ON "cnst"."conname" = "i"."relname" WHERE "t"."relkind" IN ('r', 'p') AND "cnst"."contype" IS NULL AND (("ns"."nspname" = 'public' AND "t"."relname" = 'pools') OR ("ns"."nspname" = 'public' AND "t"."relname" = 'predictions') OR ("ns"."nspname" = 'public' AND "t"."relname" = 'users') OR ("ns"."nspname" = 'public' AND "t"."relname" = 'videos'))
+query: SELECT "con"."conname" AS "constraint_name", "con"."nspname" AS "table_schema", "con"."relname" AS "table_name", "att2"."attname" AS "column_name", "ns"."nspname" AS "referenced_table_schema", "cl"."relname" AS "referenced_table_name", "att"."attname" AS "referenced_column_name", "con"."confdeltype" AS "on_delete", "con"."confupdtype" AS "on_update", "con"."condeferrable" AS "deferrable", "con"."condeferred" AS "deferred" FROM ( SELECT UNNEST ("con1"."conkey") AS "parent", UNNEST ("con1"."confkey") AS "child", "con1"."confrelid", "con1"."conrelid", "con1"."conname", "con1"."contype", "ns"."nspname", "cl"."relname", "con1"."condeferrable", CASE WHEN "con1"."condeferred" THEN 'INITIALLY DEFERRED' ELSE 'INITIALLY IMMEDIATE' END as condeferred, CASE "con1"."confdeltype" WHEN 'a' THEN 'NO ACTION' WHEN 'r' THEN 'RESTRICT' WHEN 'c' THEN 'CASCADE' WHEN 'n' THEN 'SET NULL' WHEN 'd' THEN 'SET DEFAULT' END as "confdeltype", CASE "con1"."confupdtype" WHEN 'a' THEN 'NO ACTION' WHEN 'r' THEN 'RESTRICT' WHEN 'c' THEN 'CASCADE' WHEN 'n' THEN 'SET NULL' WHEN 'd' THEN 'SET DEFAULT' END as "confupdtype" FROM "pg_class" "cl" INNER JOIN "pg_namespace" "ns" ON "cl"."relnamespace" = "ns"."oid" INNER JOIN "pg_constraint" "con1" ON "con1"."conrelid" = "cl"."oid" WHERE "con1"."contype" = 'f' AND (("ns"."nspname" = 'public' AND "cl"."relname" = 'pools') OR ("ns"."nspname" = 'public' AND "cl"."relname" = 'predictions') OR ("ns"."nspname" = 'public' AND "cl"."relname" = 'users') OR ("ns"."nspname" = 'public' AND "cl"."relname" = 'videos')) ) "con" INNER JOIN "pg_attribute" "att" ON "att"."attrelid" = "con"."confrelid" AND "att"."attnum" = "con"."child" INNER JOIN "pg_class" "cl" ON "cl"."oid" = "con"."confrelid"  AND "cl"."relispartition" = 'f'INNER JOIN "pg_namespace" "ns" ON "cl"."relnamespace" = "ns"."oid" INNER JOIN "pg_attribute" "att2" ON "att2"."attrelid" = "con"."conrelid" AND "att2"."attnum" = "con"."parent"
+query: SELECT "udt_schema", "udt_name" FROM "information_schema"."columns" WHERE "table_schema" = 'public' AND "table_name" = 'pools' AND "column_name"='status'
+query: SELECT "udt_schema", "udt_name" FROM "information_schema"."columns" WHERE "table_schema" = 'public' AND "table_name" = 'pools' AND "column_name"='result'
+query: SELECT "udt_schema", "udt_name" FROM "information_schema"."columns" WHERE "table_schema" = 'public' AND "table_name" = 'predictions' AND "column_name"='choice'
+query: SELECT "udt_schema", "udt_name" FROM "information_schema"."columns" WHERE "table_schema" = 'public' AND "table_name" = 'predictions' AND "column_name"='result'
+query: SELECT "udt_schema", "udt_name" FROM "information_schema"."columns" WHERE "table_schema" = 'public' AND "table_name" = 'users' AND "column_name"='role'
+query: SELECT "udt_schema", "udt_name" FROM "information_schema"."columns" WHERE "table_schema" = 'public' AND "table_name" = 'videos' AND "column_name"='status'
+query: SELECT "udt_schema", "udt_name" FROM "information_schema"."columns" WHERE "table_schema" = 'public' AND "table_name" = 'videos' AND "column_name"='visibility'
+query: SELECT "e"."enumlabel" AS "value" FROM "pg_enum" "e" INNER JOIN "pg_type" "t" ON "t"."oid" = "e"."enumtypid" INNER JOIN "pg_namespace" "n" ON "n"."oid" = "t"."typnamespace" WHERE "n"."nspname" = 'public' AND "t"."typname" = 'pools_status_enum'
+query: SELECT "e"."enumlabel" AS "value" FROM "pg_enum" "e" INNER JOIN "pg_type" "t" ON "t"."oid" = "e"."enumtypid" INNER JOIN "pg_namespace" "n" ON "n"."oid" = "t"."typnamespace" WHERE "n"."nspname" = 'public' AND "t"."typname" = 'pools_result_enum'
+query: SELECT "e"."enumlabel" AS "value" FROM "pg_enum" "e" INNER JOIN "pg_type" "t" ON "t"."oid" = "e"."enumtypid" INNER JOIN "pg_namespace" "n" ON "n"."oid" = "t"."typnamespace" WHERE "n"."nspname" = 'public' AND "t"."typname" = 'predictions_choice_enum'
+query: SELECT "e"."enumlabel" AS "value" FROM "pg_enum" "e" INNER JOIN "pg_type" "t" ON "t"."oid" = "e"."enumtypid" INNER JOIN "pg_namespace" "n" ON "n"."oid" = "t"."typnamespace" WHERE "n"."nspname" = 'public' AND "t"."typname" = 'predictions_result_enum'
+query: SELECT "e"."enumlabel" AS "value" FROM "pg_enum" "e" INNER JOIN "pg_type" "t" ON "t"."oid" = "e"."enumtypid" INNER JOIN "pg_namespace" "n" ON "n"."oid" = "t"."typnamespace" WHERE "n"."nspname" = 'public' AND "t"."typname" = 'users_role_enum'
+query: SELECT "e"."enumlabel" AS "value" FROM "pg_enum" "e" INNER JOIN "pg_type" "t" ON "t"."oid" = "e"."enumtypid" INNER JOIN "pg_namespace" "n" ON "n"."oid" = "t"."typnamespace" WHERE "n"."nspname" = 'public' AND "t"."typname" = 'videos_status_enum'
+query: SELECT "e"."enumlabel" AS "value" FROM "pg_enum" "e" INNER JOIN "pg_type" "t" ON "t"."oid" = "e"."enumtypid" INNER JOIN "pg_namespace" "n" ON "n"."oid" = "t"."typnamespace" WHERE "n"."nspname" = 'public' AND "t"."typname" = 'videos_visibility_enum'
+query: SELECT * FROM "information_schema"."tables" WHERE "table_schema" = 'public' AND "table_name" = 'typeorm_metadata'
+query: COMMIT
+[Nest] 29444  - 10/29/2025, 5:46:23 AM     LOG [InstanceLoader] TypeOrmCoreModule dependencies initialized +178ms
+[Nest] 29444  - 10/29/2025, 5:46:23 AM     LOG [InstanceLoader] TypeOrmModule dependencies initialized +0ms
+AuthService constructor called
+⚠️ AuthController constructor - authService: UNDEFINED
+[Nest] 29444  - 10/29/2025, 5:46:23 AM     LOG [InstanceLoader] AuthModule dependencies initialized +0ms
+[Nest] 29444  - 10/29/2025, 5:46:23 AM     LOG [RoutesResolver] AppController {/}: +244ms
+[Nest] 29444  - 10/29/2025, 5:46:23 AM     LOG [RouterExplorer] Mapped {/, GET} route +1ms
+[Nest] 29444  - 10/29/2025, 5:46:23 AM     LOG [RouterExplorer] Mapped {/health, GET} route +0ms
+[Nest] 29444  - 10/29/2025, 5:46:23 AM     LOG [RoutesResolver] AuthController {/auth}: +0ms
+[Nest] 29444  - 10/29/2025, 5:46:23 AM     LOG [RouterExplorer] Mapped {/auth/register, POST} route +0ms
+[Nest] 29444  - 10/29/2025, 5:46:23 AM     LOG [RouterExplorer] Mapped {/auth/login, POST} route +0ms
+[Nest] 29444  - 10/29/2025, 5:46:23 AM     LOG [RouterExplorer] Mapped {/auth/refresh, POST} route +0ms
+[Nest] 29444  - 10/29/2025, 5:46:23 AM     LOG [RouterExplorer] Mapped {/auth/logout, POST} route +1ms
+[Nest] 29444  - 10/29/2025, 5:46:23 AM     LOG [RouterExplorer] Mapped {/auth/logout-all, POST} route +0ms
+[Nest] 29444  - 10/29/2025, 5:46:23 AM     LOG [RouterExplorer] Mapped {/auth/profile, GET} route +0ms
+[Nest] 29444  - 10/29/2025, 5:46:23 AM     LOG [RouterExplorer] Mapped {/auth/profile, PUT} route +0ms
+[Nest] 29444  - 10/29/2025, 5:46:23 AM     LOG [RouterExplorer] Mapped {/auth/admin/users, GET} route +1ms
+[Nest] 29444  - 10/29/2025, 5:46:23 AM     LOG [RouterExplorer] Mapped {/auth/admin/users/:id, GET} route +0ms
+[Nest] 29444  - 10/29/2025, 5:46:23 AM     LOG [RouterExplorer] Mapped {/auth/creator/dashboard, GET} route +0ms
+[Nest] 29444  - 10/29/2025, 5:46:23 AM     LOG [RouterExplorer] Mapped {/auth/creator/youtube, PUT} route +0ms
+[Nest] 29444  - 10/29/2025, 5:46:23 AM     LOG [RouterExplorer] Mapped {/auth/creator/analytics, GET} route +0ms
+[Nest] 29444  - 10/29/2025, 5:46:23 AM     LOG [RouterExplorer] Mapped {/auth/public/:id, GET} route +0ms
+[Nest] 29444  - 10/29/2025, 5:46:23 AM     LOG [NestApplication] Nest application successfully started +1ms
+🚀 Creator Pool API running on http://localhost:3000
+5:46:46 AM [tsx] restarting
+c[Nest] 29908  - 10/29/2025, 5:46:47 AM     LOG [NestFactory] Starting Nest application...
+[Nest] 29908  - 10/29/2025, 5:46:47 AM     LOG [InstanceLoader] TypeOrmModule dependencies initialized +8ms
+[Nest] 29908  - 10/29/2025, 5:46:47 AM     LOG [InstanceLoader] PassportModule dependencies initialized +0ms
+[Nest] 29908  - 10/29/2025, 5:46:47 AM     LOG [InstanceLoader] ThrottlerModule dependencies initialized +0ms
+[Nest] 29908  - 10/29/2025, 5:46:47 AM     LOG [InstanceLoader] JwtModule dependencies initialized +0ms
+[Nest] 29908  - 10/29/2025, 5:46:47 AM     LOG [InstanceLoader] ConfigHostModule dependencies initialized +0ms
+[Nest] 29908  - 10/29/2025, 5:46:47 AM     LOG [InstanceLoader] ConfigModule dependencies initialized +0ms
+[Nest] 29908  - 10/29/2025, 5:46:47 AM     LOG [InstanceLoader] ConfigModule dependencies initialized +0ms
+[Nest] 29908  - 10/29/2025, 5:46:47 AM     LOG [InstanceLoader] AppModule dependencies initialized +1ms
+query: SELECT version()
+query: SELECT * FROM current_schema()
+query: CREATE EXTENSION IF NOT EXISTS "uuid-ossp"
+query: START TRANSACTION
+query: SELECT * FROM current_schema()
+query: SELECT * FROM current_database()
+query: SELECT "table_schema", "table_name", obj_description(('"' || "table_schema" || '"."' || "table_name" || '"')::regclass, 'pg_class') AS table_comment FROM "information_schema"."tables" WHERE ("table_schema" = 'public' AND "table_name" = 'predictions') OR ("table_schema" = 'public' AND "table_name" = 'pools') OR ("table_schema" = 'public' AND "table_name" = 'videos') OR ("table_schema" = 'public' AND "table_name" = 'users')
+query: SELECT TRUE FROM information_schema.columns WHERE table_name = 'pg_class' and column_name = 'relispartition'
+query: SELECT columns.*, pg_catalog.col_description(('"' || table_catalog || '"."' || table_schema || '"."' || table_name || '"')::regclass::oid, ordinal_position) AS description, ('"' || "udt_schema" || '"."' || "udt_name" || '"')::"regtype"::text AS "regtype", pg_catalog.format_type("col_attr"."atttypid", "col_attr"."atttypmod") AS "format_type" FROM "information_schema"."columns" LEFT JOIN "pg_catalog"."pg_attribute" AS "col_attr" ON "col_attr"."attname" = "columns"."column_name" AND "col_attr"."attrelid" = ( SELECT "cls"."oid" FROM "pg_catalog"."pg_class" AS "cls" LEFT JOIN "pg_catalog"."pg_namespace" AS "ns" ON "ns"."oid" = "cls"."relnamespace" WHERE "cls"."relname" = "columns"."table_name" AND "ns"."nspname" = "columns"."table_schema" ) WHERE ("table_schema" = 'public' AND "table_name" = 'pools') OR ("table_schema" = 'public' AND "table_name" = 'predictions') OR ("table_schema" = 'public' AND "table_name" = 'users') OR ("table_schema" = 'public' AND "table_name" = 'videos')
+query: SELECT "ns"."nspname" AS "table_schema", "t"."relname" AS "table_name", "cnst"."conname" AS "constraint_name", pg_get_constraintdef("cnst"."oid") AS "expression", CASE "cnst"."contype" WHEN 'p' THEN 'PRIMARY' WHEN 'u' THEN 'UNIQUE' WHEN 'c' THEN 'CHECK' WHEN 'x' THEN 'EXCLUDE' END AS "constraint_type", "a"."attname" AS "column_name" FROM "pg_constraint" "cnst" INNER JOIN "pg_class" "t" ON "t"."oid" = "cnst"."conrelid" INNER JOIN "pg_namespace" "ns" ON "ns"."oid" = "cnst"."connamespace" LEFT JOIN "pg_attribute" "a" ON "a"."attrelid" = "cnst"."conrelid" AND "a"."attnum" = ANY ("cnst"."conkey") WHERE "t"."relkind" IN ('r', 'p') AND (("ns"."nspname" = 'public' AND "t"."relname" = 'pools') OR ("ns"."nspname" = 'public' AND "t"."relname" = 'predictions') OR ("ns"."nspname" = 'public' AND "t"."relname" = 'users') OR ("ns"."nspname" = 'public' AND "t"."relname" = 'videos'))
+query: SELECT "ns"."nspname" AS "table_schema", "t"."relname" AS "table_name", "i"."relname" AS "constraint_name", "a"."attname" AS "column_name", CASE "ix"."indisunique" WHEN 't' THEN 'TRUE' ELSE'FALSE' END AS "is_unique", pg_get_expr("ix"."indpred", "ix"."indrelid") AS "condition", "types"."typname" AS "type_name", "am"."amname" AS "index_type" FROM "pg_class" "t" INNER JOIN "pg_index" "ix" ON "ix"."indrelid" = "t"."oid" INNER JOIN "pg_attribute" "a" ON "a"."attrelid" = "t"."oid"  AND "a"."attnum" = ANY ("ix"."indkey") INNER JOIN "pg_namespace" "ns" ON "ns"."oid" = "t"."relnamespace" INNER JOIN "pg_class" "i" ON "i"."oid" = "ix"."indexrelid" INNER JOIN "pg_type" "types" ON "types"."oid" = "a"."atttypid" INNER JOIN "pg_am" "am" ON "i"."relam" = "am"."oid" LEFT JOIN "pg_constraint" "cnst" ON "cnst"."conname" = "i"."relname" WHERE "t"."relkind" IN ('r', 'p') AND "cnst"."contype" IS NULL AND (("ns"."nspname" = 'public' AND "t"."relname" = 'pools') OR ("ns"."nspname" = 'public' AND "t"."relname" = 'predictions') OR ("ns"."nspname" = 'public' AND "t"."relname" = 'users') OR ("ns"."nspname" = 'public' AND "t"."relname" = 'videos'))
+query: SELECT "con"."conname" AS "constraint_name", "con"."nspname" AS "table_schema", "con"."relname" AS "table_name", "att2"."attname" AS "column_name", "ns"."nspname" AS "referenced_table_schema", "cl"."relname" AS "referenced_table_name", "att"."attname" AS "referenced_column_name", "con"."confdeltype" AS "on_delete", "con"."confupdtype" AS "on_update", "con"."condeferrable" AS "deferrable", "con"."condeferred" AS "deferred" FROM ( SELECT UNNEST ("con1"."conkey") AS "parent", UNNEST ("con1"."confkey") AS "child", "con1"."confrelid", "con1"."conrelid", "con1"."conname", "con1"."contype", "ns"."nspname", "cl"."relname", "con1"."condeferrable", CASE WHEN "con1"."condeferred" THEN 'INITIALLY DEFERRED' ELSE 'INITIALLY IMMEDIATE' END as condeferred, CASE "con1"."confdeltype" WHEN 'a' THEN 'NO ACTION' WHEN 'r' THEN 'RESTRICT' WHEN 'c' THEN 'CASCADE' WHEN 'n' THEN 'SET NULL' WHEN 'd' THEN 'SET DEFAULT' END as "confdeltype", CASE "con1"."confupdtype" WHEN 'a' THEN 'NO ACTION' WHEN 'r' THEN 'RESTRICT' WHEN 'c' THEN 'CASCADE' WHEN 'n' THEN 'SET NULL' WHEN 'd' THEN 'SET DEFAULT' END as "confupdtype" FROM "pg_class" "cl" INNER JOIN "pg_namespace" "ns" ON "cl"."relnamespace" = "ns"."oid" INNER JOIN "pg_constraint" "con1" ON "con1"."conrelid" = "cl"."oid" WHERE "con1"."contype" = 'f' AND (("ns"."nspname" = 'public' AND "cl"."relname" = 'pools') OR ("ns"."nspname" = 'public' AND "cl"."relname" = 'predictions') OR ("ns"."nspname" = 'public' AND "cl"."relname" = 'users') OR ("ns"."nspname" = 'public' AND "cl"."relname" = 'videos')) ) "con" INNER JOIN "pg_attribute" "att" ON "att"."attrelid" = "con"."confrelid" AND "att"."attnum" = "con"."child" INNER JOIN "pg_class" "cl" ON "cl"."oid" = "con"."confrelid"  AND "cl"."relispartition" = 'f'INNER JOIN "pg_namespace" "ns" ON "cl"."relnamespace" = "ns"."oid" INNER JOIN "pg_attribute" "att2" ON "att2"."attrelid" = "con"."conrelid" AND "att2"."attnum" = "con"."parent"
+query: SELECT "udt_schema", "udt_name" FROM "information_schema"."columns" WHERE "table_schema" = 'public' AND "table_name" = 'pools' AND "column_name"='status'
+query: SELECT "udt_schema", "udt_name" FROM "information_schema"."columns" WHERE "table_schema" = 'public' AND "table_name" = 'pools' AND "column_name"='result'
+query: SELECT "udt_schema", "udt_name" FROM "information_schema"."columns" WHERE "table_schema" = 'public' AND "table_name" = 'predictions' AND "column_name"='choice'
+query: SELECT "udt_schema", "udt_name" FROM "information_schema"."columns" WHERE "table_schema" = 'public' AND "table_name" = 'predictions' AND "column_name"='result'
+query: SELECT "udt_schema", "udt_name" FROM "information_schema"."columns" WHERE "table_schema" = 'public' AND "table_name" = 'users' AND "column_name"='role'
+query: SELECT "udt_schema", "udt_name" FROM "information_schema"."columns" WHERE "table_schema" = 'public' AND "table_name" = 'videos' AND "column_name"='status'
+query: SELECT "udt_schema", "udt_name" FROM "information_schema"."columns" WHERE "table_schema" = 'public' AND "table_name" = 'videos' AND "column_name"='visibility'
+query: SELECT "e"."enumlabel" AS "value" FROM "pg_enum" "e" INNER JOIN "pg_type" "t" ON "t"."oid" = "e"."enumtypid" INNER JOIN "pg_namespace" "n" ON "n"."oid" = "t"."typnamespace" WHERE "n"."nspname" = 'public' AND "t"."typname" = 'pools_status_enum'
+query: SELECT "e"."enumlabel" AS "value" FROM "pg_enum" "e" INNER JOIN "pg_type" "t" ON "t"."oid" = "e"."enumtypid" INNER JOIN "pg_namespace" "n" ON "n"."oid" = "t"."typnamespace" WHERE "n"."nspname" = 'public' AND "t"."typname" = 'pools_result_enum'
+query: SELECT "e"."enumlabel" AS "value" FROM "pg_enum" "e" INNER JOIN "pg_type" "t" ON "t"."oid" = "e"."enumtypid" INNER JOIN "pg_namespace" "n" ON "n"."oid" = "t"."typnamespace" WHERE "n"."nspname" = 'public' AND "t"."typname" = 'predictions_choice_enum'
+query: SELECT "e"."enumlabel" AS "value" FROM "pg_enum" "e" INNER JOIN "pg_type" "t" ON "t"."oid" = "e"."enumtypid" INNER JOIN "pg_namespace" "n" ON "n"."oid" = "t"."typnamespace" WHERE "n"."nspname" = 'public' AND "t"."typname" = 'predictions_result_enum'
+query: SELECT "e"."enumlabel" AS "value" FROM "pg_enum" "e" INNER JOIN "pg_type" "t" ON "t"."oid" = "e"."enumtypid" INNER JOIN "pg_namespace" "n" ON "n"."oid" = "t"."typnamespace" WHERE "n"."nspname" = 'public' AND "t"."typname" = 'users_role_enum'
+query: SELECT "e"."enumlabel" AS "value" FROM "pg_enum" "e" INNER JOIN "pg_type" "t" ON "t"."oid" = "e"."enumtypid" INNER JOIN "pg_namespace" "n" ON "n"."oid" = "t"."typnamespace" WHERE "n"."nspname" = 'public' AND "t"."typname" = 'videos_status_enum'
+query: SELECT "e"."enumlabel" AS "value" FROM "pg_enum" "e" INNER JOIN "pg_type" "t" ON "t"."oid" = "e"."enumtypid" INNER JOIN "pg_namespace" "n" ON "n"."oid" = "t"."typnamespace" WHERE "n"."nspname" = 'public' AND "t"."typname" = 'videos_visibility_enum'
+query: SELECT * FROM "information_schema"."tables" WHERE "table_schema" = 'public' AND "table_name" = 'typeorm_metadata'
+query: COMMIT
+[Nest] 29908  - 10/29/2025, 5:46:47 AM     LOG [InstanceLoader] TypeOrmCoreModule dependencies initialized +111ms
+[Nest] 29908  - 10/29/2025, 5:46:47 AM     LOG [InstanceLoader] TypeOrmModule dependencies initialized +0ms
+AuthService constructor called
+⚠️ AuthController constructor - authService: UNDEFINED
+[Nest] 29908  - 10/29/2025, 5:46:47 AM     LOG [InstanceLoader] AuthModule dependencies initialized +1ms
+[Nest] 29908  - 10/29/2025, 5:46:47 AM     LOG [RoutesResolver] AppController {/}: +181ms
+[Nest] 29908  - 10/29/2025, 5:46:47 AM     LOG [RouterExplorer] Mapped {/, GET} route +1ms
+[Nest] 29908  - 10/29/2025, 5:46:47 AM     LOG [RouterExplorer] Mapped {/health, GET} route +0ms
+[Nest] 29908  - 10/29/2025, 5:46:47 AM     LOG [RoutesResolver] AuthController {/auth}: +0ms
+[Nest] 29908  - 10/29/2025, 5:46:47 AM     LOG [RouterExplorer] Mapped {/auth/register, POST} route +1ms
+[Nest] 29908  - 10/29/2025, 5:46:47 AM     LOG [RouterExplorer] Mapped {/auth/login, POST} route +0ms
+[Nest] 29908  - 10/29/2025, 5:46:47 AM     LOG [RouterExplorer] Mapped {/auth/refresh, POST} route +0ms
+[Nest] 29908  - 10/29/2025, 5:46:47 AM     LOG [RouterExplorer] Mapped {/auth/logout, POST} route +0ms
+[Nest] 29908  - 10/29/2025, 5:46:47 AM     LOG [RouterExplorer] Mapped {/auth/logout-all, POST} route +0ms
+[Nest] 29908  - 10/29/2025, 5:46:47 AM     LOG [RouterExplorer] Mapped {/auth/profile, GET} route +0ms
+[Nest] 29908  - 10/29/2025, 5:46:47 AM     LOG [RouterExplorer] Mapped {/auth/profile, PUT} route +1ms
+[Nest] 29908  - 10/29/2025, 5:46:47 AM     LOG [RouterExplorer] Mapped {/auth/admin/users, GET} route +0ms
+[Nest] 29908  - 10/29/2025, 5:46:47 AM     LOG [RouterExplorer] Mapped {/auth/admin/users/:id, GET} route +0ms
+[Nest] 29908  - 10/29/2025, 5:46:47 AM     LOG [RouterExplorer] Mapped {/auth/creator/dashboard, GET} route +0ms
+[Nest] 29908  - 10/29/2025, 5:46:47 AM     LOG [RouterExplorer] Mapped {/auth/creator/youtube, PUT} route +0ms
+[Nest] 29908  - 10/29/2025, 5:46:47 AM     LOG [RouterExplorer] Mapped {/auth/creator/analytics, GET} route +0ms
+[Nest] 29908  - 10/29/2025, 5:46:47 AM     LOG [RouterExplorer] Mapped {/auth/public/:id, GET} route +0ms
+[Nest] 29908  - 10/29/2025, 5:46:47 AM     LOG [NestApplication] Nest application successfully started +1ms
+🚀 Creator Pool API running on http://localhost:3000
+5:46:52 AM [tsx] restarting
+c[Nest] 30029  - 10/29/2025, 5:46:53 AM     LOG [NestFactory] Starting Nest application...
+[Nest] 30029  - 10/29/2025, 5:46:53 AM     LOG [InstanceLoader] TypeOrmModule dependencies initialized +8ms
+[Nest] 30029  - 10/29/2025, 5:46:53 AM     LOG [InstanceLoader] PassportModule dependencies initialized +0ms
+[Nest] 30029  - 10/29/2025, 5:46:53 AM     LOG [InstanceLoader] ThrottlerModule dependencies initialized +0ms
+[Nest] 30029  - 10/29/2025, 5:46:53 AM     LOG [InstanceLoader] JwtModule dependencies initialized +0ms
+[Nest] 30029  - 10/29/2025, 5:46:53 AM     LOG [InstanceLoader] ConfigHostModule dependencies initialized +0ms
+[Nest] 30029  - 10/29/2025, 5:46:53 AM     LOG [InstanceLoader] ConfigModule dependencies initialized +0ms
+[Nest] 30029  - 10/29/2025, 5:46:53 AM     LOG [InstanceLoader] ConfigModule dependencies initialized +0ms
+[Nest] 30029  - 10/29/2025, 5:46:53 AM     LOG [InstanceLoader] AppModule dependencies initialized +0ms
+query: SELECT version()
+query: SELECT * FROM current_schema()
+query: CREATE EXTENSION IF NOT EXISTS "uuid-ossp"
+query: START TRANSACTION
+query: SELECT * FROM current_schema()
+query: SELECT * FROM current_database()
+query: SELECT "table_schema", "table_name", obj_description(('"' || "table_schema" || '"."' || "table_name" || '"')::regclass, 'pg_class') AS table_comment FROM "information_schema"."tables" WHERE ("table_schema" = 'public' AND "table_name" = 'predictions') OR ("table_schema" = 'public' AND "table_name" = 'pools') OR ("table_schema" = 'public' AND "table_name" = 'videos') OR ("table_schema" = 'public' AND "table_name" = 'users')
+query: SELECT TRUE FROM information_schema.columns WHERE table_name = 'pg_class' and column_name = 'relispartition'
+query: SELECT columns.*, pg_catalog.col_description(('"' || table_catalog || '"."' || table_schema || '"."' || table_name || '"')::regclass::oid, ordinal_position) AS description, ('"' || "udt_schema" || '"."' || "udt_name" || '"')::"regtype"::text AS "regtype", pg_catalog.format_type("col_attr"."atttypid", "col_attr"."atttypmod") AS "format_type" FROM "information_schema"."columns" LEFT JOIN "pg_catalog"."pg_attribute" AS "col_attr" ON "col_attr"."attname" = "columns"."column_name" AND "col_attr"."attrelid" = ( SELECT "cls"."oid" FROM "pg_catalog"."pg_class" AS "cls" LEFT JOIN "pg_catalog"."pg_namespace" AS "ns" ON "ns"."oid" = "cls"."relnamespace" WHERE "cls"."relname" = "columns"."table_name" AND "ns"."nspname" = "columns"."table_schema" ) WHERE ("table_schema" = 'public' AND "table_name" = 'pools') OR ("table_schema" = 'public' AND "table_name" = 'predictions') OR ("table_schema" = 'public' AND "table_name" = 'users') OR ("table_schema" = 'public' AND "table_name" = 'videos')
+query: SELECT "ns"."nspname" AS "table_schema", "t"."relname" AS "table_name", "cnst"."conname" AS "constraint_name", pg_get_constraintdef("cnst"."oid") AS "expression", CASE "cnst"."contype" WHEN 'p' THEN 'PRIMARY' WHEN 'u' THEN 'UNIQUE' WHEN 'c' THEN 'CHECK' WHEN 'x' THEN 'EXCLUDE' END AS "constraint_type", "a"."attname" AS "column_name" FROM "pg_constraint" "cnst" INNER JOIN "pg_class" "t" ON "t"."oid" = "cnst"."conrelid" INNER JOIN "pg_namespace" "ns" ON "ns"."oid" = "cnst"."connamespace" LEFT JOIN "pg_attribute" "a" ON "a"."attrelid" = "cnst"."conrelid" AND "a"."attnum" = ANY ("cnst"."conkey") WHERE "t"."relkind" IN ('r', 'p') AND (("ns"."nspname" = 'public' AND "t"."relname" = 'pools') OR ("ns"."nspname" = 'public' AND "t"."relname" = 'predictions') OR ("ns"."nspname" = 'public' AND "t"."relname" = 'users') OR ("ns"."nspname" = 'public' AND "t"."relname" = 'videos'))
+query: SELECT "ns"."nspname" AS "table_schema", "t"."relname" AS "table_name", "i"."relname" AS "constraint_name", "a"."attname" AS "column_name", CASE "ix"."indisunique" WHEN 't' THEN 'TRUE' ELSE'FALSE' END AS "is_unique", pg_get_expr("ix"."indpred", "ix"."indrelid") AS "condition", "types"."typname" AS "type_name", "am"."amname" AS "index_type" FROM "pg_class" "t" INNER JOIN "pg_index" "ix" ON "ix"."indrelid" = "t"."oid" INNER JOIN "pg_attribute" "a" ON "a"."attrelid" = "t"."oid"  AND "a"."attnum" = ANY ("ix"."indkey") INNER JOIN "pg_namespace" "ns" ON "ns"."oid" = "t"."relnamespace" INNER JOIN "pg_class" "i" ON "i"."oid" = "ix"."indexrelid" INNER JOIN "pg_type" "types" ON "types"."oid" = "a"."atttypid" INNER JOIN "pg_am" "am" ON "i"."relam" = "am"."oid" LEFT JOIN "pg_constraint" "cnst" ON "cnst"."conname" = "i"."relname" WHERE "t"."relkind" IN ('r', 'p') AND "cnst"."contype" IS NULL AND (("ns"."nspname" = 'public' AND "t"."relname" = 'pools') OR ("ns"."nspname" = 'public' AND "t"."relname" = 'predictions') OR ("ns"."nspname" = 'public' AND "t"."relname" = 'users') OR ("ns"."nspname" = 'public' AND "t"."relname" = 'videos'))
+query: SELECT "con"."conname" AS "constraint_name", "con"."nspname" AS "table_schema", "con"."relname" AS "table_name", "att2"."attname" AS "column_name", "ns"."nspname" AS "referenced_table_schema", "cl"."relname" AS "referenced_table_name", "att"."attname" AS "referenced_column_name", "con"."confdeltype" AS "on_delete", "con"."confupdtype" AS "on_update", "con"."condeferrable" AS "deferrable", "con"."condeferred" AS "deferred" FROM ( SELECT UNNEST ("con1"."conkey") AS "parent", UNNEST ("con1"."confkey") AS "child", "con1"."confrelid", "con1"."conrelid", "con1"."conname", "con1"."contype", "ns"."nspname", "cl"."relname", "con1"."condeferrable", CASE WHEN "con1"."condeferred" THEN 'INITIALLY DEFERRED' ELSE 'INITIALLY IMMEDIATE' END as condeferred, CASE "con1"."confdeltype" WHEN 'a' THEN 'NO ACTION' WHEN 'r' THEN 'RESTRICT' WHEN 'c' THEN 'CASCADE' WHEN 'n' THEN 'SET NULL' WHEN 'd' THEN 'SET DEFAULT' END as "confdeltype", CASE "con1"."confupdtype" WHEN 'a' THEN 'NO ACTION' WHEN 'r' THEN 'RESTRICT' WHEN 'c' THEN 'CASCADE' WHEN 'n' THEN 'SET NULL' WHEN 'd' THEN 'SET DEFAULT' END as "confupdtype" FROM "pg_class" "cl" INNER JOIN "pg_namespace" "ns" ON "cl"."relnamespace" = "ns"."oid" INNER JOIN "pg_constraint" "con1" ON "con1"."conrelid" = "cl"."oid" WHERE "con1"."contype" = 'f' AND (("ns"."nspname" = 'public' AND "cl"."relname" = 'pools') OR ("ns"."nspname" = 'public' AND "cl"."relname" = 'predictions') OR ("ns"."nspname" = 'public' AND "cl"."relname" = 'users') OR ("ns"."nspname" = 'public' AND "cl"."relname" = 'videos')) ) "con" INNER JOIN "pg_attribute" "att" ON "att"."attrelid" = "con"."confrelid" AND "att"."attnum" = "con"."child" INNER JOIN "pg_class" "cl" ON "cl"."oid" = "con"."confrelid"  AND "cl"."relispartition" = 'f'INNER JOIN "pg_namespace" "ns" ON "cl"."relnamespace" = "ns"."oid" INNER JOIN "pg_attribute" "att2" ON "att2"."attrelid" = "con"."conrelid" AND "att2"."attnum" = "con"."parent"
+query: SELECT "udt_schema", "udt_name" FROM "information_schema"."columns" WHERE "table_schema" = 'public' AND "table_name" = 'pools' AND "column_name"='status'
+query: SELECT "udt_schema", "udt_name" FROM "information_schema"."columns" WHERE "table_schema" = 'public' AND "table_name" = 'pools' AND "column_name"='result'
+query: SELECT "udt_schema", "udt_name" FROM "information_schema"."columns" WHERE "table_schema" = 'public' AND "table_name" = 'predictions' AND "column_name"='choice'
+query: SELECT "udt_schema", "udt_name" FROM "information_schema"."columns" WHERE "table_schema" = 'public' AND "table_name" = 'predictions' AND "column_name"='result'
+query: SELECT "udt_schema", "udt_name" FROM "information_schema"."columns" WHERE "table_schema" = 'public' AND "table_name" = 'users' AND "column_name"='role'
+query: SELECT "udt_schema", "udt_name" FROM "information_schema"."columns" WHERE "table_schema" = 'public' AND "table_name" = 'videos' AND "column_name"='status'
+query: SELECT "udt_schema", "udt_name" FROM "information_schema"."columns" WHERE "table_schema" = 'public' AND "table_name" = 'videos' AND "column_name"='visibility'
+query: SELECT "e"."enumlabel" AS "value" FROM "pg_enum" "e" INNER JOIN "pg_type" "t" ON "t"."oid" = "e"."enumtypid" INNER JOIN "pg_namespace" "n" ON "n"."oid" = "t"."typnamespace" WHERE "n"."nspname" = 'public' AND "t"."typname" = 'pools_status_enum'
+query: SELECT "e"."enumlabel" AS "value" FROM "pg_enum" "e" INNER JOIN "pg_type" "t" ON "t"."oid" = "e"."enumtypid" INNER JOIN "pg_namespace" "n" ON "n"."oid" = "t"."typnamespace" WHERE "n"."nspname" = 'public' AND "t"."typname" = 'pools_result_enum'
+query: SELECT "e"."enumlabel" AS "value" FROM "pg_enum" "e" INNER JOIN "pg_type" "t" ON "t"."oid" = "e"."enumtypid" INNER JOIN "pg_namespace" "n" ON "n"."oid" = "t"."typnamespace" WHERE "n"."nspname" = 'public' AND "t"."typname" = 'predictions_choice_enum'
+query: SELECT "e"."enumlabel" AS "value" FROM "pg_enum" "e" INNER JOIN "pg_type" "t" ON "t"."oid" = "e"."enumtypid" INNER JOIN "pg_namespace" "n" ON "n"."oid" = "t"."typnamespace" WHERE "n"."nspname" = 'public' AND "t"."typname" = 'predictions_result_enum'
+query: SELECT "e"."enumlabel" AS "value" FROM "pg_enum" "e" INNER JOIN "pg_type" "t" ON "t"."oid" = "e"."enumtypid" INNER JOIN "pg_namespace" "n" ON "n"."oid" = "t"."typnamespace" WHERE "n"."nspname" = 'public' AND "t"."typname" = 'users_role_enum'
+query: SELECT "e"."enumlabel" AS "value" FROM "pg_enum" "e" INNER JOIN "pg_type" "t" ON "t"."oid" = "e"."enumtypid" INNER JOIN "pg_namespace" "n" ON "n"."oid" = "t"."typnamespace" WHERE "n"."nspname" = 'public' AND "t"."typname" = 'videos_status_enum'
+query: SELECT "e"."enumlabel" AS "value" FROM "pg_enum" "e" INNER JOIN "pg_type" "t" ON "t"."oid" = "e"."enumtypid" INNER JOIN "pg_namespace" "n" ON "n"."oid" = "t"."typnamespace" WHERE "n"."nspname" = 'public' AND "t"."typname" = 'videos_visibility_enum'
+query: SELECT * FROM "information_schema"."tables" WHERE "table_schema" = 'public' AND "table_name" = 'typeorm_metadata'
+query: COMMIT
+[Nest] 30029  - 10/29/2025, 5:46:54 AM     LOG [InstanceLoader] TypeOrmCoreModule dependencies initialized +117ms
+[Nest] 30029  - 10/29/2025, 5:46:54 AM     LOG [InstanceLoader] TypeOrmModule dependencies initialized +0ms
+AuthService constructor called
+⚠️ AuthController constructor - authService: DEFINED
+[Nest] 30029  - 10/29/2025, 5:46:54 AM     LOG [InstanceLoader] AuthModule dependencies initialized +0ms
+[Nest] 30029  - 10/29/2025, 5:46:54 AM     LOG [RoutesResolver] AppController {/}: +177ms
+[Nest] 30029  - 10/29/2025, 5:46:54 AM     LOG [RouterExplorer] Mapped {/, GET} route +2ms
+[Nest] 30029  - 10/29/2025, 5:46:54 AM     LOG [RouterExplorer] Mapped {/health, GET} route +0ms
+[Nest] 30029  - 10/29/2025, 5:46:54 AM     LOG [RoutesResolver] AuthController {/auth}: +0ms
+[Nest] 30029  - 10/29/2025, 5:46:54 AM     LOG [RouterExplorer] Mapped {/auth/register, POST} route +0ms
+[Nest] 30029  - 10/29/2025, 5:46:54 AM     LOG [RouterExplorer] Mapped {/auth/login, POST} route +0ms
+[Nest] 30029  - 10/29/2025, 5:46:54 AM     LOG [RouterExplorer] Mapped {/auth/refresh, POST} route +0ms
+[Nest] 30029  - 10/29/2025, 5:46:54 AM     LOG [RouterExplorer] Mapped {/auth/logout, POST} route +1ms
+[Nest] 30029  - 10/29/2025, 5:46:54 AM     LOG [RouterExplorer] Mapped {/auth/logout-all, POST} route +0ms
+[Nest] 30029  - 10/29/2025, 5:46:54 AM     LOG [RouterExplorer] Mapped {/auth/profile, GET} route +0ms
+[Nest] 30029  - 10/29/2025, 5:46:54 AM     LOG [RouterExplorer] Mapped {/auth/profile, PUT} route +0ms
+[Nest] 30029  - 10/29/2025, 5:46:54 AM     LOG [RouterExplorer] Mapped {/auth/admin/users, GET} route +0ms
+[Nest] 30029  - 10/29/2025, 5:46:54 AM     LOG [RouterExplorer] Mapped {/auth/admin/users/:id, GET} route +1ms
+[Nest] 30029  - 10/29/2025, 5:46:54 AM     LOG [RouterExplorer] Mapped {/auth/creator/dashboard, GET} route +0ms
+[Nest] 30029  - 10/29/2025, 5:46:54 AM     LOG [RouterExplorer] Mapped {/auth/creator/youtube, PUT} route +0ms
+[Nest] 30029  - 10/29/2025, 5:46:54 AM     LOG [RouterExplorer] Mapped {/auth/creator/analytics, GET} route +0ms
+[Nest] 30029  - 10/29/2025, 5:46:54 AM     LOG [RouterExplorer] Mapped {/auth/public/:id, GET} route +0ms
+[Nest] 30029  - 10/29/2025, 5:46:54 AM     LOG [NestApplication] Nest application successfully started +1ms
+🚀 Creator Pool API running on http://localhost:3000
+query: SELECT "User"."id" AS "User_id", "User"."email" AS "User_email", "User"."name" AS "User_name", "User"."role" AS "User_role", "User"."walletBalance" AS "User_walletBalance", "User"."googleId" AS "User_googleId", "User"."youtubeChannelId" AS "User_youtubeChannelId", "User"."youtubeTokenExpiresAt" AS "User_youtubeTokenExpiresAt", "User"."createdAt" AS "User_createdAt", "User"."updatedAt" AS "User_updatedAt" FROM "users" "User" WHERE (("User"."email" = $1)) LIMIT 1 -- PARAMETERS: ["workingtest@example.com"]
+query: START TRANSACTION
+query: INSERT INTO "users"("id", "email", "name", "password", "role", "walletBalance", "googleId", "youtubeChannelId", "youtubeAccessToken", "youtubeRefreshToken", "youtubeTokenExpiresAt", "createdAt", "updatedAt") VALUES (DEFAULT, $1, $2, $3, $4, DEFAULT, DEFAULT, DEFAULT, DEFAULT, DEFAULT, DEFAULT, DEFAULT, DEFAULT) RETURNING "id", "walletBalance", "createdAt", "updatedAt" -- PARAMETERS: ["workingtest@example.com","Working Test","$2b$10$/n5rxTRHKfCRHnyE4g1M/eGon3TzHxUS0HxAcNgfVAxG6WSoYk1mO","user"]
+query: COMMIT
+[Nest] 30029  - 10/29/2025, 5:47:09 AM   ERROR [ExceptionsHandler] Cannot read properties of undefined (reading 'signAsync')
+TypeError: Cannot read properties of undefined (reading 'signAsync')
+    at AuthService.generateTokens (/Users/thomas/Backend/Creator-Pool-Backend/src/auth/auth.service.ts:214:23)
+    at AuthService.register (/Users/thomas/Backend/Creator-Pool-Backend/src/auth/auth.service.ts:76:31)
+    at processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at /Users/thomas/Backend/Creator-Pool-Backend/node_modules/@nestjs/core/router/router-execution-context.js:46:28
+    at /Users/thomas/Backend/Creator-Pool-Backend/node_modules/@nestjs/core/router/router-proxy.js:9:17
+5:47:25 AM [tsx] restarting
+c[Nest] 30668  - 10/29/2025, 5:47:27 AM     LOG [NestFactory] Starting Nest application...
+[Nest] 30668  - 10/29/2025, 5:47:27 AM     LOG [InstanceLoader] TypeOrmModule dependencies initialized +7ms
+[Nest] 30668  - 10/29/2025, 5:47:27 AM     LOG [InstanceLoader] PassportModule dependencies initialized +0ms
+[Nest] 30668  - 10/29/2025, 5:47:27 AM     LOG [InstanceLoader] ThrottlerModule dependencies initialized +0ms
+[Nest] 30668  - 10/29/2025, 5:47:27 AM     LOG [InstanceLoader] JwtModule dependencies initialized +0ms
+[Nest] 30668  - 10/29/2025, 5:47:27 AM     LOG [InstanceLoader] ConfigHostModule dependencies initialized +0ms
+[Nest] 30668  - 10/29/2025, 5:47:27 AM     LOG [InstanceLoader] ConfigModule dependencies initialized +0ms
+[Nest] 30668  - 10/29/2025, 5:47:27 AM     LOG [InstanceLoader] ConfigModule dependencies initialized +1ms
+[Nest] 30668  - 10/29/2025, 5:47:27 AM     LOG [InstanceLoader] AppModule dependencies initialized +0ms
+query: SELECT version()
+query: SELECT * FROM current_schema()
+query: CREATE EXTENSION IF NOT EXISTS "uuid-ossp"
+query: START TRANSACTION
+query: SELECT * FROM current_schema()
+query: SELECT * FROM current_database()
+query: SELECT "table_schema", "table_name", obj_description(('"' || "table_schema" || '"."' || "table_name" || '"')::regclass, 'pg_class') AS table_comment FROM "information_schema"."tables" WHERE ("table_schema" = 'public' AND "table_name" = 'predictions') OR ("table_schema" = 'public' AND "table_name" = 'pools') OR ("table_schema" = 'public' AND "table_name" = 'videos') OR ("table_schema" = 'public' AND "table_name" = 'users')
+query: SELECT TRUE FROM information_schema.columns WHERE table_name = 'pg_class' and column_name = 'relispartition'
+query: SELECT columns.*, pg_catalog.col_description(('"' || table_catalog || '"."' || table_schema || '"."' || table_name || '"')::regclass::oid, ordinal_position) AS description, ('"' || "udt_schema" || '"."' || "udt_name" || '"')::"regtype"::text AS "regtype", pg_catalog.format_type("col_attr"."atttypid", "col_attr"."atttypmod") AS "format_type" FROM "information_schema"."columns" LEFT JOIN "pg_catalog"."pg_attribute" AS "col_attr" ON "col_attr"."attname" = "columns"."column_name" AND "col_attr"."attrelid" = ( SELECT "cls"."oid" FROM "pg_catalog"."pg_class" AS "cls" LEFT JOIN "pg_catalog"."pg_namespace" AS "ns" ON "ns"."oid" = "cls"."relnamespace" WHERE "cls"."relname" = "columns"."table_name" AND "ns"."nspname" = "columns"."table_schema" ) WHERE ("table_schema" = 'public' AND "table_name" = 'pools') OR ("table_schema" = 'public' AND "table_name" = 'predictions') OR ("table_schema" = 'public' AND "table_name" = 'users') OR ("table_schema" = 'public' AND "table_name" = 'videos')
+query: SELECT "ns"."nspname" AS "table_schema", "t"."relname" AS "table_name", "cnst"."conname" AS "constraint_name", pg_get_constraintdef("cnst"."oid") AS "expression", CASE "cnst"."contype" WHEN 'p' THEN 'PRIMARY' WHEN 'u' THEN 'UNIQUE' WHEN 'c' THEN 'CHECK' WHEN 'x' THEN 'EXCLUDE' END AS "constraint_type", "a"."attname" AS "column_name" FROM "pg_constraint" "cnst" INNER JOIN "pg_class" "t" ON "t"."oid" = "cnst"."conrelid" INNER JOIN "pg_namespace" "ns" ON "ns"."oid" = "cnst"."connamespace" LEFT JOIN "pg_attribute" "a" ON "a"."attrelid" = "cnst"."conrelid" AND "a"."attnum" = ANY ("cnst"."conkey") WHERE "t"."relkind" IN ('r', 'p') AND (("ns"."nspname" = 'public' AND "t"."relname" = 'pools') OR ("ns"."nspname" = 'public' AND "t"."relname" = 'predictions') OR ("ns"."nspname" = 'public' AND "t"."relname" = 'users') OR ("ns"."nspname" = 'public' AND "t"."relname" = 'videos'))
+query: SELECT "ns"."nspname" AS "table_schema", "t"."relname" AS "table_name", "i"."relname" AS "constraint_name", "a"."attname" AS "column_name", CASE "ix"."indisunique" WHEN 't' THEN 'TRUE' ELSE'FALSE' END AS "is_unique", pg_get_expr("ix"."indpred", "ix"."indrelid") AS "condition", "types"."typname" AS "type_name", "am"."amname" AS "index_type" FROM "pg_class" "t" INNER JOIN "pg_index" "ix" ON "ix"."indrelid" = "t"."oid" INNER JOIN "pg_attribute" "a" ON "a"."attrelid" = "t"."oid"  AND "a"."attnum" = ANY ("ix"."indkey") INNER JOIN "pg_namespace" "ns" ON "ns"."oid" = "t"."relnamespace" INNER JOIN "pg_class" "i" ON "i"."oid" = "ix"."indexrelid" INNER JOIN "pg_type" "types" ON "types"."oid" = "a"."atttypid" INNER JOIN "pg_am" "am" ON "i"."relam" = "am"."oid" LEFT JOIN "pg_constraint" "cnst" ON "cnst"."conname" = "i"."relname" WHERE "t"."relkind" IN ('r', 'p') AND "cnst"."contype" IS NULL AND (("ns"."nspname" = 'public' AND "t"."relname" = 'pools') OR ("ns"."nspname" = 'public' AND "t"."relname" = 'predictions') OR ("ns"."nspname" = 'public' AND "t"."relname" = 'users') OR ("ns"."nspname" = 'public' AND "t"."relname" = 'videos'))
+query: SELECT "con"."conname" AS "constraint_name", "con"."nspname" AS "table_schema", "con"."relname" AS "table_name", "att2"."attname" AS "column_name", "ns"."nspname" AS "referenced_table_schema", "cl"."relname" AS "referenced_table_name", "att"."attname" AS "referenced_column_name", "con"."confdeltype" AS "on_delete", "con"."confupdtype" AS "on_update", "con"."condeferrable" AS "deferrable", "con"."condeferred" AS "deferred" FROM ( SELECT UNNEST ("con1"."conkey") AS "parent", UNNEST ("con1"."confkey") AS "child", "con1"."confrelid", "con1"."conrelid", "con1"."conname", "con1"."contype", "ns"."nspname", "cl"."relname", "con1"."condeferrable", CASE WHEN "con1"."condeferred" THEN 'INITIALLY DEFERRED' ELSE 'INITIALLY IMMEDIATE' END as condeferred, CASE "con1"."confdeltype" WHEN 'a' THEN 'NO ACTION' WHEN 'r' THEN 'RESTRICT' WHEN 'c' THEN 'CASCADE' WHEN 'n' THEN 'SET NULL' WHEN 'd' THEN 'SET DEFAULT' END as "confdeltype", CASE "con1"."confupdtype" WHEN 'a' THEN 'NO ACTION' WHEN 'r' THEN 'RESTRICT' WHEN 'c' THEN 'CASCADE' WHEN 'n' THEN 'SET NULL' WHEN 'd' THEN 'SET DEFAULT' END as "confupdtype" FROM "pg_class" "cl" INNER JOIN "pg_namespace" "ns" ON "cl"."relnamespace" = "ns"."oid" INNER JOIN "pg_constraint" "con1" ON "con1"."conrelid" = "cl"."oid" WHERE "con1"."contype" = 'f' AND (("ns"."nspname" = 'public' AND "cl"."relname" = 'pools') OR ("ns"."nspname" = 'public' AND "cl"."relname" = 'predictions') OR ("ns"."nspname" = 'public' AND "cl"."relname" = 'users') OR ("ns"."nspname" = 'public' AND "cl"."relname" = 'videos')) ) "con" INNER JOIN "pg_attribute" "att" ON "att"."attrelid" = "con"."confrelid" AND "att"."attnum" = "con"."child" INNER JOIN "pg_class" "cl" ON "cl"."oid" = "con"."confrelid"  AND "cl"."relispartition" = 'f'INNER JOIN "pg_namespace" "ns" ON "cl"."relnamespace" = "ns"."oid" INNER JOIN "pg_attribute" "att2" ON "att2"."attrelid" = "con"."conrelid" AND "att2"."attnum" = "con"."parent"
+query: SELECT "udt_schema", "udt_name" FROM "information_schema"."columns" WHERE "table_schema" = 'public' AND "table_name" = 'pools' AND "column_name"='status'
+query: SELECT "udt_schema", "udt_name" FROM "information_schema"."columns" WHERE "table_schema" = 'public' AND "table_name" = 'pools' AND "column_name"='result'
+query: SELECT "udt_schema", "udt_name" FROM "information_schema"."columns" WHERE "table_schema" = 'public' AND "table_name" = 'predictions' AND "column_name"='choice'
+query: SELECT "udt_schema", "udt_name" FROM "information_schema"."columns" WHERE "table_schema" = 'public' AND "table_name" = 'predictions' AND "column_name"='result'
+query: SELECT "udt_schema", "udt_name" FROM "information_schema"."columns" WHERE "table_schema" = 'public' AND "table_name" = 'users' AND "column_name"='role'
+query: SELECT "udt_schema", "udt_name" FROM "information_schema"."columns" WHERE "table_schema" = 'public' AND "table_name" = 'videos' AND "column_name"='status'
+query: SELECT "udt_schema", "udt_name" FROM "information_schema"."columns" WHERE "table_schema" = 'public' AND "table_name" = 'videos' AND "column_name"='visibility'
+query: SELECT "e"."enumlabel" AS "value" FROM "pg_enum" "e" INNER JOIN "pg_type" "t" ON "t"."oid" = "e"."enumtypid" INNER JOIN "pg_namespace" "n" ON "n"."oid" = "t"."typnamespace" WHERE "n"."nspname" = 'public' AND "t"."typname" = 'pools_status_enum'
+query: SELECT "e"."enumlabel" AS "value" FROM "pg_enum" "e" INNER JOIN "pg_type" "t" ON "t"."oid" = "e"."enumtypid" INNER JOIN "pg_namespace" "n" ON "n"."oid" = "t"."typnamespace" WHERE "n"."nspname" = 'public' AND "t"."typname" = 'pools_result_enum'
+query: SELECT "e"."enumlabel" AS "value" FROM "pg_enum" "e" INNER JOIN "pg_type" "t" ON "t"."oid" = "e"."enumtypid" INNER JOIN "pg_namespace" "n" ON "n"."oid" = "t"."typnamespace" WHERE "n"."nspname" = 'public' AND "t"."typname" = 'predictions_choice_enum'
+query: SELECT "e"."enumlabel" AS "value" FROM "pg_enum" "e" INNER JOIN "pg_type" "t" ON "t"."oid" = "e"."enumtypid" INNER JOIN "pg_namespace" "n" ON "n"."oid" = "t"."typnamespace" WHERE "n"."nspname" = 'public' AND "t"."typname" = 'predictions_result_enum'
+query: SELECT "e"."enumlabel" AS "value" FROM "pg_enum" "e" INNER JOIN "pg_type" "t" ON "t"."oid" = "e"."enumtypid" INNER JOIN "pg_namespace" "n" ON "n"."oid" = "t"."typnamespace" WHERE "n"."nspname" = 'public' AND "t"."typname" = 'users_role_enum'
+query: SELECT "e"."enumlabel" AS "value" FROM "pg_enum" "e" INNER JOIN "pg_type" "t" ON "t"."oid" = "e"."enumtypid" INNER JOIN "pg_namespace" "n" ON "n"."oid" = "t"."typnamespace" WHERE "n"."nspname" = 'public' AND "t"."typname" = 'videos_status_enum'
+query: SELECT "e"."enumlabel" AS "value" FROM "pg_enum" "e" INNER JOIN "pg_type" "t" ON "t"."oid" = "e"."enumtypid" INNER JOIN "pg_namespace" "n" ON "n"."oid" = "t"."typnamespace" WHERE "n"."nspname" = 'public' AND "t"."typname" = 'videos_visibility_enum'
+query: SELECT * FROM "information_schema"."tables" WHERE "table_schema" = 'public' AND "table_name" = 'typeorm_metadata'
+query: COMMIT
+[Nest] 30668  - 10/29/2025, 5:47:27 AM     LOG [InstanceLoader] TypeOrmCoreModule dependencies initialized +128ms
+[Nest] 30668  - 10/29/2025, 5:47:27 AM     LOG [InstanceLoader] TypeOrmModule dependencies initialized +0ms
+AuthService constructor called
+⚠️ AuthController constructor - authService: DEFINED
+[Nest] 30668  - 10/29/2025, 5:47:27 AM     LOG [InstanceLoader] AuthModule dependencies initialized +0ms
+[Nest] 30668  - 10/29/2025, 5:47:27 AM     LOG [RoutesResolver] AppController {/}: +208ms
+[Nest] 30668  - 10/29/2025, 5:47:27 AM     LOG [RouterExplorer] Mapped {/, GET} route +1ms
+[Nest] 30668  - 10/29/2025, 5:47:27 AM     LOG [RouterExplorer] Mapped {/health, GET} route +0ms
+[Nest] 30668  - 10/29/2025, 5:47:27 AM     LOG [RoutesResolver] AuthController {/auth}: +0ms
+[Nest] 30668  - 10/29/2025, 5:47:27 AM     LOG [RouterExplorer] Mapped {/auth/register, POST} route +1ms
+[Nest] 30668  - 10/29/2025, 5:47:27 AM     LOG [RouterExplorer] Mapped {/auth/login, POST} route +0ms
+[Nest] 30668  - 10/29/2025, 5:47:27 AM     LOG [RouterExplorer] Mapped {/auth/refresh, POST} route +0ms
+[Nest] 30668  - 10/29/2025, 5:47:27 AM     LOG [RouterExplorer] Mapped {/auth/logout, POST} route +0ms
+[Nest] 30668  - 10/29/2025, 5:47:27 AM     LOG [RouterExplorer] Mapped {/auth/logout-all, POST} route +0ms
+[Nest] 30668  - 10/29/2025, 5:47:27 AM     LOG [RouterExplorer] Mapped {/auth/profile, GET} route +0ms
+[Nest] 30668  - 10/29/2025, 5:47:27 AM     LOG [RouterExplorer] Mapped {/auth/profile, PUT} route +0ms
+[Nest] 30668  - 10/29/2025, 5:47:27 AM     LOG [RouterExplorer] Mapped {/auth/admin/users, GET} route +1ms
+[Nest] 30668  - 10/29/2025, 5:47:27 AM     LOG [RouterExplorer] Mapped {/auth/admin/users/:id, GET} route +0ms
+[Nest] 30668  - 10/29/2025, 5:47:27 AM     LOG [RouterExplorer] Mapped {/auth/creator/dashboard, GET} route +0ms
+[Nest] 30668  - 10/29/2025, 5:47:27 AM     LOG [RouterExplorer] Mapped {/auth/creator/youtube, PUT} route +0ms
+[Nest] 30668  - 10/29/2025, 5:47:27 AM     LOG [RouterExplorer] Mapped {/auth/creator/analytics, GET} route +0ms
+[Nest] 30668  - 10/29/2025, 5:47:27 AM     LOG [RouterExplorer] Mapped {/auth/public/:id, GET} route +0ms
+[Nest] 30668  - 10/29/2025, 5:47:27 AM     LOG [NestApplication] Nest application successfully started +1ms
+🚀 Creator Pool API running on http://localhost:3000
+5:47:33 AM [tsx] restarting
+c[Nest] 30818  - 10/29/2025, 5:47:34 AM     LOG [NestFactory] Starting Nest application...
+[Nest] 30818  - 10/29/2025, 5:47:34 AM     LOG [InstanceLoader] TypeOrmModule dependencies initialized +7ms
+[Nest] 30818  - 10/29/2025, 5:47:34 AM     LOG [InstanceLoader] PassportModule dependencies initialized +0ms
+[Nest] 30818  - 10/29/2025, 5:47:34 AM     LOG [InstanceLoader] ThrottlerModule dependencies initialized +0ms
+[Nest] 30818  - 10/29/2025, 5:47:34 AM     LOG [InstanceLoader] JwtModule dependencies initialized +0ms
+[Nest] 30818  - 10/29/2025, 5:47:34 AM     LOG [InstanceLoader] ConfigHostModule dependencies initialized +1ms
+[Nest] 30818  - 10/29/2025, 5:47:34 AM     LOG [InstanceLoader] ConfigModule dependencies initialized +0ms
+[Nest] 30818  - 10/29/2025, 5:47:34 AM     LOG [InstanceLoader] ConfigModule dependencies initialized +0ms
+[Nest] 30818  - 10/29/2025, 5:47:34 AM     LOG [InstanceLoader] AppModule dependencies initialized +0ms
+query: SELECT version()
+query: SELECT * FROM current_schema()
+query: CREATE EXTENSION IF NOT EXISTS "uuid-ossp"
+query: START TRANSACTION
+query: SELECT * FROM current_schema()
+query: SELECT * FROM current_database()
+query: SELECT "table_schema", "table_name", obj_description(('"' || "table_schema" || '"."' || "table_name" || '"')::regclass, 'pg_class') AS table_comment FROM "information_schema"."tables" WHERE ("table_schema" = 'public' AND "table_name" = 'predictions') OR ("table_schema" = 'public' AND "table_name" = 'pools') OR ("table_schema" = 'public' AND "table_name" = 'videos') OR ("table_schema" = 'public' AND "table_name" = 'users')
+query: SELECT TRUE FROM information_schema.columns WHERE table_name = 'pg_class' and column_name = 'relispartition'
+query: SELECT columns.*, pg_catalog.col_description(('"' || table_catalog || '"."' || table_schema || '"."' || table_name || '"')::regclass::oid, ordinal_position) AS description, ('"' || "udt_schema" || '"."' || "udt_name" || '"')::"regtype"::text AS "regtype", pg_catalog.format_type("col_attr"."atttypid", "col_attr"."atttypmod") AS "format_type" FROM "information_schema"."columns" LEFT JOIN "pg_catalog"."pg_attribute" AS "col_attr" ON "col_attr"."attname" = "columns"."column_name" AND "col_attr"."attrelid" = ( SELECT "cls"."oid" FROM "pg_catalog"."pg_class" AS "cls" LEFT JOIN "pg_catalog"."pg_namespace" AS "ns" ON "ns"."oid" = "cls"."relnamespace" WHERE "cls"."relname" = "columns"."table_name" AND "ns"."nspname" = "columns"."table_schema" ) WHERE ("table_schema" = 'public' AND "table_name" = 'pools') OR ("table_schema" = 'public' AND "table_name" = 'predictions') OR ("table_schema" = 'public' AND "table_name" = 'users') OR ("table_schema" = 'public' AND "table_name" = 'videos')
+query: SELECT "ns"."nspname" AS "table_schema", "t"."relname" AS "table_name", "cnst"."conname" AS "constraint_name", pg_get_constraintdef("cnst"."oid") AS "expression", CASE "cnst"."contype" WHEN 'p' THEN 'PRIMARY' WHEN 'u' THEN 'UNIQUE' WHEN 'c' THEN 'CHECK' WHEN 'x' THEN 'EXCLUDE' END AS "constraint_type", "a"."attname" AS "column_name" FROM "pg_constraint" "cnst" INNER JOIN "pg_class" "t" ON "t"."oid" = "cnst"."conrelid" INNER JOIN "pg_namespace" "ns" ON "ns"."oid" = "cnst"."connamespace" LEFT JOIN "pg_attribute" "a" ON "a"."attrelid" = "cnst"."conrelid" AND "a"."attnum" = ANY ("cnst"."conkey") WHERE "t"."relkind" IN ('r', 'p') AND (("ns"."nspname" = 'public' AND "t"."relname" = 'pools') OR ("ns"."nspname" = 'public' AND "t"."relname" = 'predictions') OR ("ns"."nspname" = 'public' AND "t"."relname" = 'users') OR ("ns"."nspname" = 'public' AND "t"."relname" = 'videos'))
+query: SELECT "ns"."nspname" AS "table_schema", "t"."relname" AS "table_name", "i"."relname" AS "constraint_name", "a"."attname" AS "column_name", CASE "ix"."indisunique" WHEN 't' THEN 'TRUE' ELSE'FALSE' END AS "is_unique", pg_get_expr("ix"."indpred", "ix"."indrelid") AS "condition", "types"."typname" AS "type_name", "am"."amname" AS "index_type" FROM "pg_class" "t" INNER JOIN "pg_index" "ix" ON "ix"."indrelid" = "t"."oid" INNER JOIN "pg_attribute" "a" ON "a"."attrelid" = "t"."oid"  AND "a"."attnum" = ANY ("ix"."indkey") INNER JOIN "pg_namespace" "ns" ON "ns"."oid" = "t"."relnamespace" INNER JOIN "pg_class" "i" ON "i"."oid" = "ix"."indexrelid" INNER JOIN "pg_type" "types" ON "types"."oid" = "a"."atttypid" INNER JOIN "pg_am" "am" ON "i"."relam" = "am"."oid" LEFT JOIN "pg_constraint" "cnst" ON "cnst"."conname" = "i"."relname" WHERE "t"."relkind" IN ('r', 'p') AND "cnst"."contype" IS NULL AND (("ns"."nspname" = 'public' AND "t"."relname" = 'pools') OR ("ns"."nspname" = 'public' AND "t"."relname" = 'predictions') OR ("ns"."nspname" = 'public' AND "t"."relname" = 'users') OR ("ns"."nspname" = 'public' AND "t"."relname" = 'videos'))
+query: SELECT "con"."conname" AS "constraint_name", "con"."nspname" AS "table_schema", "con"."relname" AS "table_name", "att2"."attname" AS "column_name", "ns"."nspname" AS "referenced_table_schema", "cl"."relname" AS "referenced_table_name", "att"."attname" AS "referenced_column_name", "con"."confdeltype" AS "on_delete", "con"."confupdtype" AS "on_update", "con"."condeferrable" AS "deferrable", "con"."condeferred" AS "deferred" FROM ( SELECT UNNEST ("con1"."conkey") AS "parent", UNNEST ("con1"."confkey") AS "child", "con1"."confrelid", "con1"."conrelid", "con1"."conname", "con1"."contype", "ns"."nspname", "cl"."relname", "con1"."condeferrable", CASE WHEN "con1"."condeferred" THEN 'INITIALLY DEFERRED' ELSE 'INITIALLY IMMEDIATE' END as condeferred, CASE "con1"."confdeltype" WHEN 'a' THEN 'NO ACTION' WHEN 'r' THEN 'RESTRICT' WHEN 'c' THEN 'CASCADE' WHEN 'n' THEN 'SET NULL' WHEN 'd' THEN 'SET DEFAULT' END as "confdeltype", CASE "con1"."confupdtype" WHEN 'a' THEN 'NO ACTION' WHEN 'r' THEN 'RESTRICT' WHEN 'c' THEN 'CASCADE' WHEN 'n' THEN 'SET NULL' WHEN 'd' THEN 'SET DEFAULT' END as "confupdtype" FROM "pg_class" "cl" INNER JOIN "pg_namespace" "ns" ON "cl"."relnamespace" = "ns"."oid" INNER JOIN "pg_constraint" "con1" ON "con1"."conrelid" = "cl"."oid" WHERE "con1"."contype" = 'f' AND (("ns"."nspname" = 'public' AND "cl"."relname" = 'pools') OR ("ns"."nspname" = 'public' AND "cl"."relname" = 'predictions') OR ("ns"."nspname" = 'public' AND "cl"."relname" = 'users') OR ("ns"."nspname" = 'public' AND "cl"."relname" = 'videos')) ) "con" INNER JOIN "pg_attribute" "att" ON "att"."attrelid" = "con"."confrelid" AND "att"."attnum" = "con"."child" INNER JOIN "pg_class" "cl" ON "cl"."oid" = "con"."confrelid"  AND "cl"."relispartition" = 'f'INNER JOIN "pg_namespace" "ns" ON "cl"."relnamespace" = "ns"."oid" INNER JOIN "pg_attribute" "att2" ON "att2"."attrelid" = "con"."conrelid" AND "att2"."attnum" = "con"."parent"
+query: SELECT "udt_schema", "udt_name" FROM "information_schema"."columns" WHERE "table_schema" = 'public' AND "table_name" = 'pools' AND "column_name"='status'
+query: SELECT "udt_schema", "udt_name" FROM "information_schema"."columns" WHERE "table_schema" = 'public' AND "table_name" = 'pools' AND "column_name"='result'
+query: SELECT "udt_schema", "udt_name" FROM "information_schema"."columns" WHERE "table_schema" = 'public' AND "table_name" = 'predictions' AND "column_name"='choice'
+query: SELECT "udt_schema", "udt_name" FROM "information_schema"."columns" WHERE "table_schema" = 'public' AND "table_name" = 'predictions' AND "column_name"='result'
+query: SELECT "udt_schema", "udt_name" FROM "information_schema"."columns" WHERE "table_schema" = 'public' AND "table_name" = 'users' AND "column_name"='role'
+query: SELECT "udt_schema", "udt_name" FROM "information_schema"."columns" WHERE "table_schema" = 'public' AND "table_name" = 'videos' AND "column_name"='status'
+query: SELECT "udt_schema", "udt_name" FROM "information_schema"."columns" WHERE "table_schema" = 'public' AND "table_name" = 'videos' AND "column_name"='visibility'
+query: SELECT "e"."enumlabel" AS "value" FROM "pg_enum" "e" INNER JOIN "pg_type" "t" ON "t"."oid" = "e"."enumtypid" INNER JOIN "pg_namespace" "n" ON "n"."oid" = "t"."typnamespace" WHERE "n"."nspname" = 'public' AND "t"."typname" = 'pools_status_enum'
+query: SELECT "e"."enumlabel" AS "value" FROM "pg_enum" "e" INNER JOIN "pg_type" "t" ON "t"."oid" = "e"."enumtypid" INNER JOIN "pg_namespace" "n" ON "n"."oid" = "t"."typnamespace" WHERE "n"."nspname" = 'public' AND "t"."typname" = 'pools_result_enum'
+query: SELECT "e"."enumlabel" AS "value" FROM "pg_enum" "e" INNER JOIN "pg_type" "t" ON "t"."oid" = "e"."enumtypid" INNER JOIN "pg_namespace" "n" ON "n"."oid" = "t"."typnamespace" WHERE "n"."nspname" = 'public' AND "t"."typname" = 'predictions_choice_enum'
+query: SELECT "e"."enumlabel" AS "value" FROM "pg_enum" "e" INNER JOIN "pg_type" "t" ON "t"."oid" = "e"."enumtypid" INNER JOIN "pg_namespace" "n" ON "n"."oid" = "t"."typnamespace" WHERE "n"."nspname" = 'public' AND "t"."typname" = 'predictions_result_enum'
+query: SELECT "e"."enumlabel" AS "value" FROM "pg_enum" "e" INNER JOIN "pg_type" "t" ON "t"."oid" = "e"."enumtypid" INNER JOIN "pg_namespace" "n" ON "n"."oid" = "t"."typnamespace" WHERE "n"."nspname" = 'public' AND "t"."typname" = 'users_role_enum'
+query: SELECT "e"."enumlabel" AS "value" FROM "pg_enum" "e" INNER JOIN "pg_type" "t" ON "t"."oid" = "e"."enumtypid" INNER JOIN "pg_namespace" "n" ON "n"."oid" = "t"."typnamespace" WHERE "n"."nspname" = 'public' AND "t"."typname" = 'videos_status_enum'
+query: SELECT "e"."enumlabel" AS "value" FROM "pg_enum" "e" INNER JOIN "pg_type" "t" ON "t"."oid" = "e"."enumtypid" INNER JOIN "pg_namespace" "n" ON "n"."oid" = "t"."typnamespace" WHERE "n"."nspname" = 'public' AND "t"."typname" = 'videos_visibility_enum'
+query: SELECT * FROM "information_schema"."tables" WHERE "table_schema" = 'public' AND "table_name" = 'typeorm_metadata'
+query: COMMIT
+[Nest] 30818  - 10/29/2025, 5:47:34 AM     LOG [InstanceLoader] TypeOrmCoreModule dependencies initialized +115ms
+[Nest] 30818  - 10/29/2025, 5:47:34 AM     LOG [InstanceLoader] TypeOrmModule dependencies initialized +0ms
+AuthService constructor called jwtService: DEFINED
+⚠️ AuthController constructor - authService: DEFINED
+[Nest] 30818  - 10/29/2025, 5:47:34 AM     LOG [InstanceLoader] AuthModule dependencies initialized +1ms
+[Nest] 30818  - 10/29/2025, 5:47:34 AM     LOG [RoutesResolver] AppController {/}: +178ms
+[Nest] 30818  - 10/29/2025, 5:47:34 AM     LOG [RouterExplorer] Mapped {/, GET} route +1ms
+[Nest] 30818  - 10/29/2025, 5:47:34 AM     LOG [RouterExplorer] Mapped {/health, GET} route +0ms
+[Nest] 30818  - 10/29/2025, 5:47:34 AM     LOG [RoutesResolver] AuthController {/auth}: +1ms
+[Nest] 30818  - 10/29/2025, 5:47:34 AM     LOG [RouterExplorer] Mapped {/auth/register, POST} route +0ms
+[Nest] 30818  - 10/29/2025, 5:47:34 AM     LOG [RouterExplorer] Mapped {/auth/login, POST} route +0ms
+[Nest] 30818  - 10/29/2025, 5:47:34 AM     LOG [RouterExplorer] Mapped {/auth/refresh, POST} route +0ms
+[Nest] 30818  - 10/29/2025, 5:47:34 AM     LOG [RouterExplorer] Mapped {/auth/logout, POST} route +0ms
+[Nest] 30818  - 10/29/2025, 5:47:34 AM     LOG [RouterExplorer] Mapped {/auth/logout-all, POST} route +1ms
+[Nest] 30818  - 10/29/2025, 5:47:34 AM     LOG [RouterExplorer] Mapped {/auth/profile, GET} route +0ms
+[Nest] 30818  - 10/29/2025, 5:47:34 AM     LOG [RouterExplorer] Mapped {/auth/profile, PUT} route +0ms
+[Nest] 30818  - 10/29/2025, 5:47:34 AM     LOG [RouterExplorer] Mapped {/auth/admin/users, GET} route +0ms
+[Nest] 30818  - 10/29/2025, 5:47:34 AM     LOG [RouterExplorer] Mapped {/auth/admin/users/:id, GET} route +0ms
+[Nest] 30818  - 10/29/2025, 5:47:34 AM     LOG [RouterExplorer] Mapped {/auth/creator/dashboard, GET} route +0ms
+[Nest] 30818  - 10/29/2025, 5:47:34 AM     LOG [RouterExplorer] Mapped {/auth/creator/youtube, PUT} route +1ms
+[Nest] 30818  - 10/29/2025, 5:47:34 AM     LOG [RouterExplorer] Mapped {/auth/creator/analytics, GET} route +0ms
+[Nest] 30818  - 10/29/2025, 5:47:34 AM     LOG [RouterExplorer] Mapped {/auth/public/:id, GET} route +0ms
+[Nest] 30818  - 10/29/2025, 5:47:34 AM     LOG [NestApplication] Nest application successfully started +1ms
+🚀 Creator Pool API running on http://localhost:3000
+query: SELECT "User"."id" AS "User_id", "User"."email" AS "User_email", "User"."name" AS "User_name", "User"."role" AS "User_role", "User"."walletBalance" AS "User_walletBalance", "User"."googleId" AS "User_googleId", "User"."youtubeChannelId" AS "User_youtubeChannelId", "User"."youtubeTokenExpiresAt" AS "User_youtubeTokenExpiresAt", "User"."createdAt" AS "User_createdAt", "User"."updatedAt" AS "User_updatedAt" FROM "users" "User" WHERE (("User"."email" = $1)) LIMIT 1 -- PARAMETERS: ["success@example.com"]
+query: START TRANSACTION
+query: INSERT INTO "users"("id", "email", "name", "password", "role", "walletBalance", "googleId", "youtubeChannelId", "youtubeAccessToken", "youtubeRefreshToken", "youtubeTokenExpiresAt", "createdAt", "updatedAt") VALUES (DEFAULT, $1, $2, $3, $4, DEFAULT, DEFAULT, DEFAULT, DEFAULT, DEFAULT, DEFAULT, DEFAULT, DEFAULT) RETURNING "id", "walletBalance", "createdAt", "updatedAt" -- PARAMETERS: ["success@example.com","Success User","$2b$10$v5lzceO.19GRLHGPVJHakOmmN8CmSpZn42FPPXUqR7m88UfL9MXF6","user"]
+query: COMMIT
+query: SELECT "User"."id" AS "User_id", "User"."email" AS "User_email", "User"."name" AS "User_name", "User"."password" AS "User_password", "User"."role" AS "User_role", "User"."walletBalance" AS "User_walletBalance", "User"."createdAt" AS "User_createdAt", "User"."updatedAt" AS "User_updatedAt" FROM "users" "User" WHERE (("User"."email" = $1)) LIMIT 1 -- PARAMETERS: ["success@example.com"]
+5:48:02 AM [tsx] restarting
+c[Nest] 31395  - 10/29/2025, 5:48:04 AM     LOG [NestFactory] Starting Nest application...
+[Nest] 31395  - 10/29/2025, 5:48:04 AM     LOG [InstanceLoader] TypeOrmModule dependencies initialized +7ms
+[Nest] 31395  - 10/29/2025, 5:48:04 AM     LOG [InstanceLoader] PassportModule dependencies initialized +0ms
+[Nest] 31395  - 10/29/2025, 5:48:04 AM     LOG [InstanceLoader] ThrottlerModule dependencies initialized +0ms
+[Nest] 31395  - 10/29/2025, 5:48:04 AM     LOG [InstanceLoader] JwtModule dependencies initialized +0ms
+[Nest] 31395  - 10/29/2025, 5:48:04 AM     LOG [InstanceLoader] ConfigHostModule dependencies initialized +0ms
+[Nest] 31395  - 10/29/2025, 5:48:04 AM     LOG [InstanceLoader] ConfigModule dependencies initialized +0ms
+[Nest] 31395  - 10/29/2025, 5:48:04 AM     LOG [InstanceLoader] ConfigModule dependencies initialized +1ms
+[Nest] 31395  - 10/29/2025, 5:48:04 AM     LOG [InstanceLoader] AppModule dependencies initialized +0ms
+query: SELECT version()
+query: SELECT * FROM current_schema()
+query: CREATE EXTENSION IF NOT EXISTS "uuid-ossp"
+query: START TRANSACTION
+query: SELECT * FROM current_schema()
+query: SELECT * FROM current_database()
+query: SELECT "table_schema", "table_name", obj_description(('"' || "table_schema" || '"."' || "table_name" || '"')::regclass, 'pg_class') AS table_comment FROM "information_schema"."tables" WHERE ("table_schema" = 'public' AND "table_name" = 'predictions') OR ("table_schema" = 'public' AND "table_name" = 'pools') OR ("table_schema" = 'public' AND "table_name" = 'videos') OR ("table_schema" = 'public' AND "table_name" = 'users')
+query: SELECT TRUE FROM information_schema.columns WHERE table_name = 'pg_class' and column_name = 'relispartition'
+query: SELECT columns.*, pg_catalog.col_description(('"' || table_catalog || '"."' || table_schema || '"."' || table_name || '"')::regclass::oid, ordinal_position) AS description, ('"' || "udt_schema" || '"."' || "udt_name" || '"')::"regtype"::text AS "regtype", pg_catalog.format_type("col_attr"."atttypid", "col_attr"."atttypmod") AS "format_type" FROM "information_schema"."columns" LEFT JOIN "pg_catalog"."pg_attribute" AS "col_attr" ON "col_attr"."attname" = "columns"."column_name" AND "col_attr"."attrelid" = ( SELECT "cls"."oid" FROM "pg_catalog"."pg_class" AS "cls" LEFT JOIN "pg_catalog"."pg_namespace" AS "ns" ON "ns"."oid" = "cls"."relnamespace" WHERE "cls"."relname" = "columns"."table_name" AND "ns"."nspname" = "columns"."table_schema" ) WHERE ("table_schema" = 'public' AND "table_name" = 'pools') OR ("table_schema" = 'public' AND "table_name" = 'predictions') OR ("table_schema" = 'public' AND "table_name" = 'users') OR ("table_schema" = 'public' AND "table_name" = 'videos')
+query: SELECT "ns"."nspname" AS "table_schema", "t"."relname" AS "table_name", "cnst"."conname" AS "constraint_name", pg_get_constraintdef("cnst"."oid") AS "expression", CASE "cnst"."contype" WHEN 'p' THEN 'PRIMARY' WHEN 'u' THEN 'UNIQUE' WHEN 'c' THEN 'CHECK' WHEN 'x' THEN 'EXCLUDE' END AS "constraint_type", "a"."attname" AS "column_name" FROM "pg_constraint" "cnst" INNER JOIN "pg_class" "t" ON "t"."oid" = "cnst"."conrelid" INNER JOIN "pg_namespace" "ns" ON "ns"."oid" = "cnst"."connamespace" LEFT JOIN "pg_attribute" "a" ON "a"."attrelid" = "cnst"."conrelid" AND "a"."attnum" = ANY ("cnst"."conkey") WHERE "t"."relkind" IN ('r', 'p') AND (("ns"."nspname" = 'public' AND "t"."relname" = 'pools') OR ("ns"."nspname" = 'public' AND "t"."relname" = 'predictions') OR ("ns"."nspname" = 'public' AND "t"."relname" = 'users') OR ("ns"."nspname" = 'public' AND "t"."relname" = 'videos'))
+query: SELECT "ns"."nspname" AS "table_schema", "t"."relname" AS "table_name", "i"."relname" AS "constraint_name", "a"."attname" AS "column_name", CASE "ix"."indisunique" WHEN 't' THEN 'TRUE' ELSE'FALSE' END AS "is_unique", pg_get_expr("ix"."indpred", "ix"."indrelid") AS "condition", "types"."typname" AS "type_name", "am"."amname" AS "index_type" FROM "pg_class" "t" INNER JOIN "pg_index" "ix" ON "ix"."indrelid" = "t"."oid" INNER JOIN "pg_attribute" "a" ON "a"."attrelid" = "t"."oid"  AND "a"."attnum" = ANY ("ix"."indkey") INNER JOIN "pg_namespace" "ns" ON "ns"."oid" = "t"."relnamespace" INNER JOIN "pg_class" "i" ON "i"."oid" = "ix"."indexrelid" INNER JOIN "pg_type" "types" ON "types"."oid" = "a"."atttypid" INNER JOIN "pg_am" "am" ON "i"."relam" = "am"."oid" LEFT JOIN "pg_constraint" "cnst" ON "cnst"."conname" = "i"."relname" WHERE "t"."relkind" IN ('r', 'p') AND "cnst"."contype" IS NULL AND (("ns"."nspname" = 'public' AND "t"."relname" = 'pools') OR ("ns"."nspname" = 'public' AND "t"."relname" = 'predictions') OR ("ns"."nspname" = 'public' AND "t"."relname" = 'users') OR ("ns"."nspname" = 'public' AND "t"."relname" = 'videos'))
+query: SELECT "con"."conname" AS "constraint_name", "con"."nspname" AS "table_schema", "con"."relname" AS "table_name", "att2"."attname" AS "column_name", "ns"."nspname" AS "referenced_table_schema", "cl"."relname" AS "referenced_table_name", "att"."attname" AS "referenced_column_name", "con"."confdeltype" AS "on_delete", "con"."confupdtype" AS "on_update", "con"."condeferrable" AS "deferrable", "con"."condeferred" AS "deferred" FROM ( SELECT UNNEST ("con1"."conkey") AS "parent", UNNEST ("con1"."confkey") AS "child", "con1"."confrelid", "con1"."conrelid", "con1"."conname", "con1"."contype", "ns"."nspname", "cl"."relname", "con1"."condeferrable", CASE WHEN "con1"."condeferred" THEN 'INITIALLY DEFERRED' ELSE 'INITIALLY IMMEDIATE' END as condeferred, CASE "con1"."confdeltype" WHEN 'a' THEN 'NO ACTION' WHEN 'r' THEN 'RESTRICT' WHEN 'c' THEN 'CASCADE' WHEN 'n' THEN 'SET NULL' WHEN 'd' THEN 'SET DEFAULT' END as "confdeltype", CASE "con1"."confupdtype" WHEN 'a' THEN 'NO ACTION' WHEN 'r' THEN 'RESTRICT' WHEN 'c' THEN 'CASCADE' WHEN 'n' THEN 'SET NULL' WHEN 'd' THEN 'SET DEFAULT' END as "confupdtype" FROM "pg_class" "cl" INNER JOIN "pg_namespace" "ns" ON "cl"."relnamespace" = "ns"."oid" INNER JOIN "pg_constraint" "con1" ON "con1"."conrelid" = "cl"."oid" WHERE "con1"."contype" = 'f' AND (("ns"."nspname" = 'public' AND "cl"."relname" = 'pools') OR ("ns"."nspname" = 'public' AND "cl"."relname" = 'predictions') OR ("ns"."nspname" = 'public' AND "cl"."relname" = 'users') OR ("ns"."nspname" = 'public' AND "cl"."relname" = 'videos')) ) "con" INNER JOIN "pg_attribute" "att" ON "att"."attrelid" = "con"."confrelid" AND "att"."attnum" = "con"."child" INNER JOIN "pg_class" "cl" ON "cl"."oid" = "con"."confrelid"  AND "cl"."relispartition" = 'f'INNER JOIN "pg_namespace" "ns" ON "cl"."relnamespace" = "ns"."oid" INNER JOIN "pg_attribute" "att2" ON "att2"."attrelid" = "con"."conrelid" AND "att2"."attnum" = "con"."parent"
+query: SELECT "udt_schema", "udt_name" FROM "information_schema"."columns" WHERE "table_schema" = 'public' AND "table_name" = 'pools' AND "column_name"='status'
+query: SELECT "udt_schema", "udt_name" FROM "information_schema"."columns" WHERE "table_schema" = 'public' AND "table_name" = 'pools' AND "column_name"='result'
+query: SELECT "udt_schema", "udt_name" FROM "information_schema"."columns" WHERE "table_schema" = 'public' AND "table_name" = 'predictions' AND "column_name"='choice'
+query: SELECT "udt_schema", "udt_name" FROM "information_schema"."columns" WHERE "table_schema" = 'public' AND "table_name" = 'predictions' AND "column_name"='result'
+query: SELECT "udt_schema", "udt_name" FROM "information_schema"."columns" WHERE "table_schema" = 'public' AND "table_name" = 'users' AND "column_name"='role'
+query: SELECT "udt_schema", "udt_name" FROM "information_schema"."columns" WHERE "table_schema" = 'public' AND "table_name" = 'videos' AND "column_name"='status'
+query: SELECT "udt_schema", "udt_name" FROM "information_schema"."columns" WHERE "table_schema" = 'public' AND "table_name" = 'videos' AND "column_name"='visibility'
+query: SELECT "e"."enumlabel" AS "value" FROM "pg_enum" "e" INNER JOIN "pg_type" "t" ON "t"."oid" = "e"."enumtypid" INNER JOIN "pg_namespace" "n" ON "n"."oid" = "t"."typnamespace" WHERE "n"."nspname" = 'public' AND "t"."typname" = 'pools_status_enum'
+query: SELECT "e"."enumlabel" AS "value" FROM "pg_enum" "e" INNER JOIN "pg_type" "t" ON "t"."oid" = "e"."enumtypid" INNER JOIN "pg_namespace" "n" ON "n"."oid" = "t"."typnamespace" WHERE "n"."nspname" = 'public' AND "t"."typname" = 'pools_result_enum'
+query: SELECT "e"."enumlabel" AS "value" FROM "pg_enum" "e" INNER JOIN "pg_type" "t" ON "t"."oid" = "e"."enumtypid" INNER JOIN "pg_namespace" "n" ON "n"."oid" = "t"."typnamespace" WHERE "n"."nspname" = 'public' AND "t"."typname" = 'predictions_choice_enum'
+query: SELECT "e"."enumlabel" AS "value" FROM "pg_enum" "e" INNER JOIN "pg_type" "t" ON "t"."oid" = "e"."enumtypid" INNER JOIN "pg_namespace" "n" ON "n"."oid" = "t"."typnamespace" WHERE "n"."nspname" = 'public' AND "t"."typname" = 'predictions_result_enum'
+query: SELECT "e"."enumlabel" AS "value" FROM "pg_enum" "e" INNER JOIN "pg_type" "t" ON "t"."oid" = "e"."enumtypid" INNER JOIN "pg_namespace" "n" ON "n"."oid" = "t"."typnamespace" WHERE "n"."nspname" = 'public' AND "t"."typname" = 'users_role_enum'
+query: SELECT "e"."enumlabel" AS "value" FROM "pg_enum" "e" INNER JOIN "pg_type" "t" ON "t"."oid" = "e"."enumtypid" INNER JOIN "pg_namespace" "n" ON "n"."oid" = "t"."typnamespace" WHERE "n"."nspname" = 'public' AND "t"."typname" = 'videos_status_enum'
+query: SELECT "e"."enumlabel" AS "value" FROM "pg_enum" "e" INNER JOIN "pg_type" "t" ON "t"."oid" = "e"."enumtypid" INNER JOIN "pg_namespace" "n" ON "n"."oid" = "t"."typnamespace" WHERE "n"."nspname" = 'public' AND "t"."typname" = 'videos_visibility_enum'
+query: SELECT * FROM "information_schema"."tables" WHERE "table_schema" = 'public' AND "table_name" = 'typeorm_metadata'
+query: COMMIT
+[Nest] 31395  - 10/29/2025, 5:48:04 AM     LOG [InstanceLoader] TypeOrmCoreModule dependencies initialized +122ms
+[Nest] 31395  - 10/29/2025, 5:48:04 AM     LOG [InstanceLoader] TypeOrmModule dependencies initialized +0ms
+AuthService constructor called jwtService: DEFINED
+[Nest] 31395  - 10/29/2025, 5:48:04 AM     LOG [InstanceLoader] AuthModule dependencies initialized +0ms
+[Nest] 31395  - 10/29/2025, 5:48:04 AM     LOG [RoutesResolver] AppController {/}: +186ms
+[Nest] 31395  - 10/29/2025, 5:48:04 AM     LOG [RouterExplorer] Mapped {/, GET} route +1ms
+[Nest] 31395  - 10/29/2025, 5:48:04 AM     LOG [RouterExplorer] Mapped {/health, GET} route +1ms
+[Nest] 31395  - 10/29/2025, 5:48:04 AM     LOG [RoutesResolver] AuthController {/auth}: +0ms
+[Nest] 31395  - 10/29/2025, 5:48:04 AM     LOG [RouterExplorer] Mapped {/auth/register, POST} route +0ms
+[Nest] 31395  - 10/29/2025, 5:48:04 AM     LOG [RouterExplorer] Mapped {/auth/login, POST} route +0ms
+[Nest] 31395  - 10/29/2025, 5:48:04 AM     LOG [RouterExplorer] Mapped {/auth/refresh, POST} route +0ms
+[Nest] 31395  - 10/29/2025, 5:48:04 AM     LOG [RouterExplorer] Mapped {/auth/logout, POST} route +0ms
+[Nest] 31395  - 10/29/2025, 5:48:04 AM     LOG [RouterExplorer] Mapped {/auth/logout-all, POST} route +0ms
+[Nest] 31395  - 10/29/2025, 5:48:04 AM     LOG [RouterExplorer] Mapped {/auth/profile, GET} route +1ms
+[Nest] 31395  - 10/29/2025, 5:48:04 AM     LOG [RouterExplorer] Mapped {/auth/profile, PUT} route +0ms
+[Nest] 31395  - 10/29/2025, 5:48:04 AM     LOG [RouterExplorer] Mapped {/auth/admin/users, GET} route +0ms
+[Nest] 31395  - 10/29/2025, 5:48:04 AM     LOG [RouterExplorer] Mapped {/auth/admin/users/:id, GET} route +0ms
+[Nest] 31395  - 10/29/2025, 5:48:04 AM     LOG [RouterExplorer] Mapped {/auth/creator/dashboard, GET} route +0ms
+[Nest] 31395  - 10/29/2025, 5:48:04 AM     LOG [RouterExplorer] Mapped {/auth/creator/youtube, PUT} route +1ms
+[Nest] 31395  - 10/29/2025, 5:48:04 AM     LOG [RouterExplorer] Mapped {/auth/creator/analytics, GET} route +0ms
+[Nest] 31395  - 10/29/2025, 5:48:04 AM     LOG [RouterExplorer] Mapped {/auth/public/:id, GET} route +0ms
+[Nest] 31395  - 10/29/2025, 5:48:04 AM     LOG [NestApplication] Nest application successfully started +1ms
+🚀 Creator Pool API running on http://localhost:3000
+5:48:09 AM [tsx] restarting
+c[Nest] 31548  - 10/29/2025, 5:48:10 AM     LOG [NestFactory] Starting Nest application...
+[Nest] 31548  - 10/29/2025, 5:48:10 AM     LOG [InstanceLoader] TypeOrmModule dependencies initialized +8ms
+[Nest] 31548  - 10/29/2025, 5:48:10 AM     LOG [InstanceLoader] PassportModule dependencies initialized +0ms
+[Nest] 31548  - 10/29/2025, 5:48:10 AM     LOG [InstanceLoader] ThrottlerModule dependencies initialized +0ms
+[Nest] 31548  - 10/29/2025, 5:48:10 AM     LOG [InstanceLoader] JwtModule dependencies initialized +0ms
+[Nest] 31548  - 10/29/2025, 5:48:10 AM     LOG [InstanceLoader] ConfigHostModule dependencies initialized +0ms
+[Nest] 31548  - 10/29/2025, 5:48:10 AM     LOG [InstanceLoader] ConfigModule dependencies initialized +0ms
+[Nest] 31548  - 10/29/2025, 5:48:10 AM     LOG [InstanceLoader] ConfigModule dependencies initialized +0ms
+[Nest] 31548  - 10/29/2025, 5:48:10 AM     LOG [InstanceLoader] AppModule dependencies initialized +1ms
+query: SELECT version()
+query: SELECT * FROM current_schema()
+query: CREATE EXTENSION IF NOT EXISTS "uuid-ossp"
+query: START TRANSACTION
+query: SELECT * FROM current_schema()
+query: SELECT * FROM current_database()
+query: SELECT "table_schema", "table_name", obj_description(('"' || "table_schema" || '"."' || "table_name" || '"')::regclass, 'pg_class') AS table_comment FROM "information_schema"."tables" WHERE ("table_schema" = 'public' AND "table_name" = 'predictions') OR ("table_schema" = 'public' AND "table_name" = 'pools') OR ("table_schema" = 'public' AND "table_name" = 'videos') OR ("table_schema" = 'public' AND "table_name" = 'users')
+query: SELECT TRUE FROM information_schema.columns WHERE table_name = 'pg_class' and column_name = 'relispartition'
+query: SELECT columns.*, pg_catalog.col_description(('"' || table_catalog || '"."' || table_schema || '"."' || table_name || '"')::regclass::oid, ordinal_position) AS description, ('"' || "udt_schema" || '"."' || "udt_name" || '"')::"regtype"::text AS "regtype", pg_catalog.format_type("col_attr"."atttypid", "col_attr"."atttypmod") AS "format_type" FROM "information_schema"."columns" LEFT JOIN "pg_catalog"."pg_attribute" AS "col_attr" ON "col_attr"."attname" = "columns"."column_name" AND "col_attr"."attrelid" = ( SELECT "cls"."oid" FROM "pg_catalog"."pg_class" AS "cls" LEFT JOIN "pg_catalog"."pg_namespace" AS "ns" ON "ns"."oid" = "cls"."relnamespace" WHERE "cls"."relname" = "columns"."table_name" AND "ns"."nspname" = "columns"."table_schema" ) WHERE ("table_schema" = 'public' AND "table_name" = 'pools') OR ("table_schema" = 'public' AND "table_name" = 'predictions') OR ("table_schema" = 'public' AND "table_name" = 'users') OR ("table_schema" = 'public' AND "table_name" = 'videos')
+query: SELECT "ns"."nspname" AS "table_schema", "t"."relname" AS "table_name", "cnst"."conname" AS "constraint_name", pg_get_constraintdef("cnst"."oid") AS "expression", CASE "cnst"."contype" WHEN 'p' THEN 'PRIMARY' WHEN 'u' THEN 'UNIQUE' WHEN 'c' THEN 'CHECK' WHEN 'x' THEN 'EXCLUDE' END AS "constraint_type", "a"."attname" AS "column_name" FROM "pg_constraint" "cnst" INNER JOIN "pg_class" "t" ON "t"."oid" = "cnst"."conrelid" INNER JOIN "pg_namespace" "ns" ON "ns"."oid" = "cnst"."connamespace" LEFT JOIN "pg_attribute" "a" ON "a"."attrelid" = "cnst"."conrelid" AND "a"."attnum" = ANY ("cnst"."conkey") WHERE "t"."relkind" IN ('r', 'p') AND (("ns"."nspname" = 'public' AND "t"."relname" = 'pools') OR ("ns"."nspname" = 'public' AND "t"."relname" = 'predictions') OR ("ns"."nspname" = 'public' AND "t"."relname" = 'users') OR ("ns"."nspname" = 'public' AND "t"."relname" = 'videos'))
+query: SELECT "ns"."nspname" AS "table_schema", "t"."relname" AS "table_name", "i"."relname" AS "constraint_name", "a"."attname" AS "column_name", CASE "ix"."indisunique" WHEN 't' THEN 'TRUE' ELSE'FALSE' END AS "is_unique", pg_get_expr("ix"."indpred", "ix"."indrelid") AS "condition", "types"."typname" AS "type_name", "am"."amname" AS "index_type" FROM "pg_class" "t" INNER JOIN "pg_index" "ix" ON "ix"."indrelid" = "t"."oid" INNER JOIN "pg_attribute" "a" ON "a"."attrelid" = "t"."oid"  AND "a"."attnum" = ANY ("ix"."indkey") INNER JOIN "pg_namespace" "ns" ON "ns"."oid" = "t"."relnamespace" INNER JOIN "pg_class" "i" ON "i"."oid" = "ix"."indexrelid" INNER JOIN "pg_type" "types" ON "types"."oid" = "a"."atttypid" INNER JOIN "pg_am" "am" ON "i"."relam" = "am"."oid" LEFT JOIN "pg_constraint" "cnst" ON "cnst"."conname" = "i"."relname" WHERE "t"."relkind" IN ('r', 'p') AND "cnst"."contype" IS NULL AND (("ns"."nspname" = 'public' AND "t"."relname" = 'pools') OR ("ns"."nspname" = 'public' AND "t"."relname" = 'predictions') OR ("ns"."nspname" = 'public' AND "t"."relname" = 'users') OR ("ns"."nspname" = 'public' AND "t"."relname" = 'videos'))
+query: SELECT "con"."conname" AS "constraint_name", "con"."nspname" AS "table_schema", "con"."relname" AS "table_name", "att2"."attname" AS "column_name", "ns"."nspname" AS "referenced_table_schema", "cl"."relname" AS "referenced_table_name", "att"."attname" AS "referenced_column_name", "con"."confdeltype" AS "on_delete", "con"."confupdtype" AS "on_update", "con"."condeferrable" AS "deferrable", "con"."condeferred" AS "deferred" FROM ( SELECT UNNEST ("con1"."conkey") AS "parent", UNNEST ("con1"."confkey") AS "child", "con1"."confrelid", "con1"."conrelid", "con1"."conname", "con1"."contype", "ns"."nspname", "cl"."relname", "con1"."condeferrable", CASE WHEN "con1"."condeferred" THEN 'INITIALLY DEFERRED' ELSE 'INITIALLY IMMEDIATE' END as condeferred, CASE "con1"."confdeltype" WHEN 'a' THEN 'NO ACTION' WHEN 'r' THEN 'RESTRICT' WHEN 'c' THEN 'CASCADE' WHEN 'n' THEN 'SET NULL' WHEN 'd' THEN 'SET DEFAULT' END as "confdeltype", CASE "con1"."confupdtype" WHEN 'a' THEN 'NO ACTION' WHEN 'r' THEN 'RESTRICT' WHEN 'c' THEN 'CASCADE' WHEN 'n' THEN 'SET NULL' WHEN 'd' THEN 'SET DEFAULT' END as "confupdtype" FROM "pg_class" "cl" INNER JOIN "pg_namespace" "ns" ON "cl"."relnamespace" = "ns"."oid" INNER JOIN "pg_constraint" "con1" ON "con1"."conrelid" = "cl"."oid" WHERE "con1"."contype" = 'f' AND (("ns"."nspname" = 'public' AND "cl"."relname" = 'pools') OR ("ns"."nspname" = 'public' AND "cl"."relname" = 'predictions') OR ("ns"."nspname" = 'public' AND "cl"."relname" = 'users') OR ("ns"."nspname" = 'public' AND "cl"."relname" = 'videos')) ) "con" INNER JOIN "pg_attribute" "att" ON "att"."attrelid" = "con"."confrelid" AND "att"."attnum" = "con"."child" INNER JOIN "pg_class" "cl" ON "cl"."oid" = "con"."confrelid"  AND "cl"."relispartition" = 'f'INNER JOIN "pg_namespace" "ns" ON "cl"."relnamespace" = "ns"."oid" INNER JOIN "pg_attribute" "att2" ON "att2"."attrelid" = "con"."conrelid" AND "att2"."attnum" = "con"."parent"
+query: SELECT "udt_schema", "udt_name" FROM "information_schema"."columns" WHERE "table_schema" = 'public' AND "table_name" = 'pools' AND "column_name"='status'
+query: SELECT "udt_schema", "udt_name" FROM "information_schema"."columns" WHERE "table_schema" = 'public' AND "table_name" = 'pools' AND "column_name"='result'
+query: SELECT "udt_schema", "udt_name" FROM "information_schema"."columns" WHERE "table_schema" = 'public' AND "table_name" = 'predictions' AND "column_name"='choice'
+query: SELECT "udt_schema", "udt_name" FROM "information_schema"."columns" WHERE "table_schema" = 'public' AND "table_name" = 'predictions' AND "column_name"='result'
+query: SELECT "udt_schema", "udt_name" FROM "information_schema"."columns" WHERE "table_schema" = 'public' AND "table_name" = 'users' AND "column_name"='role'
+query: SELECT "udt_schema", "udt_name" FROM "information_schema"."columns" WHERE "table_schema" = 'public' AND "table_name" = 'videos' AND "column_name"='status'
+query: SELECT "udt_schema", "udt_name" FROM "information_schema"."columns" WHERE "table_schema" = 'public' AND "table_name" = 'videos' AND "column_name"='visibility'
+query: SELECT "e"."enumlabel" AS "value" FROM "pg_enum" "e" INNER JOIN "pg_type" "t" ON "t"."oid" = "e"."enumtypid" INNER JOIN "pg_namespace" "n" ON "n"."oid" = "t"."typnamespace" WHERE "n"."nspname" = 'public' AND "t"."typname" = 'pools_status_enum'
+query: SELECT "e"."enumlabel" AS "value" FROM "pg_enum" "e" INNER JOIN "pg_type" "t" ON "t"."oid" = "e"."enumtypid" INNER JOIN "pg_namespace" "n" ON "n"."oid" = "t"."typnamespace" WHERE "n"."nspname" = 'public' AND "t"."typname" = 'pools_result_enum'
+query: SELECT "e"."enumlabel" AS "value" FROM "pg_enum" "e" INNER JOIN "pg_type" "t" ON "t"."oid" = "e"."enumtypid" INNER JOIN "pg_namespace" "n" ON "n"."oid" = "t"."typnamespace" WHERE "n"."nspname" = 'public' AND "t"."typname" = 'predictions_choice_enum'
+query: SELECT "e"."enumlabel" AS "value" FROM "pg_enum" "e" INNER JOIN "pg_type" "t" ON "t"."oid" = "e"."enumtypid" INNER JOIN "pg_namespace" "n" ON "n"."oid" = "t"."typnamespace" WHERE "n"."nspname" = 'public' AND "t"."typname" = 'predictions_result_enum'
+query: SELECT "e"."enumlabel" AS "value" FROM "pg_enum" "e" INNER JOIN "pg_type" "t" ON "t"."oid" = "e"."enumtypid" INNER JOIN "pg_namespace" "n" ON "n"."oid" = "t"."typnamespace" WHERE "n"."nspname" = 'public' AND "t"."typname" = 'users_role_enum'
+query: SELECT "e"."enumlabel" AS "value" FROM "pg_enum" "e" INNER JOIN "pg_type" "t" ON "t"."oid" = "e"."enumtypid" INNER JOIN "pg_namespace" "n" ON "n"."oid" = "t"."typnamespace" WHERE "n"."nspname" = 'public' AND "t"."typname" = 'videos_status_enum'
+query: SELECT "e"."enumlabel" AS "value" FROM "pg_enum" "e" INNER JOIN "pg_type" "t" ON "t"."oid" = "e"."enumtypid" INNER JOIN "pg_namespace" "n" ON "n"."oid" = "t"."typnamespace" WHERE "n"."nspname" = 'public' AND "t"."typname" = 'videos_visibility_enum'
+query: SELECT * FROM "information_schema"."tables" WHERE "table_schema" = 'public' AND "table_name" = 'typeorm_metadata'
+query: COMMIT
+[Nest] 31548  - 10/29/2025, 5:48:10 AM     LOG [InstanceLoader] TypeOrmCoreModule dependencies initialized +181ms
+[Nest] 31548  - 10/29/2025, 5:48:10 AM     LOG [InstanceLoader] TypeOrmModule dependencies initialized +0ms
+[Nest] 31548  - 10/29/2025, 5:48:10 AM     LOG [InstanceLoader] AuthModule dependencies initialized +0ms
+[Nest] 31548  - 10/29/2025, 5:48:11 AM     LOG [RoutesResolver] AppController {/}: +187ms
+[Nest] 31548  - 10/29/2025, 5:48:11 AM     LOG [RouterExplorer] Mapped {/, GET} route +1ms
+[Nest] 31548  - 10/29/2025, 5:48:11 AM     LOG [RouterExplorer] Mapped {/health, GET} route +0ms
+[Nest] 31548  - 10/29/2025, 5:48:11 AM     LOG [RoutesResolver] AuthController {/auth}: +0ms
+[Nest] 31548  - 10/29/2025, 5:48:11 AM     LOG [RouterExplorer] Mapped {/auth/register, POST} route +1ms
+[Nest] 31548  - 10/29/2025, 5:48:11 AM     LOG [RouterExplorer] Mapped {/auth/login, POST} route +0ms
+[Nest] 31548  - 10/29/2025, 5:48:11 AM     LOG [RouterExplorer] Mapped {/auth/refresh, POST} route +0ms
+[Nest] 31548  - 10/29/2025, 5:48:11 AM     LOG [RouterExplorer] Mapped {/auth/logout, POST} route +0ms
+[Nest] 31548  - 10/29/2025, 5:48:11 AM     LOG [RouterExplorer] Mapped {/auth/logout-all, POST} route +0ms
+[Nest] 31548  - 10/29/2025, 5:48:11 AM     LOG [RouterExplorer] Mapped {/auth/profile, GET} route +0ms
+[Nest] 31548  - 10/29/2025, 5:48:11 AM     LOG [RouterExplorer] Mapped {/auth/profile, PUT} route +1ms
+[Nest] 31548  - 10/29/2025, 5:48:11 AM     LOG [RouterExplorer] Mapped {/auth/admin/users, GET} route +0ms
+[Nest] 31548  - 10/29/2025, 5:48:11 AM     LOG [RouterExplorer] Mapped {/auth/admin/users/:id, GET} route +0ms
+[Nest] 31548  - 10/29/2025, 5:48:11 AM     LOG [RouterExplorer] Mapped {/auth/creator/dashboard, GET} route +0ms
+[Nest] 31548  - 10/29/2025, 5:48:11 AM     LOG [RouterExplorer] Mapped {/auth/creator/youtube, PUT} route +0ms
+[Nest] 31548  - 10/29/2025, 5:48:11 AM     LOG [RouterExplorer] Mapped {/auth/creator/analytics, GET} route +0ms
+[Nest] 31548  - 10/29/2025, 5:48:11 AM     LOG [RouterExplorer] Mapped {/auth/public/:id, GET} route +0ms
+[Nest] 31548  - 10/29/2025, 5:48:11 AM     LOG [NestApplication] Nest application successfully started +1ms
+🚀 Creator Pool API running on http://localhost:3000
+query: SELECT "User"."id" AS "User_id", "User"."email" AS "User_email", "User"."name" AS "User_name", "User"."role" AS "User_role", "User"."walletBalance" AS "User_walletBalance", "User"."googleId" AS "User_googleId", "User"."youtubeChannelId" AS "User_youtubeChannelId", "User"."youtubeTokenExpiresAt" AS "User_youtubeTokenExpiresAt", "User"."createdAt" AS "User_createdAt", "User"."updatedAt" AS "User_updatedAt" FROM "users" "User" WHERE (("User"."id" = $1)) LIMIT 1 -- PARAMETERS: ["292164e6-40c2-4056-a564-61c60fb46813"]
+5:48:30 AM [tsx] restarting
+c[Nest] 31936  - 10/29/2025, 5:48:31 AM     LOG [NestFactory] Starting Nest application...
+[Nest] 31936  - 10/29/2025, 5:48:31 AM     LOG [InstanceLoader] TypeOrmModule dependencies initialized +7ms
+[Nest] 31936  - 10/29/2025, 5:48:31 AM     LOG [InstanceLoader] PassportModule dependencies initialized +0ms
+[Nest] 31936  - 10/29/2025, 5:48:31 AM     LOG [InstanceLoader] ThrottlerModule dependencies initialized +0ms
+[Nest] 31936  - 10/29/2025, 5:48:31 AM     LOG [InstanceLoader] JwtModule dependencies initialized +0ms
+[Nest] 31936  - 10/29/2025, 5:48:31 AM     LOG [InstanceLoader] ConfigHostModule dependencies initialized +0ms
+[Nest] 31936  - 10/29/2025, 5:48:31 AM     LOG [InstanceLoader] ConfigModule dependencies initialized +0ms
+[Nest] 31936  - 10/29/2025, 5:48:31 AM     LOG [InstanceLoader] ConfigModule dependencies initialized +0ms
+[Nest] 31936  - 10/29/2025, 5:48:31 AM     LOG [InstanceLoader] AppModule dependencies initialized +0ms
+query: SELECT version()
+query: SELECT * FROM current_schema()
+query: CREATE EXTENSION IF NOT EXISTS "uuid-ossp"
+query: START TRANSACTION
+query: SELECT * FROM current_schema()
+query: SELECT * FROM current_database()
+query: SELECT "table_schema", "table_name", obj_description(('"' || "table_schema" || '"."' || "table_name" || '"')::regclass, 'pg_class') AS table_comment FROM "information_schema"."tables" WHERE ("table_schema" = 'public' AND "table_name" = 'predictions') OR ("table_schema" = 'public' AND "table_name" = 'pools') OR ("table_schema" = 'public' AND "table_name" = 'videos') OR ("table_schema" = 'public' AND "table_name" = 'users')
+query: SELECT TRUE FROM information_schema.columns WHERE table_name = 'pg_class' and column_name = 'relispartition'
+query: SELECT columns.*, pg_catalog.col_description(('"' || table_catalog || '"."' || table_schema || '"."' || table_name || '"')::regclass::oid, ordinal_position) AS description, ('"' || "udt_schema" || '"."' || "udt_name" || '"')::"regtype"::text AS "regtype", pg_catalog.format_type("col_attr"."atttypid", "col_attr"."atttypmod") AS "format_type" FROM "information_schema"."columns" LEFT JOIN "pg_catalog"."pg_attribute" AS "col_attr" ON "col_attr"."attname" = "columns"."column_name" AND "col_attr"."attrelid" = ( SELECT "cls"."oid" FROM "pg_catalog"."pg_class" AS "cls" LEFT JOIN "pg_catalog"."pg_namespace" AS "ns" ON "ns"."oid" = "cls"."relnamespace" WHERE "cls"."relname" = "columns"."table_name" AND "ns"."nspname" = "columns"."table_schema" ) WHERE ("table_schema" = 'public' AND "table_name" = 'pools') OR ("table_schema" = 'public' AND "table_name" = 'predictions') OR ("table_schema" = 'public' AND "table_name" = 'users') OR ("table_schema" = 'public' AND "table_name" = 'videos')
+query: SELECT "ns"."nspname" AS "table_schema", "t"."relname" AS "table_name", "cnst"."conname" AS "constraint_name", pg_get_constraintdef("cnst"."oid") AS "expression", CASE "cnst"."contype" WHEN 'p' THEN 'PRIMARY' WHEN 'u' THEN 'UNIQUE' WHEN 'c' THEN 'CHECK' WHEN 'x' THEN 'EXCLUDE' END AS "constraint_type", "a"."attname" AS "column_name" FROM "pg_constraint" "cnst" INNER JOIN "pg_class" "t" ON "t"."oid" = "cnst"."conrelid" INNER JOIN "pg_namespace" "ns" ON "ns"."oid" = "cnst"."connamespace" LEFT JOIN "pg_attribute" "a" ON "a"."attrelid" = "cnst"."conrelid" AND "a"."attnum" = ANY ("cnst"."conkey") WHERE "t"."relkind" IN ('r', 'p') AND (("ns"."nspname" = 'public' AND "t"."relname" = 'pools') OR ("ns"."nspname" = 'public' AND "t"."relname" = 'predictions') OR ("ns"."nspname" = 'public' AND "t"."relname" = 'users') OR ("ns"."nspname" = 'public' AND "t"."relname" = 'videos'))
+query: SELECT "ns"."nspname" AS "table_schema", "t"."relname" AS "table_name", "i"."relname" AS "constraint_name", "a"."attname" AS "column_name", CASE "ix"."indisunique" WHEN 't' THEN 'TRUE' ELSE'FALSE' END AS "is_unique", pg_get_expr("ix"."indpred", "ix"."indrelid") AS "condition", "types"."typname" AS "type_name", "am"."amname" AS "index_type" FROM "pg_class" "t" INNER JOIN "pg_index" "ix" ON "ix"."indrelid" = "t"."oid" INNER JOIN "pg_attribute" "a" ON "a"."attrelid" = "t"."oid"  AND "a"."attnum" = ANY ("ix"."indkey") INNER JOIN "pg_namespace" "ns" ON "ns"."oid" = "t"."relnamespace" INNER JOIN "pg_class" "i" ON "i"."oid" = "ix"."indexrelid" INNER JOIN "pg_type" "types" ON "types"."oid" = "a"."atttypid" INNER JOIN "pg_am" "am" ON "i"."relam" = "am"."oid" LEFT JOIN "pg_constraint" "cnst" ON "cnst"."conname" = "i"."relname" WHERE "t"."relkind" IN ('r', 'p') AND "cnst"."contype" IS NULL AND (("ns"."nspname" = 'public' AND "t"."relname" = 'pools') OR ("ns"."nspname" = 'public' AND "t"."relname" = 'predictions') OR ("ns"."nspname" = 'public' AND "t"."relname" = 'users') OR ("ns"."nspname" = 'public' AND "t"."relname" = 'videos'))
+query: SELECT "con"."conname" AS "constraint_name", "con"."nspname" AS "table_schema", "con"."relname" AS "table_name", "att2"."attname" AS "column_name", "ns"."nspname" AS "referenced_table_schema", "cl"."relname" AS "referenced_table_name", "att"."attname" AS "referenced_column_name", "con"."confdeltype" AS "on_delete", "con"."confupdtype" AS "on_update", "con"."condeferrable" AS "deferrable", "con"."condeferred" AS "deferred" FROM ( SELECT UNNEST ("con1"."conkey") AS "parent", UNNEST ("con1"."confkey") AS "child", "con1"."confrelid", "con1"."conrelid", "con1"."conname", "con1"."contype", "ns"."nspname", "cl"."relname", "con1"."condeferrable", CASE WHEN "con1"."condeferred" THEN 'INITIALLY DEFERRED' ELSE 'INITIALLY IMMEDIATE' END as condeferred, CASE "con1"."confdeltype" WHEN 'a' THEN 'NO ACTION' WHEN 'r' THEN 'RESTRICT' WHEN 'c' THEN 'CASCADE' WHEN 'n' THEN 'SET NULL' WHEN 'd' THEN 'SET DEFAULT' END as "confdeltype", CASE "con1"."confupdtype" WHEN 'a' THEN 'NO ACTION' WHEN 'r' THEN 'RESTRICT' WHEN 'c' THEN 'CASCADE' WHEN 'n' THEN 'SET NULL' WHEN 'd' THEN 'SET DEFAULT' END as "confupdtype" FROM "pg_class" "cl" INNER JOIN "pg_namespace" "ns" ON "cl"."relnamespace" = "ns"."oid" INNER JOIN "pg_constraint" "con1" ON "con1"."conrelid" = "cl"."oid" WHERE "con1"."contype" = 'f' AND (("ns"."nspname" = 'public' AND "cl"."relname" = 'pools') OR ("ns"."nspname" = 'public' AND "cl"."relname" = 'predictions') OR ("ns"."nspname" = 'public' AND "cl"."relname" = 'users') OR ("ns"."nspname" = 'public' AND "cl"."relname" = 'videos')) ) "con" INNER JOIN "pg_attribute" "att" ON "att"."attrelid" = "con"."confrelid" AND "att"."attnum" = "con"."child" INNER JOIN "pg_class" "cl" ON "cl"."oid" = "con"."confrelid"  AND "cl"."relispartition" = 'f'INNER JOIN "pg_namespace" "ns" ON "cl"."relnamespace" = "ns"."oid" INNER JOIN "pg_attribute" "att2" ON "att2"."attrelid" = "con"."conrelid" AND "att2"."attnum" = "con"."parent"
+query: SELECT "udt_schema", "udt_name" FROM "information_schema"."columns" WHERE "table_schema" = 'public' AND "table_name" = 'pools' AND "column_name"='status'
+query: SELECT "udt_schema", "udt_name" FROM "information_schema"."columns" WHERE "table_schema" = 'public' AND "table_name" = 'pools' AND "column_name"='result'
+query: SELECT "udt_schema", "udt_name" FROM "information_schema"."columns" WHERE "table_schema" = 'public' AND "table_name" = 'predictions' AND "column_name"='choice'
+query: SELECT "udt_schema", "udt_name" FROM "information_schema"."columns" WHERE "table_schema" = 'public' AND "table_name" = 'predictions' AND "column_name"='result'
+query: SELECT "udt_schema", "udt_name" FROM "information_schema"."columns" WHERE "table_schema" = 'public' AND "table_name" = 'users' AND "column_name"='role'
+query: SELECT "udt_schema", "udt_name" FROM "information_schema"."columns" WHERE "table_schema" = 'public' AND "table_name" = 'videos' AND "column_name"='status'
+query: SELECT "udt_schema", "udt_name" FROM "information_schema"."columns" WHERE "table_schema" = 'public' AND "table_name" = 'videos' AND "column_name"='visibility'
+query: SELECT "e"."enumlabel" AS "value" FROM "pg_enum" "e" INNER JOIN "pg_type" "t" ON "t"."oid" = "e"."enumtypid" INNER JOIN "pg_namespace" "n" ON "n"."oid" = "t"."typnamespace" WHERE "n"."nspname" = 'public' AND "t"."typname" = 'pools_status_enum'
+query: SELECT "e"."enumlabel" AS "value" FROM "pg_enum" "e" INNER JOIN "pg_type" "t" ON "t"."oid" = "e"."enumtypid" INNER JOIN "pg_namespace" "n" ON "n"."oid" = "t"."typnamespace" WHERE "n"."nspname" = 'public' AND "t"."typname" = 'pools_result_enum'
+query: SELECT "e"."enumlabel" AS "value" FROM "pg_enum" "e" INNER JOIN "pg_type" "t" ON "t"."oid" = "e"."enumtypid" INNER JOIN "pg_namespace" "n" ON "n"."oid" = "t"."typnamespace" WHERE "n"."nspname" = 'public' AND "t"."typname" = 'predictions_choice_enum'
+query: SELECT "e"."enumlabel" AS "value" FROM "pg_enum" "e" INNER JOIN "pg_type" "t" ON "t"."oid" = "e"."enumtypid" INNER JOIN "pg_namespace" "n" ON "n"."oid" = "t"."typnamespace" WHERE "n"."nspname" = 'public' AND "t"."typname" = 'predictions_result_enum'
+query: SELECT "e"."enumlabel" AS "value" FROM "pg_enum" "e" INNER JOIN "pg_type" "t" ON "t"."oid" = "e"."enumtypid" INNER JOIN "pg_namespace" "n" ON "n"."oid" = "t"."typnamespace" WHERE "n"."nspname" = 'public' AND "t"."typname" = 'users_role_enum'
+query: SELECT "e"."enumlabel" AS "value" FROM "pg_enum" "e" INNER JOIN "pg_type" "t" ON "t"."oid" = "e"."enumtypid" INNER JOIN "pg_namespace" "n" ON "n"."oid" = "t"."typnamespace" WHERE "n"."nspname" = 'public' AND "t"."typname" = 'videos_status_enum'
+query: SELECT "e"."enumlabel" AS "value" FROM "pg_enum" "e" INNER JOIN "pg_type" "t" ON "t"."oid" = "e"."enumtypid" INNER JOIN "pg_namespace" "n" ON "n"."oid" = "t"."typnamespace" WHERE "n"."nspname" = 'public' AND "t"."typname" = 'videos_visibility_enum'
+query: SELECT * FROM "information_schema"."tables" WHERE "table_schema" = 'public' AND "table_name" = 'typeorm_metadata'
+query: COMMIT
+[Nest] 31936  - 10/29/2025, 5:48:31 AM     LOG [InstanceLoader] TypeOrmCoreModule dependencies initialized +141ms
+[Nest] 31936  - 10/29/2025, 5:48:31 AM     LOG [InstanceLoader] TypeOrmModule dependencies initialized +0ms
+[Nest] 31936  - 10/29/2025, 5:48:31 AM     LOG [InstanceLoader] AuthModule dependencies initialized +1ms
+[Nest] 31936  - 10/29/2025, 5:48:31 AM     LOG [RoutesResolver] AppController {/}: +587ms
+[Nest] 31936  - 10/29/2025, 5:48:31 AM     LOG [RouterExplorer] Mapped {/, GET} route +1ms
+[Nest] 31936  - 10/29/2025, 5:48:31 AM     LOG [RouterExplorer] Mapped {/health, GET} route +0ms
+[Nest] 31936  - 10/29/2025, 5:48:31 AM     LOG [RoutesResolver] AuthController {/auth}: +0ms
+[Nest] 31936  - 10/29/2025, 5:48:31 AM     LOG [RouterExplorer] Mapped {/auth/register, POST} route +0ms
+[Nest] 31936  - 10/29/2025, 5:48:31 AM     LOG [RouterExplorer] Mapped {/auth/login, POST} route +0ms
+[Nest] 31936  - 10/29/2025, 5:48:31 AM     LOG [RouterExplorer] Mapped {/auth/refresh, POST} route +0ms
+[Nest] 31936  - 10/29/2025, 5:48:31 AM     LOG [RouterExplorer] Mapped {/auth/logout, POST} route +1ms
+[Nest] 31936  - 10/29/2025, 5:48:31 AM     LOG [RouterExplorer] Mapped {/auth/logout-all, POST} route +0ms
+[Nest] 31936  - 10/29/2025, 5:48:31 AM     LOG [RouterExplorer] Mapped {/auth/profile, GET} route +0ms
+[Nest] 31936  - 10/29/2025, 5:48:31 AM     LOG [RouterExplorer] Mapped {/auth/profile, PUT} route +0ms
+[Nest] 31936  - 10/29/2025, 5:48:31 AM     LOG [RouterExplorer] Mapped {/auth/admin/users, GET} route +0ms
+[Nest] 31936  - 10/29/2025, 5:48:31 AM     LOG [RouterExplorer] Mapped {/auth/admin/users/:id, GET} route +0ms
+[Nest] 31936  - 10/29/2025, 5:48:31 AM     LOG [RouterExplorer] Mapped {/auth/creator/dashboard, GET} route +0ms
+[Nest] 31936  - 10/29/2025, 5:48:31 AM     LOG [RouterExplorer] Mapped {/auth/creator/youtube, PUT} route +0ms
+[Nest] 31936  - 10/29/2025, 5:48:31 AM     LOG [RouterExplorer] Mapped {/auth/creator/analytics, GET} route +1ms
+[Nest] 31936  - 10/29/2025, 5:48:31 AM     LOG [RouterExplorer] Mapped {/auth/public/:id, GET} route +0ms
+[Nest] 31936  - 10/29/2025, 5:48:31 AM     LOG [NestApplication] Nest application successfully started +1ms
+🚀 Creator Pool API running on http://localhost:3000

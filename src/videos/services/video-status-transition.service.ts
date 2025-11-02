@@ -95,24 +95,49 @@ export class VideoStatusTransitionService {
 
       await this.videoRepository.save(video);
 
-      // Update associated pools
-      const pools = await this.poolRepository.find({
-        where: {
-          videoId: video.id,
-          status: PoolStatus.AWAITING_RELEASE,
-        },
-      });
-
-      for (const pool of pools) {
-        await this.transitionPoolToLiveTracking(pool);
-      }
+      // Handle pool transitions for this video
+      await this.handlePoolTransitionsForPublicVideo(video);
 
       this.logger.log(
-        `Successfully transitioned video ${video.youtubeId} and ${pools.length} pools`
+        `Successfully transitioned video ${video.youtubeId} to public`
       );
     } catch (error) {
       this.logger.error(`Error transitioning video ${video.youtubeId}:`, error);
       throw error;
+    }
+  }
+
+  /**
+   * Handle pool transitions when video goes public
+   * Transitions both OPEN and AWAITING_RELEASE pools to LIVE_TRACKING
+   */
+  private async handlePoolTransitionsForPublicVideo(
+    video: Video
+  ): Promise<void> {
+    // Find all pools for this video that need to transition
+    const pools = await this.poolRepository.find({
+      where: {
+        videoId: video.id,
+      },
+      relations: ["video"],
+    });
+
+    let transitionedCount = 0;
+
+    for (const pool of pools) {
+      if (
+        pool.status === PoolStatus.OPEN ||
+        pool.status === PoolStatus.AWAITING_RELEASE
+      ) {
+        await this.transitionPoolToLiveTracking(pool);
+        transitionedCount++;
+      }
+    }
+
+    if (transitionedCount > 0) {
+      this.logger.log(
+        `Transitioned ${transitionedCount} pools to LIVE_TRACKING (video ${video.youtubeId} went public)`
+      );
     }
   }
 

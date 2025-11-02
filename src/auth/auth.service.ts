@@ -3,6 +3,8 @@ import {
   UnauthorizedException,
   ConflictException,
   NotFoundException,
+  BadRequestException,
+  Inject,
 } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { Repository } from "typeorm";
@@ -44,7 +46,7 @@ export class AuthService {
   constructor(
     @InjectRepository(User)
     private userRepository: Repository<User>,
-    private jwtService: JwtService
+    @Inject(JwtService) private jwtService: JwtService
     // private refreshTokenService: RefreshTokenService,
     // private tokenBlacklistService: TokenBlacklistService
   ) {}
@@ -60,12 +62,22 @@ export class AuthService {
       throw new ConflictException("User with this email already exists");
     }
 
+    // Validate and sanitize role - only allow valid UserRole values
+    let userRole = UserRole.USER; // Default to USER role
+
+    // Map "predictor" to "user" for backward compatibility
+    if (role && role === ("predictor" as any)) {
+      userRole = UserRole.USER;
+    } else if (role && Object.values(UserRole).includes(role as UserRole)) {
+      userRole = role as UserRole;
+    }
+
     // Create new user
     const user = this.userRepository.create({
       email,
       password, // Will be hashed by @BeforeInsert() in entity
       name: [firstName, lastName].filter(Boolean).join(" ") || email,
-      role: role ?? UserRole.USER,
+      role: userRole,
     });
 
     const savedUser = await this.userRepository.save(user);
@@ -202,10 +214,13 @@ export class AuthService {
   private async generateTokens(
     user: User
   ): Promise<{ accessToken: string; refreshToken: string }> {
+    // Map "user" role to "predictor" for frontend compatibility
+    const roleForToken = user.role === UserRole.USER ? "predictor" : user.role;
+
     const payload: JwtPayload = {
       sub: user.id,
       email: user.email,
-      role: user.role,
+      role: roleForToken,
     };
 
     const [accessToken, refreshToken] = await Promise.all([
@@ -217,11 +232,15 @@ export class AuthService {
   }
 
   private sanitizeUser(user: User): PublicUser {
+    // Map "user" role to "predictor" for frontend compatibility
+    const roleForResponse =
+      user.role === UserRole.USER ? "predictor" : user.role;
+
     return {
       id: user.id,
       email: user.email,
       name: user.name,
-      role: user.role,
+      role: roleForResponse as any, // Cast to any since PublicUser expects UserRole but we're returning "predictor"
       walletBalance: Number(user.walletBalance),
       googleId: user.googleId,
       youtubeChannelId: user.youtubeChannelId,
@@ -319,5 +338,41 @@ export class AuthService {
       youtubeChannelId: user.youtubeChannelId,
       createdAt: user.createdAt,
     };
+  }
+
+  /**
+   * Get user wallet balance
+   */
+  async getWalletBalance(userId: string): Promise<{ balance: number }> {
+    const user = await this.userRepository.findOne({
+      where: { id: userId },
+      select: ["walletBalance"],
+    });
+    if (!user) {
+      throw new NotFoundException("User not found");
+    }
+
+    return { balance: Number(user.walletBalance) };
+  }
+
+  /**
+   * Add funds to user wallet (for testing/demo purposes)
+   */
+  async addFundsToWallet(userId: string, amount: number): Promise<PublicUser> {
+    const user = await this.userRepository.findOne({
+      where: { id: userId },
+    });
+    if (!user) {
+      throw new NotFoundException("User not found");
+    }
+
+    if (amount <= 0) {
+      throw new BadRequestException("Amount must be greater than 0");
+    }
+
+    user.walletBalance = Number(user.walletBalance) + amount;
+    const updatedUser = await this.userRepository.save(user);
+
+    return this.sanitizeUser(updatedUser);
   }
 }
