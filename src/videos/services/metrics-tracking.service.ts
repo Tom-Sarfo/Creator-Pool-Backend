@@ -1,8 +1,10 @@
-import { Injectable, Logger } from "@nestjs/common";
+import { Injectable, Logger, Inject } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { Repository } from "typeorm";
 import { Video } from "../../entities/video.entity";
 import { Pool, PoolStatus } from "../../entities/pool.entity";
+import { User } from "../../entities/user.entity";
+import { YouTubeService } from "../../youtube/youtube.service";
 
 @Injectable()
 export class MetricsTrackingService {
@@ -12,7 +14,11 @@ export class MetricsTrackingService {
     @InjectRepository(Video)
     private videoRepository: Repository<Video>,
     @InjectRepository(Pool)
-    private poolRepository: Repository<Pool>
+    private poolRepository: Repository<Pool>,
+    @InjectRepository(User)
+    private userRepository: Repository<User>,
+    @Inject(YouTubeService)
+    private youtubeService: YouTubeService
   ) {}
 
   /**
@@ -46,8 +52,7 @@ export class MetricsTrackingService {
    */
   async updateVideoMetricsForPool(video: Video): Promise<void> {
     try {
-      // In production, this would call the YouTube Data API
-      const metrics = await this.fetchYouTubeMetrics(video.youtubeId);
+      const metrics = await this.fetchYouTubeMetrics(video);
 
       if (metrics) {
         video.viewCount = metrics.viewCount;
@@ -57,7 +62,6 @@ export class MetricsTrackingService {
 
         await this.videoRepository.save(video);
 
-        // Update pool with current metrics
         await this.updatePoolMetrics(video);
 
         this.logger.debug(`Updated metrics for video ${video.youtubeId}:`, {
@@ -75,24 +79,45 @@ export class MetricsTrackingService {
   }
 
   /**
-   * Simulate YouTube API call to fetch video metrics
-   * In production, this would call the actual YouTube Data API
+   * Fetch video metrics from YouTube API
    */
-  private async fetchYouTubeMetrics(youtubeId: string): Promise<{
+  private async fetchYouTubeMetrics(video: Video): Promise<{
     viewCount: number;
     likeCount: number;
     commentCount: number;
   } | null> {
-    // TODO: Implement actual YouTube API call
-    // For now, return null to prevent API calls in development
-    this.logger.debug(`Fetching YouTube metrics for video: ${youtubeId}`);
+    const user = await this.userRepository.findOne({
+      where: { id: video.creatorId },
+      select: [
+        "id",
+        "youtubeAccessToken",
+        "youtubeRefreshToken",
+        "youtubeTokenExpiresAt",
+      ],
+    });
 
-    // Simulate some metrics for testing
-    return {
-      viewCount: Math.floor(Math.random() * 10000) + 1000,
-      likeCount: Math.floor(Math.random() * 500) + 50,
-      commentCount: Math.floor(Math.random() * 100) + 10,
-    };
+    if (!user || !user.youtubeAccessToken) {
+      this.logger.warn(
+        `Cannot fetch metrics for video ${video.youtubeId}: creator ${video.creatorId} not connected to YouTube`
+      );
+      return null;
+    }
+
+    try {
+      const accessToken = await this.youtubeService.refreshTokenIfNeeded(user);
+      const metrics = await this.youtubeService.getVideoMetrics(
+        accessToken,
+        video.youtubeId
+      );
+
+      return metrics;
+    } catch (error) {
+      this.logger.error(
+        `Error fetching YouTube metrics for video ${video.youtubeId}:`,
+        error
+      );
+      return null;
+    }
   }
 
   /**
@@ -109,35 +134,16 @@ export class MetricsTrackingService {
     for (const pool of pools) {
       pool.currentViews = video.viewCount;
 
-      // Update odds based on current metrics vs target
-      await this.updatePoolOdds(pool);
+      // Note: Probabilities are calculated based on weighted stakes, not video metrics
+      // Probabilities will be updated when predictions are added/removed
 
       await this.poolRepository.save(pool);
     }
   }
 
-  /**
-   * Update pool odds based on current performance
-   */
-  private async updatePoolOdds(pool: Pool): Promise<void> {
-    // Simple odds calculation based on current views vs target
-    const progressRatio = Number(pool.currentViews) / Number(pool.targetViews);
-
-    // Adjust odds based on progress (simplified logic)
-    if (progressRatio >= 0.8) {
-      // Video is performing well, favor YES
-      pool.yesOdds = 0.3;
-      pool.noOdds = 0.7;
-    } else if (progressRatio >= 0.5) {
-      // Video is performing moderately
-      pool.yesOdds = 0.5;
-      pool.noOdds = 0.5;
-    } else {
-      // Video is underperforming, favor NO
-      pool.yesOdds = 0.7;
-      pool.noOdds = 0.3;
-    }
-  }
+  // Note: Odds-based calculations removed
+  // Probabilities are now calculated based on weighted stakes using sqrt(stake) formula
+  // This happens automatically in ProbabilityService when predictions are added/removed
 
   /**
    * Get current metrics for a video

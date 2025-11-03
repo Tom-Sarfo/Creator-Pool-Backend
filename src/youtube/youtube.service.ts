@@ -282,6 +282,55 @@ export class YouTubeService {
     }
   }
 
+  async getVideoMetrics(
+    accessToken: string,
+    youtubeId: string
+  ): Promise<{
+    viewCount: number;
+    likeCount: number;
+    commentCount: number;
+  } | null> {
+    try {
+      const response = await fetch(
+        `https://www.googleapis.com/youtube/v3/videos?part=statistics&id=${youtubeId}`,
+        {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+        }
+      );
+
+      if (!response.ok) {
+        const errorData = await response.text();
+        this.logger.error(
+          `Failed to fetch video metrics for ${youtubeId}: ${errorData}`
+        );
+        return null;
+      }
+
+      const data = await response.json();
+
+      if (!data.items || data.items.length === 0) {
+        this.logger.warn(`Video ${youtubeId} not found`);
+        return null;
+      }
+
+      const statistics = data.items[0].statistics || {};
+
+      return {
+        viewCount: parseInt(statistics.viewCount || "0", 10),
+        likeCount: parseInt(statistics.likeCount || "0", 10),
+        commentCount: parseInt(statistics.commentCount || "0", 10),
+      };
+    } catch (error) {
+      this.logger.error(
+        `Error fetching video metrics for ${youtubeId}:`,
+        error
+      );
+      return null;
+    }
+  }
+
   private async getChannelVideos(
     accessToken: string,
     channelId: string
@@ -484,7 +533,7 @@ export class YouTubeService {
     }
   }
 
-  private async refreshTokenIfNeeded(user: User): Promise<string> {
+  async refreshTokenIfNeeded(user: User): Promise<string> {
     if (
       !user.youtubeTokenExpiresAt ||
       new Date() < user.youtubeTokenExpiresAt

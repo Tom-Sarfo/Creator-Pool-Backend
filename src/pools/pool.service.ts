@@ -11,7 +11,7 @@ import { Pool, PoolStatus, PoolResult } from "../entities/pool.entity";
 import { Video, VideoStatus } from "../entities/video.entity";
 import { User } from "../entities/user.entity";
 import { PoolLifecycleService } from "./services/pool-lifecycle.service";
-import { OddsService } from "./services/odds.service";
+import { ProbabilityService } from "./services/probability.service";
 
 export interface CreatePoolDto {
   videoId: string;
@@ -52,8 +52,8 @@ export class PoolService {
     private userRepository: Repository<User>,
     @Inject(PoolLifecycleService)
     private poolLifecycleService: PoolLifecycleService,
-    @Inject(OddsService)
-    private oddsService: OddsService
+    @Inject(ProbabilityService)
+    private probabilityService: ProbabilityService
   ) {}
 
   /**
@@ -98,14 +98,12 @@ export class PoolService {
     const pool = this.poolRepository.create({
       ...createPoolDto,
       creatorId,
-      predictionWindowMinutes:
-        createPoolDto.predictionWindowMinutes || 15, // 15 minutes in minutes
+      predictionWindowMinutes: createPoolDto.predictionWindowMinutes || 15, // 15 minutes in minutes
       trackingDurationDays: createPoolDto.trackingDurationDays || 7,
       creatorPledge: createPoolDto.creatorPledge || 0,
       status: PoolStatus.OPEN,
       closesAt: new Date(
-        Date.now() +
-          (createPoolDto.predictionWindowMinutes || 15) * 60 * 1000
+        Date.now() + (createPoolDto.predictionWindowMinutes || 15) * 60 * 1000
       ),
     });
 
@@ -155,11 +153,12 @@ export class PoolService {
       .take(limit)
       .getManyAndCount();
 
-    // Calculate odds for each pool
+    // Calculate probabilities for each pool
     for (const pool of pools) {
-      const odds = this.oddsService.calculatePoolOdds(pool);
-      pool.yesOdds = odds.yes;
-      pool.noOdds = odds.no;
+      const probabilities =
+        this.probabilityService.calculatePoolProbabilities(pool);
+      pool.probabilityYes = probabilities.probabilityYes;
+      pool.probabilityNo = probabilities.probabilityNo;
     }
 
     return {
@@ -183,10 +182,11 @@ export class PoolService {
       throw new NotFoundException("Pool not found");
     }
 
-    // Calculate current odds
-    const odds = this.oddsService.calculatePoolOdds(pool);
-    pool.yesOdds = odds.yes;
-    pool.noOdds = odds.no;
+    // Calculate current probabilities
+    const probabilities =
+      this.probabilityService.calculatePoolProbabilities(pool);
+    pool.probabilityYes = probabilities.probabilityYes;
+    pool.probabilityNo = probabilities.probabilityNo;
 
     return pool;
   }
@@ -351,12 +351,14 @@ export class PoolService {
     yesStake: number;
     noStake: number;
     participants: number;
-    currentOdds: { yes: number; no: number };
+    probabilityYes: number;
+    probabilityNo: number;
     timeRemaining: number;
   }> {
     const pool = await this.getPoolById(id);
 
-    const odds = this.oddsService.calculatePoolOdds(pool);
+    const probabilities =
+      this.probabilityService.calculatePoolProbabilities(pool);
     const timeRemaining = pool.isPredictionWindowOpen()
       ? pool.getPredictionTimeRemaining()
       : pool.getTrackingTimeRemaining();
@@ -369,7 +371,8 @@ export class PoolService {
       yesStake: Number(pool.yesStake),
       noStake: Number(pool.noStake),
       participants: pool.participants,
-      currentOdds: odds,
+      probabilityYes: probabilities.probabilityYes,
+      probabilityNo: probabilities.probabilityNo,
       timeRemaining,
     };
   }

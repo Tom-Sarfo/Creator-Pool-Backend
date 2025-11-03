@@ -85,7 +85,8 @@ export class Prediction {
     return this.result === PredictionResult.PENDING;
   }
 
-  // Calculate potential payout based on current odds
+  // @deprecated - This method used odds-based calculation
+  // Potential payout should be calculated using ProbabilityService.calculatePotentialPayout()
   calculatePotentialPayout(odds: number): number {
     return Number(this.stake) * (1 + odds);
   }

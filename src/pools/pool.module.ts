@@ -7,7 +7,7 @@ import { Video } from "../entities/video.entity";
 import { User } from "../entities/user.entity";
 import { PoolLifecycleService } from "./services/pool-lifecycle.service";
 import { PoolSchedulerService } from "./services/pool-scheduler.service";
-import { OddsService } from "./services/odds.service";
+import { ProbabilityService } from "./services/probability.service";
 
 @Module({
   imports: [TypeOrmModule.forFeature([Pool, Video, User])],
@@ -17,8 +17,8 @@ import { OddsService } from "./services/odds.service";
     PoolLifecycleService,
     PoolSchedulerService,
     PoolService,
-    OddsService,
+    ProbabilityService,
   ],
-  exports: [PoolService, PoolLifecycleService, OddsService],
+  exports: [PoolService, PoolLifecycleService, ProbabilityService],
 })
 export class PoolModule {}

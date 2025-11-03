@@ -85,6 +85,15 @@ export class Pool {
   @Column({ type: "decimal", precision: 10, scale: 2, default: 0 })
   currentViews: number;
 
+  // Weighted probability (new system)
+  @Column({ type: "decimal", precision: 10, scale: 4, default: 0 })
+  probabilityYes: number;
+
+  @Column({ type: "decimal", precision: 10, scale: 4, default: 0 })
+  probabilityNo: number;
+
+  // @deprecated - Keep for backwards compatibility, will be removed in future migration
+  // Use probabilityYes and probabilityNo instead
   @Column({ type: "decimal", precision: 10, scale: 2, nullable: true })
   yesOdds: number;
 

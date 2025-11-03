@@ -15,7 +15,7 @@ import {
 } from "../entities/prediction.entity";
 import { Pool, PoolStatus } from "../entities/pool.entity";
 import { User } from "../entities/user.entity";
-import { OddsService } from "../pools/services/odds.service";
+import { ProbabilityService } from "../pools/services/probability.service";
 
 export interface CreatePredictionDto {
   poolId: string;
@@ -42,8 +42,8 @@ export class PredictionService {
     private poolRepository: Repository<Pool>,
     @InjectRepository(User)
     private userRepository: Repository<User>,
-    @Inject(OddsService)
-    private oddsService: OddsService
+    @Inject(ProbabilityService)
+    private probabilityService: ProbabilityService
   ) {}
 
   /**
@@ -54,7 +54,8 @@ export class PredictionService {
     createPredictionDto: CreatePredictionDto
   ): Promise<{
     prediction: Prediction;
-    updatedOdds: { yes: number; no: number };
+    potentialPayout: number;
+    updatedProbabilities: { probabilityYes: number; probabilityNo: number };
   }> {
     // Validate predictor exists
     const predictor = await this.userRepository.findOne({
@@ -113,36 +114,53 @@ export class PredictionService {
       predictedAt: new Date(),
     });
 
-    // Calculate potential payout
-    const currentOdds = this.oddsService.calculatePoolOdds(pool);
-    const odds =
+    // Calculate potential payout before adding this prediction to pool
+    const totalStakeOnUserSide =
       createPredictionDto.choice === PredictionChoice.YES
-        ? currentOdds.yes
-        : currentOdds.no;
+        ? Number(pool.yesStake)
+        : Number(pool.noStake);
 
-    prediction.potentialPayout = this.oddsService.calculatePotentialPayout(
+    // Calculate potential payout using new formula
+    const potentialPayout = this.probabilityService.calculatePotentialPayout(
       createPredictionDto.stake,
-      odds
+      totalStakeOnUserSide,
+      Number(pool.totalStake)
     );
+
+    prediction.potentialPayout = potentialPayout;
 
     const savedPrediction = await this.predictionRepository.save(prediction);
 
-    // Update pool statistics
+    // Update pool statistics (this updates stakes and probabilities)
     await this.updatePoolStats(pool, createPredictionDto);
 
     // Deduct stake from user wallet
     predictor.walletBalance -= createPredictionDto.stake;
     await this.userRepository.save(predictor);
 
-    // Get updated odds
+    // Get updated pool with new probabilities
     const updatedPool = await this.poolRepository.findOne({
       where: { id: createPredictionDto.poolId },
     });
-    const updatedOdds = this.oddsService.calculatePoolOdds(updatedPool);
+    const updatedProbabilities =
+      this.probabilityService.calculatePoolProbabilities(updatedPool);
+
+    // Recalculate potential payout with updated pool state
+    const updatedTotalStakeOnUserSide =
+      createPredictionDto.choice === PredictionChoice.YES
+        ? Number(updatedPool.yesStake)
+        : Number(updatedPool.noStake);
+    const updatedPotentialPayout =
+      this.probabilityService.calculatePotentialPayout(
+        createPredictionDto.stake,
+        updatedTotalStakeOnUserSide,
+        Number(updatedPool.totalStake)
+      );
 
     return {
       prediction: savedPrediction,
-      updatedOdds,
+      potentialPayout: updatedPotentialPayout,
+      updatedProbabilities,
     };
   }
 
@@ -266,10 +284,11 @@ export class PredictionService {
     pool.totalStake = Number(pool.totalStake) + predictionData.stake;
     pool.participants += 1;
 
-    // Update odds
-    const odds = this.oddsService.calculatePoolOdds(pool);
-    pool.yesOdds = odds.yes;
-    pool.noOdds = odds.no;
+    // Update probabilities
+    const probabilities =
+      this.probabilityService.calculatePoolProbabilities(pool);
+    pool.probabilityYes = probabilities.probabilityYes;
+    pool.probabilityNo = probabilities.probabilityNo;
 
     await this.poolRepository.save(pool);
   }
@@ -436,10 +455,11 @@ export class PredictionService {
     pool.totalStake = Number(pool.totalStake) - Number(prediction.stake);
     pool.participants -= 1;
 
-    // Update odds
-    const odds = this.oddsService.calculatePoolOdds(pool);
-    pool.yesOdds = odds.yes;
-    pool.noOdds = odds.no;
+    // Update probabilities
+    const probabilities =
+      this.probabilityService.calculatePoolProbabilities(pool);
+    pool.probabilityYes = probabilities.probabilityYes;
+    pool.probabilityNo = probabilities.probabilityNo;
 
     await this.poolRepository.save(pool);
 

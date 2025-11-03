@@ -7,14 +7,17 @@ import { User } from "../entities/user.entity";
 import { Pool } from "../entities/pool.entity";
 import { VideoStatusTransitionService } from "./services/video-status-transition.service";
 import { MetricsTrackingService } from "./services/metrics-tracking.service";
+import { MetricsSchedulerService } from "./services/metrics-scheduler.service";
+import { YouTubeModule } from "../youtube/youtube.module";
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Video, User, Pool])],
+  imports: [TypeOrmModule.forFeature([Video, User, Pool]), YouTubeModule],
   controllers: [VideoController],
   providers: [
     VideoService,
     VideoStatusTransitionService,
     MetricsTrackingService,
+    MetricsSchedulerService,
   ],
   exports: [VideoService, VideoStatusTransitionService, MetricsTrackingService],
 })
