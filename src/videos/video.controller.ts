@@ -21,6 +21,7 @@ import {
 } from "./video.service";
 import { CurrentUser } from "../auth/decorators/current-user.decorator";
 import { User, UserRole } from "../entities/user.entity";
+import { VideoStatus, VideoVisibility } from "../entities/video.entity";
 import { Roles } from "../auth/decorators/roles.decorator";
 import { RolesGuard } from "../auth/guards/roles.guard";
 
@@ -48,18 +49,20 @@ export class VideoController {
     @Query("page") page?: string,
     @Query("limit") limit?: string
   ) {
+    const parsedPage = page ? parseInt(page, 10) : undefined;
+    const parsedLimit = limit ? parseInt(limit, 10) : undefined;
+
     const filters = {
       creatorId,
-      status,
-      visibility,
-      hasActivePool: hasActivePool === "true",
+      status: status ? (status as VideoStatus) : undefined,
+      visibility: visibility ? (visibility as VideoVisibility) : undefined,
+      hasActivePool:
+        hasActivePool === undefined ? undefined : hasActivePool === "true",
+      page: Number.isNaN(parsedPage) ? undefined : parsedPage,
+      limit: Number.isNaN(parsedLimit) ? undefined : parsedLimit,
     };
 
-    return this.videoService.getVideos(
-      filters,
-      page ? parseInt(page) : 1,
-      limit ? parseInt(limit) : 10
-    );
+    return this.videoService.getVideos(filters);
   }
 
   @Get("creator/:creatorId")
