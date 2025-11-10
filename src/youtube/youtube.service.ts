@@ -163,7 +163,25 @@ export class YouTubeService {
         throw new BadRequestException("User not connected to YouTube");
       }
 
-      const accessToken = await this.refreshTokenIfNeeded(user);
+      let accessToken: string;
+      try {
+        accessToken = await this.refreshTokenIfNeeded(user);
+      } catch (error) {
+        // If token refresh failed due to invalid_grant, tokens are already cleared
+        if (
+          error instanceof BadRequestException &&
+          error.message.includes("reconnect your YouTube account")
+        ) {
+          this.logger.warn(
+            `Cannot sync videos for user ${userId}: YouTube tokens invalid. User needs to reconnect.`
+          );
+          throw new BadRequestException(
+            "YouTube access has been revoked or expired. Please reconnect your YouTube account to sync videos."
+          );
+        }
+        throw error;
+      }
+
       const channelVideos = await this.getChannelVideos(
         accessToken,
         user.youtubeChannelId
@@ -534,13 +552,19 @@ export class YouTubeService {
   }
 
   async refreshTokenIfNeeded(user: User): Promise<string> {
-    if (
-      !user.youtubeTokenExpiresAt ||
-      new Date() < user.youtubeTokenExpiresAt
-    ) {
+    // Check if user has an access token
+    if (!user.youtubeAccessToken) {
+      throw new BadRequestException(
+        "No access token available. Please reconnect your YouTube account."
+      );
+    }
+
+    // If token hasn't expired yet, return the current access token
+    if (user.youtubeTokenExpiresAt && new Date() < user.youtubeTokenExpiresAt) {
       return user.youtubeAccessToken;
     }
 
+    // Token is expired, need to refresh
     if (!user.youtubeRefreshToken) {
       throw new BadRequestException(
         "No refresh token available. Please reconnect your YouTube account."
@@ -571,8 +595,34 @@ export class YouTubeService {
       });
 
       if (!response.ok) {
-        const errorData = await response.text();
-        this.logger.error(`Token refresh failed: ${errorData}`);
+        const errorText = await response.text();
+        let errorData: any;
+        try {
+          errorData = JSON.parse(errorText);
+        } catch {
+          errorData = { error: "unknown", error_description: errorText };
+        }
+
+        this.logger.error(`Token refresh failed: ${errorText}`);
+
+        // Check for invalid_grant error - means token is expired or revoked
+        if (errorData.error === "invalid_grant") {
+          this.logger.warn(
+            `YouTube refresh token invalid for user ${user.id}. Clearing tokens. User needs to reconnect.`
+          );
+
+          // Clear all YouTube tokens - user needs to reconnect
+          await this.userRepository.update(user.id, {
+            youtubeAccessToken: null,
+            youtubeRefreshToken: null,
+            youtubeTokenExpiresAt: null,
+          });
+
+          throw new BadRequestException(
+            "YouTube access has been revoked or expired. Please reconnect your YouTube account."
+          );
+        }
+
         throw new BadRequestException("Failed to refresh YouTube access token");
       }
 
@@ -592,6 +642,10 @@ export class YouTubeService {
       this.logger.log("Successfully refreshed YouTube access token");
       return data.access_token;
     } catch (error) {
+      // Re-throw BadRequestException as-is (including our custom invalid_grant handling)
+      if (error instanceof BadRequestException) {
+        throw error;
+      }
       this.logger.error("Error refreshing token:", error);
       throw error;
     }
@@ -808,11 +862,30 @@ export class YouTubeService {
         },
       });
     } catch (error) {
+      const isInvalidGrant =
+        error instanceof BadRequestException &&
+        error.message.includes("reconnect your YouTube account");
+
       tests.push({
         name: "Get valid access token",
         passed: false,
-        message: `Error getting token: ${error.message}`,
+        message: isInvalidGrant
+          ? "YouTube access has been revoked or expired. Please reconnect your YouTube account."
+          : `Error getting token: ${error.message}`,
+        details: {
+          errorType: isInvalidGrant ? "invalid_grant" : "unknown",
+          tokensCleared: isInvalidGrant,
+        },
       });
+
+      if (isInvalidGrant) {
+        return this.createTestResult(
+          false,
+          "YouTube access has been revoked or expired. Please reconnect your YouTube account.",
+          tests
+        );
+      }
+
       return this.createTestResult(
         false,
         "Failed to get valid access token",

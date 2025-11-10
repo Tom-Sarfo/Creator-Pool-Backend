@@ -350,3 +350,4 @@ export class VideoService {
     return this.metricsTrackingService.getAllTrackingMetrics();
   }
 }
+

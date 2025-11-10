@@ -8,6 +8,8 @@ import { User } from "../entities/user.entity";
 import { PoolLifecycleService } from "./services/pool-lifecycle.service";
 import { PoolSchedulerService } from "./services/pool-scheduler.service";
 import { ProbabilityService } from "./services/probability.service";
+import { CreatorAnalyticsService } from "./services/creator-analytics.service";
+import { QuestionSuggestionService } from "./services/question-suggestion.service";
 
 @Module({
   imports: [TypeOrmModule.forFeature([Pool, Video, User])],
@@ -18,6 +20,8 @@ import { ProbabilityService } from "./services/probability.service";
     PoolSchedulerService,
     PoolService,
     ProbabilityService,
+    CreatorAnalyticsService,
+    QuestionSuggestionService,
   ],
   exports: [PoolService, PoolLifecycleService, ProbabilityService],
 })

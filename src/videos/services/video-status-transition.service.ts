@@ -1,4 +1,4 @@
-import { Injectable, Logger } from "@nestjs/common";
+import { Injectable, Logger, Inject } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { Repository } from "typeorm";
 import {
@@ -7,6 +7,8 @@ import {
   VideoVisibility,
 } from "../../entities/video.entity";
 import { Pool, PoolStatus } from "../../entities/pool.entity";
+import { YouTubeService } from "../../youtube/youtube.service";
+import { User } from "../../entities/user.entity";
 
 @Injectable()
 export class VideoStatusTransitionService {
@@ -16,7 +18,11 @@ export class VideoStatusTransitionService {
     @InjectRepository(Video)
     private videoRepository: Repository<Video>,
     @InjectRepository(Pool)
-    private poolRepository: Repository<Pool>
+    private poolRepository: Repository<Pool>,
+    @InjectRepository(User)
+    private userRepository: Repository<User>,
+    @Inject(YouTubeService)
+    private youtubeService: YouTubeService
   ) {}
 
   /**
@@ -54,9 +60,7 @@ export class VideoStatusTransitionService {
    */
   private async checkVideoTransition(video: Video): Promise<void> {
     try {
-      // In a real implementation, you would call YouTube API here
-      // For now, we'll simulate the check
-      const isNowPublic = await this.checkYouTubeVideoStatus(video.youtubeId);
+      const isNowPublic = await this.checkYouTubeVideoStatus(video);
 
       if (isNowPublic) {
         await this.transitionVideoToPublic(video);
@@ -70,14 +74,84 @@ export class VideoStatusTransitionService {
   }
 
   /**
-   * Simulate YouTube API call to check video status
-   * In production, this would call the actual YouTube Data API
+   * Check YouTube API to see if video status has changed from unlisted to public
    */
-  private async checkYouTubeVideoStatus(youtubeId: string): Promise<boolean> {
-    // TODO: Implement actual YouTube API call
-    // For now, return false to prevent automatic transitions in development
-    this.logger.debug(`Checking YouTube status for video: ${youtubeId}`);
-    return false;
+  private async checkYouTubeVideoStatus(video: Video): Promise<boolean> {
+    try {
+      // Get the creator's YouTube credentials
+      const user = await this.userRepository.findOne({
+        where: { id: video.creatorId },
+        select: [
+          "id",
+          "youtubeAccessToken",
+          "youtubeRefreshToken",
+          "youtubeTokenExpiresAt",
+        ],
+      });
+
+      if (!user || !user.youtubeAccessToken) {
+        this.logger.debug(
+          `Cannot check status for video ${video.youtubeId}: creator not connected to YouTube`
+        );
+        return false;
+      }
+
+      // Get a valid access token (refresh if needed)
+      const accessToken = await this.youtubeService.refreshTokenIfNeeded(user);
+
+      // Call YouTube API to get video status
+      const response = await fetch(
+        `https://www.googleapis.com/youtube/v3/videos?part=status&id=${video.youtubeId}`,
+        {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+        }
+      );
+
+      if (!response.ok) {
+        const errorData = await response.text();
+        this.logger.error(
+          `Failed to check video status for ${video.youtubeId}: ${errorData}`
+        );
+        return false;
+      }
+
+      const data = await response.json();
+
+      if (!data.items || data.items.length === 0) {
+        this.logger.warn(`Video ${video.youtubeId} not found on YouTube`);
+        return false;
+      }
+
+      const videoStatus = data.items[0].status?.privacyStatus;
+
+      // Check if video is now public
+      if (videoStatus === "public") {
+        this.logger.log(
+          `Video ${video.youtubeId} has transitioned from unlisted to public on YouTube`
+        );
+        return true;
+      }
+
+      return false;
+    } catch (error) {
+      // Check if error is due to invalid/revoked tokens
+      if (
+        error instanceof Error &&
+        error.message.includes("reconnect your YouTube account")
+      ) {
+        this.logger.warn(
+          `Cannot check status for video ${video.youtubeId}: Creator needs to reconnect YouTube account`
+        );
+      } else {
+        this.logger.error(
+          `Error checking YouTube status for video ${video.youtubeId}:`,
+          error
+        );
+      }
+      return false;
+    }
   }
 
   /**
@@ -88,9 +162,15 @@ export class VideoStatusTransitionService {
 
     try {
       // Update video status
+      const wasUnlisted = video.status === VideoStatus.UNLISTED;
       video.status = VideoStatus.PUBLIC;
       video.visibility = VideoVisibility.PUBLIC;
-      video.publishedAt = new Date();
+
+      // Only set publishedAt if it wasn't already set (don't overwrite if video was previously public)
+      if (!video.publishedAt) {
+        video.publishedAt = new Date();
+      }
+
       video.lastSyncedAt = new Date();
 
       await this.videoRepository.save(video);

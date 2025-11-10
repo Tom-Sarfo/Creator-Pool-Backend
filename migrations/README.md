@@ -2,6 +2,58 @@
 
 This directory contains SQL migration files for database schema changes.
 
+## Migration: Add Milestone Tracking Columns
+
+### File: `002_add_milestone_columns.sql`
+
+This migration adds milestone tracking columns to the `videos` table to support the question suggestion system.
+
+### What it does:
+
+1. Adds `views24h`, `views48h`, `views7d`, `views30d` columns (INTEGER, nullable)
+2. Adds `milestone24hCapturedAt`, `milestone48hCapturedAt`, `milestone7dCapturedAt`, `milestone30dCapturedAt` columns (TIMESTAMP, nullable)
+3. All columns are nullable for backward compatibility
+4. Milestones are captured automatically by the metrics tracking service
+
+### Running the Migration
+
+```bash
+psql -U your_username -d your_database_name -f migrations/002_add_milestone_columns.sql
+```
+
+### Verification
+
+After running the migration, verify it was successful:
+
+```bash
+psql -U your_username -d your_database_name -f migrations/verify_milestone_migration.sql
+```
+
+Or run these queries directly:
+
+```sql
+-- Check if columns exist
+SELECT column_name, data_type, is_nullable
+FROM information_schema.columns
+WHERE table_name = 'videos'
+  AND column_name IN ('views24h', 'views48h', 'views7d', 'views30d',
+                      'milestone24hCapturedAt', 'milestone48hCapturedAt',
+                      'milestone7dCapturedAt', 'milestone30dCapturedAt');
+```
+
+### Rollback (if needed)
+
+```sql
+ALTER TABLE videos DROP COLUMN IF EXISTS "views24h";
+ALTER TABLE videos DROP COLUMN IF EXISTS "views48h";
+ALTER TABLE videos DROP COLUMN IF EXISTS "views7d";
+ALTER TABLE videos DROP COLUMN IF EXISTS "views30d";
+ALTER TABLE videos DROP COLUMN IF EXISTS "milestone24hCapturedAt";
+ALTER TABLE videos DROP COLUMN IF EXISTS "milestone48hCapturedAt";
+ALTER TABLE videos DROP COLUMN IF EXISTS "milestone7dCapturedAt";
+ALTER TABLE videos DROP COLUMN IF EXISTS "milestone30dCapturedAt";
+```
+
 ## Migration: Add Probability Columns
 
 ### File: `001_add_probability_columns.sql`

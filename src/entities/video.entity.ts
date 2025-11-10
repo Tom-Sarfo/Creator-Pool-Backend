@@ -74,6 +74,31 @@ export class Video {
   @Column({ type: "timestamp", nullable: true })
   lastSyncedAt: Date;
 
+  // Milestone tracking fields (for analytics and suggestions)
+  @Column({ type: "int", nullable: true })
+  views24h: number; // Views 24 hours after publication
+
+  @Column({ type: "int", nullable: true })
+  views48h: number; // Views 48 hours after publication
+
+  @Column({ type: "int", nullable: true })
+  views7d: number; // Views 7 days after publication
+
+  @Column({ type: "int", nullable: true })
+  views30d: number; // Views 30 days after publication
+
+  @Column({ type: "timestamp", nullable: true })
+  milestone24hCapturedAt: Date;
+
+  @Column({ type: "timestamp", nullable: true })
+  milestone48hCapturedAt: Date;
+
+  @Column({ type: "timestamp", nullable: true })
+  milestone7dCapturedAt: Date;
+
+  @Column({ type: "timestamp", nullable: true })
+  milestone30dCapturedAt: Date;
+
   // Pool-related fields
   @Column({ type: "boolean", default: false })
   hasActivePool: boolean;

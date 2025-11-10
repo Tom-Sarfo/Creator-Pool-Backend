@@ -36,9 +36,9 @@ export class MetricsSchedulerService implements OnModuleInit, OnModuleDestroy {
             this.logger.error("Error during scheduled metrics update:", error);
           });
         }
-      }, 300000); // 5 minutes
+      }, 120000); // 2 minutes - faster updates for better UX
 
-      this.logger.log("Metrics scheduler started (running every 5 minutes)");
+      this.logger.log("Metrics scheduler started (running every 2 minutes)");
     }, 1000);
   }
 

@@ -25,10 +25,15 @@ import { User, UserRole } from "../entities/user.entity";
 import { Roles } from "../auth/decorators/roles.decorator";
 import { RolesGuard } from "../auth/guards/roles.guard";
 import { PoolStatus } from "../entities/pool.entity";
+import { QuestionSuggestionService } from "./services/question-suggestion.service";
 
 @Controller("pools")
 export class PoolController {
-  constructor(@Inject(PoolService) private poolService: PoolService) {}
+  constructor(
+    @Inject(PoolService) private poolService: PoolService,
+    @Inject(QuestionSuggestionService)
+    private questionSuggestionService: QuestionSuggestionService
+  ) {}
 
   @Post()
   @UseGuards(AuthGuard("jwt"), RolesGuard)
@@ -146,5 +151,18 @@ export class PoolController {
     @Body() depositPledgeDto: DepositPledgeDto
   ) {
     return this.poolService.depositPledge(id, depositPledgeDto.amount, user.id);
+  }
+
+  @Get("creators/:creatorId/suggestions")
+  @UseGuards(AuthGuard("jwt"), RolesGuard)
+  @Roles(UserRole.CREATOR, UserRole.ADMIN)
+  async getSuggestions(
+    @Param("creatorId") creatorId: string,
+    @Query("videoId") videoId?: string
+  ) {
+    return this.questionSuggestionService.generateSuggestions(
+      creatorId,
+      videoId
+    );
   }
 }

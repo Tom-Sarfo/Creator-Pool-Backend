@@ -9,3 +9,7 @@ export class AddFundsDto {
   @IsString()
   paymentMethod?: string;
 }
+
+
+
+

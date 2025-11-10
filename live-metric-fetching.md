@@ -293,3 +293,7 @@ If metrics seem stale:
 1. Check the `lastSyncedAt` timestamp
 2. Manually trigger a sync using `POST /api/videos/:id/sync-metrics`
 3. Verify the pool is in `LIVE_TRACKING` status
+
+
+
+

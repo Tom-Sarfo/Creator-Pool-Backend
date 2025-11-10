@@ -50,3 +50,7 @@ COMMENT ON COLUMN pools."probabilityNo" IS 'Probability of NO outcome (0-1 range
 -- FROM pools
 -- WHERE "totalStake" > 0;
 
+
+
+
+
