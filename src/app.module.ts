@@ -41,17 +41,34 @@ import { VideoModule } from "./videos/video.module";
     ]),
     TypeOrmModule.forRootAsync({
       imports: [ConfigModule],
-      useFactory: (configService: ConfigService) => ({
-        type: "postgres",
-        host: configService.get("DB_HOST"),
-        port: configService.get("DB_PORT"),
-        username: configService.get("DB_USERNAME"),
-        password: configService.get("DB_PASSWORD"),
-        database: configService.get("DB_NAME"),
-        entities: [User, Video, Pool, Prediction],
-        synchronize: configService.get("NODE_ENV") !== "production",
-        logging: configService.get("NODE_ENV") === "development",
-      }),
+      useFactory: (configService: ConfigService) => {
+        const nodeEnv = configService.get<string>("NODE_ENV");
+        const isProduction = nodeEnv === "production";
+        const isDevelopment = nodeEnv === "development";
+        const databaseUrl = configService.get<string>("DATABASE_URL");
+        const dbHost = configService.get<string>("DB_HOST");
+        const dbPort = configService.get<string>("DB_PORT");
+        const dbUsername = configService.get<string>("DB_USERNAME");
+        const dbPassword = configService.get<string>("DB_PASSWORD");
+        const dbName = configService.get<string>("DB_NAME");
+
+        const fallbackConfig = {
+          host: dbHost ?? "localhost",
+          port: parseInt(dbPort ?? "5432", 10),
+          username: dbUsername ?? "",
+          password: dbPassword ?? "",
+          database: dbName ?? "",
+        };
+
+        return {
+          type: "postgres",
+          ...(databaseUrl ? { url: databaseUrl } : fallbackConfig),
+          ssl: isProduction ? { rejectUnauthorized: false } : false,
+          entities: [User, Video, Pool, Prediction],
+          synchronize: !isProduction,
+          logging: isDevelopment,
+        };
+      },
       inject: [ConfigService],
     }),
     AuthModule,
