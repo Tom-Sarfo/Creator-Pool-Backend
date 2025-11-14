@@ -39,34 +39,52 @@ import { VideoModule } from "./videos/video.module";
         limit: 100, // 100 requests per minute
       },
     ]),
+    // TypeOrmModule.forRootAsync({
+    //   imports: [ConfigModule],
+    //   useFactory: (configService: ConfigService) => ({
+    //     type: "postgres",
+    //     host: configService.get("DB_HOST"),
+    //     port: configService.get("DB_PORT"),
+    //     username: configService.get("DB_USERNAME"),
+    //     password: configService.get("DB_PASSWORD"),
+    //     database: configService.get("DB_NAME"),
+    //     entities: [User, Video, Pool, Prediction],
+    //     synchronize: configService.get("NODE_ENV") !== "production",
+    //     logging: configService.get("NODE_ENV") === "development",
+    //   }),
+    //   inject: [ConfigService],
+    // }),
+
     TypeOrmModule.forRootAsync({
       imports: [ConfigModule],
       useFactory: (configService: ConfigService) => {
-        const nodeEnv = configService.get<string>("NODE_ENV");
-        const isProduction = nodeEnv === "production";
-        const isDevelopment = nodeEnv === "development";
+        // Use the full DATABASE_URL if available (e.g., from Vercel/Neon)
         const databaseUrl = configService.get<string>("DATABASE_URL");
-        const dbHost = configService.get<string>("DB_HOST");
-        const dbPort = configService.get<string>("DB_PORT");
-        const dbUsername = configService.get<string>("DB_USERNAME");
-        const dbPassword = configService.get<string>("DB_PASSWORD");
-        const dbName = configService.get<string>("DB_NAME");
 
-        const fallbackConfig = {
-          host: dbHost ?? "localhost",
-          port: parseInt(dbPort ?? "5432", 10),
-          username: dbUsername ?? "",
-          password: dbPassword ?? "",
-          database: dbName ?? "",
-        };
+        if (databaseUrl) {
+          return {
+            type: "postgres" as const,
+            url: databaseUrl,
+            entities: [User, Video, Pool, Prediction],
+            synchronize: configService.get<string>("NODE_ENV") !== "production",
+            logging: configService.get<string>("NODE_ENV") === "development",
+            ssl: {
+              rejectUnauthorized: false,
+            },
+          };
+        }
 
+        // Fallback to individual variables for local development if needed
         return {
-          type: "postgres",
-          ...(databaseUrl ? { url: databaseUrl } : fallbackConfig),
-          ssl: isProduction ? { rejectUnauthorized: false } : false,
+          type: "postgres" as const,
+          host: configService.get<string>("DB_HOST"),
+          port: configService.get<number>("DB_PORT"),
+          username: configService.get<string>("DB_USERNAME"),
+          password: configService.get<string>("DB_PASSWORD"),
+          database: configService.get<string>("DB_NAME"),
           entities: [User, Video, Pool, Prediction],
-          synchronize: !isProduction,
-          logging: isDevelopment,
+          synchronize: configService.get<string>("NODE_ENV") !== "production",
+          logging: configService.get<string>("NODE_ENV") === "development",
         };
       },
       inject: [ConfigService],
