@@ -43,8 +43,13 @@ async function bootstrap() {
   // Enhanced CORS configuration
   app.enableCors({
     origin: (origin, callback) => {
+      // Build allowed origins from environment and defaults
       const allowedOrigins = [
-        process.env.FRONTEND_URL || "http://localhost:3001",
+        // Production frontend (Vercel)
+        "https://creator-pool.vercel.app",
+        // Environment variable for frontend URL
+        process.env.FRONTEND_URL,
+        // Local development origins
         "http://localhost:3000",
         "http://localhost:3001",
         "http://127.0.0.1:3000",
@@ -53,7 +58,7 @@ async function bootstrap() {
         "http://localhost:5173", // Vite default
         "http://127.0.0.1:8080", // Common dev port
         "http://localhost:8080", // Common dev port
-      ];
+      ].filter(Boolean); // Remove undefined values
 
       // Allow requests with no origin (mobile apps, Postman, etc.)
       if (!origin) return callback(null, true);
@@ -66,6 +71,7 @@ async function bootstrap() {
         }
       }
 
+      // Check if origin is in allowed list
       if (allowedOrigins.includes(origin)) {
         callback(null, true);
       } else {
