@@ -12,6 +12,18 @@ async function bootstrap() {
     exclude: ["/health"], // Exclude health check from prefix if needed
   });
 
+  // Normalize URLs: Remove double slashes and ensure proper path format
+  app.use((req, res, next) => {
+    // Normalize the URL by removing double slashes (except after protocol)
+    if (req.url) {
+      req.url = req.url.replace(/([^:]\/)\/+/g, "$1");
+    }
+    if (req.path) {
+      req.path = req.path.replace(/\/+/g, "/");
+    }
+    next();
+  });
+
   // Backward compatibility: Rewrite old routes to /api routes (works for all HTTP methods)
   app.use((req, res, next) => {
     // Only rewrite if request doesn't already start with /api and isn't /health
