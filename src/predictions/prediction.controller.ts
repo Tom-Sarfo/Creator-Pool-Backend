@@ -60,6 +60,12 @@ export class PredictionController {
     return this.predictionService.getPredictions(filters);
   }
 
+  @Get("me")
+  @UseGuards(AuthGuard("jwt"))
+  async getMyPredictions(@CurrentUser() user: User) {
+    return this.predictionService.getUserPredictions(user.id);
+  }
+
   @Get("user/:userId")
   @UseGuards(AuthGuard("jwt"), RolesGuard)
   @Roles(UserRole.ADMIN)
@@ -82,6 +88,12 @@ export class PredictionController {
     @Param("poolId") poolId: string
   ) {
     return this.predictionService.getUserPoolPrediction(userId, poolId);
+  }
+
+  @Get("me/stats")
+  @UseGuards(AuthGuard("jwt"))
+  async getMyPredictionStats(@CurrentUser() user: User) {
+    return this.predictionService.getUserPredictionStats(user.id);
   }
 
   @Get("user/:userId/stats")
