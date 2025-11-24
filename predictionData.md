@@ -25,34 +25,37 @@ This guide explains how to fetch and integrate real-time prediction data for a p
 **Description**: Returns comprehensive statistics for the authenticated user's predictions.
 
 **Request**:
+
 ```http
 GET /predictions/me/stats
 Authorization: Bearer <your-jwt-token>
 ```
 
 **Response**:
+
 ```typescript
 interface PredictionStats {
-  totalPredictions: number;        // Total number of predictions made
-  wonPredictions: number;          // Number of winning predictions
-  lostPredictions: number;          // Number of losing predictions
-  pendingPredictions: number;      // Active predictions (not yet settled)
-  totalEarnings: number;           // Total earnings from won predictions
-  totalStaked: number;             // Total amount staked across all predictions
-  winRate: number;                 // Win rate percentage (0-100)
+  totalPredictions: number; // Total number of predictions made
+  wonPredictions: number; // Number of winning predictions
+  lostPredictions: number; // Number of losing predictions
+  pendingPredictions: number; // Active predictions (not yet settled)
+  totalEarnings: number; // Total earnings from won predictions
+  totalStaked: number; // Total amount staked across all predictions
+  winRate: number; // Win rate percentage (0-100)
 }
 ```
 
 **Example Response**:
+
 ```json
 {
   "totalPredictions": 45,
   "wonPredictions": 28,
   "lostPredictions": 12,
   "pendingPredictions": 5,
-  "totalEarnings": 1250.50,
-  "totalStaked": 890.00,
-  "winRate": 70.00
+  "totalEarnings": 1250.5,
+  "totalStaked": 890.0,
+  "winRate": 70.0
 }
 ```
 
@@ -65,6 +68,7 @@ interface PredictionStats {
 **Description**: Returns all predictions made by the authenticated user, ordered by most recent first.
 
 **Request**:
+
 ```http
 GET /predictions/me
 Authorization: Bearer <your-jwt-token>
@@ -73,6 +77,7 @@ Authorization: Bearer <your-jwt-token>
 **Response**: Array of prediction objects with full details including pool and video information.
 
 **Example Response**:
+
 ```json
 [
   {
@@ -80,8 +85,8 @@ Authorization: Bearer <your-jwt-token>
     "poolId": "pool-uuid",
     "predictorId": "user-uuid",
     "choice": "yes",
-    "stake": 50.00,
-    "potentialPayout": 75.50,
+    "stake": 50.0,
+    "potentialPayout": 75.5,
     "actualPayout": null,
     "result": "pending",
     "settledAt": null,
@@ -129,18 +134,18 @@ Authorization: Bearer <your-jwt-token>
 
 ```typescript
 interface Prediction {
-  id: string;                      // UUID
-  poolId: string;                  // UUID of the pool
-  predictorId: string;             // UUID of the predictor (user)
-  choice: "yes" | "no";           // Prediction choice
-  stake: number;                   // Amount staked
-  potentialPayout: number | null;  // Calculated potential payout
-  actualPayout: number | null;     // Actual payout if won
+  id: string; // UUID
+  poolId: string; // UUID of the pool
+  predictorId: string; // UUID of the predictor (user)
+  choice: "yes" | "no"; // Prediction choice
+  stake: number; // Amount staked
+  potentialPayout: number | null; // Calculated potential payout
+  actualPayout: number | null; // Actual payout if won
   result: "won" | "lost" | "pending"; // Prediction result
-  settledAt: Date | null;          // When prediction was settled
-  predictedAt: Date;               // When prediction was made
-  updatedAt: Date;                 // Last update timestamp
-  pool?: Pool;                     // Related pool object (if included)
+  settledAt: Date | null; // When prediction was settled
+  predictedAt: Date; // When prediction was made
+  updatedAt: Date; // Last update timestamp
+  pool?: Pool; // Related pool object (if included)
 }
 ```
 
@@ -148,13 +153,13 @@ interface Prediction {
 
 ```typescript
 interface PredictionStats {
-  totalPredictions: number;        // All predictions (won + lost + pending)
-  wonPredictions: number;          // Predictions that won
-  lostPredictions: number;         // Predictions that lost
-  pendingPredictions: number;       // Active predictions (not yet settled)
-  totalEarnings: number;           // Sum of actualPayout from won predictions
-  totalStaked: number;             // Sum of all stakes
-  winRate: number;                 // (wonPredictions / totalPredictions) * 100
+  totalPredictions: number; // All predictions (won + lost + pending)
+  wonPredictions: number; // Predictions that won
+  lostPredictions: number; // Predictions that lost
+  pendingPredictions: number; // Active predictions (not yet settled)
+  totalEarnings: number; // Sum of actualPayout from won predictions
+  totalStaked: number; // Sum of all stakes
+  winRate: number; // (wonPredictions / totalPredictions) * 100
 }
 ```
 
@@ -180,10 +185,10 @@ Create a utility function to handle authenticated API requests:
 
 ```typescript
 // utils/api.ts
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3000';
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3000";
 
 interface ApiOptions {
-  method?: 'GET' | 'POST' | 'PUT' | 'DELETE';
+  method?: "GET" | "POST" | "PUT" | "DELETE";
   body?: any;
   headers?: Record<string, string>;
 }
@@ -192,17 +197,17 @@ async function apiRequest<T>(
   endpoint: string,
   options: ApiOptions = {}
 ): Promise<T> {
-  const token = localStorage.getItem('accessToken');
-  
+  const token = localStorage.getItem("accessToken");
+
   if (!token) {
-    throw new Error('No authentication token found');
+    throw new Error("No authentication token found");
   }
 
   const response = await fetch(`${API_BASE_URL}${endpoint}`, {
-    method: options.method || 'GET',
+    method: options.method || "GET",
     headers: {
-      'Content-Type': 'application/json',
-      'Authorization': `Bearer ${token}`,
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
       ...options.headers,
     },
     body: options.body ? JSON.stringify(options.body) : undefined,
@@ -211,7 +216,7 @@ async function apiRequest<T>(
   if (!response.ok) {
     if (response.status === 401) {
       // Token expired, handle refresh or redirect to login
-      throw new Error('Authentication failed');
+      throw new Error("Authentication failed");
     }
     throw new Error(`API request failed: ${response.statusText}`);
   }
@@ -220,8 +225,8 @@ async function apiRequest<T>(
 }
 
 export const predictionApi = {
-  getMyStats: () => apiRequest<PredictionStats>('/predictions/me/stats'),
-  getMyPredictions: () => apiRequest<Prediction[]>('/predictions/me'),
+  getMyStats: () => apiRequest<PredictionStats>("/predictions/me/stats"),
+  getMyPredictions: () => apiRequest<Prediction[]>("/predictions/me"),
 };
 ```
 
@@ -229,8 +234,8 @@ export const predictionApi = {
 
 ```typescript
 // hooks/usePredictionStats.ts
-import { useState, useEffect } from 'react';
-import { predictionApi, PredictionStats } from '../utils/api';
+import { useState, useEffect } from "react";
+import { predictionApi, PredictionStats } from "../utils/api";
 
 interface UsePredictionStatsReturn {
   stats: PredictionStats | null;
@@ -251,7 +256,7 @@ export function usePredictionStats(): UsePredictionStatsReturn {
       const data = await predictionApi.getMyStats();
       setStats(data);
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Failed to fetch stats');
+      setError(err instanceof Error ? err.message : "Failed to fetch stats");
       setStats(null);
     } finally {
       setLoading(false);
@@ -275,8 +280,8 @@ export function usePredictionStats(): UsePredictionStatsReturn {
 
 ```typescript
 // hooks/useMyPredictions.ts
-import { useState, useEffect } from 'react';
-import { predictionApi, Prediction } from '../utils/api';
+import { useState, useEffect } from "react";
+import { predictionApi, Prediction } from "../utils/api";
 
 interface UseMyPredictionsReturn {
   predictions: Prediction[];
@@ -297,7 +302,9 @@ export function useMyPredictions(): UseMyPredictionsReturn {
       const data = await predictionApi.getMyPredictions();
       setPredictions(data);
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Failed to fetch predictions');
+      setError(
+        err instanceof Error ? err.message : "Failed to fetch predictions"
+      );
       setPredictions([]);
     } finally {
       setLoading(false);
@@ -342,7 +349,7 @@ export function PredictorStats() {
   return (
     <div className="predictor-stats">
       <h2>Your Prediction Statistics</h2>
-      
+
       <div className="stats-grid">
         <div className="stat-card">
           <h3>Active Predictions</h3>
@@ -399,12 +406,12 @@ For real-time updates, you can poll the stats endpoint at regular intervals:
 
 ```typescript
 // hooks/usePredictionStats.ts (Enhanced with polling)
-import { useState, useEffect, useRef } from 'react';
-import { predictionApi, PredictionStats } from '../utils/api';
+import { useState, useEffect, useRef } from "react";
+import { predictionApi, PredictionStats } from "../utils/api";
 
 interface UsePredictionStatsOptions {
   pollInterval?: number; // Poll interval in milliseconds (default: 30000 = 30s)
-  enabled?: boolean;     // Enable/disable polling
+  enabled?: boolean; // Enable/disable polling
 }
 
 export function usePredictionStats(
@@ -422,7 +429,7 @@ export function usePredictionStats(
       const data = await predictionApi.getMyStats();
       setStats(data);
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Failed to fetch stats');
+      setError(err instanceof Error ? err.message : "Failed to fetch stats");
       // Don't clear stats on error, keep showing last known data
     } finally {
       setLoading(false);
@@ -456,6 +463,7 @@ export function usePredictionStats(
 ```
 
 **Usage**:
+
 ```typescript
 // Poll every 10 seconds
 const { stats } = usePredictionStats({ pollInterval: 10000 });
@@ -470,8 +478,8 @@ For true real-time updates, implement WebSocket connection:
 
 ```typescript
 // hooks/usePredictionStatsWebSocket.ts
-import { useState, useEffect, useRef } from 'react';
-import { PredictionStats } from '../utils/api';
+import { useState, useEffect, useRef } from "react";
+import { PredictionStats } from "../utils/api";
 
 interface UsePredictionStatsWebSocketOptions {
   enabled?: boolean;
@@ -489,9 +497,9 @@ export function usePredictionStatsWebSocket(
   useEffect(() => {
     if (!enabled) return;
 
-    const token = localStorage.getItem('accessToken');
+    const token = localStorage.getItem("accessToken");
     if (!token) {
-      setError('No authentication token found');
+      setError("No authentication token found");
       setLoading(false);
       return;
     }
@@ -511,18 +519,18 @@ export function usePredictionStatsWebSocket(
         const data: PredictionStats = JSON.parse(event.data);
         setStats(data);
       } catch (err) {
-        console.error('Failed to parse WebSocket message:', err);
+        console.error("Failed to parse WebSocket message:", err);
       }
     };
 
     ws.onerror = (error) => {
-      setError('WebSocket connection error');
+      setError("WebSocket connection error");
       setLoading(false);
     };
 
     ws.onclose = () => {
       // Optionally attempt to reconnect
-      console.log('WebSocket closed');
+      console.log("WebSocket closed");
     };
 
     wsRef.current = ws;
@@ -537,7 +545,7 @@ export function usePredictionStatsWebSocket(
   const refetch = async () => {
     // For WebSocket, refetch means requesting an update
     if (wsRef.current && wsRef.current.readyState === WebSocket.OPEN) {
-      wsRef.current.send(JSON.stringify({ action: 'refresh' }));
+      wsRef.current.send(JSON.stringify({ action: "refresh" }));
     }
   };
 
@@ -561,7 +569,7 @@ Update stats immediately after user actions (like creating a prediction):
 const handleCreatePrediction = async (predictionData) => {
   try {
     const result = await predictionApi.createPrediction(predictionData);
-    
+
     // Optimistically update stats
     if (stats) {
       setStats({
@@ -571,7 +579,7 @@ const handleCreatePrediction = async (predictionData) => {
         totalStaked: stats.totalStaked + predictionData.stake,
       });
     }
-    
+
     // Refetch to get accurate data
     await refetch();
   } catch (error) {
@@ -594,9 +602,9 @@ import { useMyPredictions } from '../hooks/useMyPredictions';
 
 export function Dashboard() {
   const [pollInterval, setPollInterval] = useState(30000); // 30 seconds
-  const { stats, loading: statsLoading, error: statsError, refetch: refetchStats } = 
+  const { stats, loading: statsLoading, error: statsError, refetch: refetchStats } =
     usePredictionStats({ pollInterval });
-  const { predictions, loading: predictionsLoading, refetch: refetchPredictions } = 
+  const { predictions, loading: predictionsLoading, refetch: refetchPredictions } =
     useMyPredictions();
 
   const handleRefresh = async () => {
@@ -732,12 +740,12 @@ Always handle authentication errors and token expiration:
 try {
   const stats = await predictionApi.getMyStats();
 } catch (error) {
-  if (error.message === 'Authentication failed') {
+  if (error.message === "Authentication failed") {
     // Redirect to login or refresh token
     handleTokenRefresh();
   } else {
     // Show error message to user
-    showError('Failed to load prediction stats');
+    showError("Failed to load prediction stats");
   }
 }
 ```
@@ -758,10 +766,10 @@ Consider caching stats data to reduce API calls:
 
 ```typescript
 // Use React Query or SWR for automatic caching and refetching
-import useSWR from 'swr';
+import useSWR from "swr";
 
 const { data: stats, error } = useSWR(
-  '/predictions/me/stats',
+  "/predictions/me/stats",
   predictionApi.getMyStats,
   { refreshInterval: 30000 }
 );
@@ -773,7 +781,7 @@ Update UI immediately after user actions, then sync with server:
 
 ```typescript
 // After creating prediction
-setStats(prev => ({
+setStats((prev) => ({
   ...prev,
   pendingPredictions: prev.pendingPredictions + 1,
   totalPredictions: prev.totalPredictions + 1,
@@ -800,8 +808,9 @@ useEffect(() => {
     }
   };
 
-  document.addEventListener('visibilitychange', handleVisibilityChange);
-  return () => document.removeEventListener('visibilitychange', handleVisibilityChange);
+  document.addEventListener("visibilitychange", handleVisibilityChange);
+  return () =>
+    document.removeEventListener("visibilitychange", handleVisibilityChange);
 }, []);
 ```
 
@@ -819,10 +828,10 @@ To integrate predictor data in your frontend:
 6. **Optimistic updates**: Update UI immediately after user actions
 
 The key metrics available are:
+
 - **Active Predictions**: `pendingPredictions` - predictions waiting to be settled
 - **Total Predictions**: `totalPredictions` - all predictions made
 - **Win Rate**: `winRate` - percentage of settled predictions that won
 - **Total Earnings**: `totalEarnings` - sum of payouts from won predictions
 
 For real-time updates, implement polling with a reasonable interval (30 seconds recommended) or wait for WebSocket support to be added to the backend.
-

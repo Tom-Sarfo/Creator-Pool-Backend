@@ -94,6 +94,19 @@ export class PoolService {
       throw new ConflictException("Video already has an active pool");
     }
 
+    // Validate wallet balance and deduct pledge if provided
+    if (createPoolDto.creatorPledge && createPoolDto.creatorPledge > 0) {
+      const walletBalance = Number(creator.walletBalance) || 0;
+
+      if (createPoolDto.creatorPledge > walletBalance) {
+        throw new BadRequestException("Insufficient wallet balance for pledge");
+      }
+
+      // Deduct pledge from wallet BEFORE creating pool (atomic operation)
+      creator.walletBalance -= createPoolDto.creatorPledge;
+      await this.userRepository.save(creator);
+    }
+
     // Create pool
     const pool = this.poolRepository.create({
       ...createPoolDto,
@@ -433,6 +446,23 @@ export class PoolService {
     if (pool.status === PoolStatus.SETTLED) {
       throw new BadRequestException("Cannot deposit pledge for settled pools");
     }
+
+    // Get creator and validate wallet balance
+    const creator = await this.userRepository.findOne({
+      where: { id: creatorId },
+    });
+    if (!creator) {
+      throw new NotFoundException("Creator not found");
+    }
+
+    const walletBalance = Number(creator.walletBalance) || 0;
+    if (amount > walletBalance) {
+      throw new BadRequestException("Insufficient wallet balance");
+    }
+
+    // Deduct amount from wallet BEFORE updating pool (atomic operation)
+    creator.walletBalance -= amount;
+    await this.userRepository.save(creator);
 
     // Update pledge amount (add to existing if any)
     const currentPledge = Number(pool.creatorPledge) || 0;
