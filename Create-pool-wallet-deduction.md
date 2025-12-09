@@ -14,6 +14,7 @@ The backend now handles wallet deduction **atomically** when creating pools or d
 ### 1. POST `/api/pools` (Create Pool)
 
 **New Behavior:**
+
 - If `creatorPledge` is provided and > 0, the backend automatically:
   1. Validates creator's wallet balance is sufficient
   2. Deducts the pledge amount from creator's wallet
@@ -21,6 +22,7 @@ The backend now handles wallet deduction **atomically** when creating pools or d
 - All operations happen atomically in a single request
 
 **Request (unchanged):**
+
 ```typescript
 POST /api/pools
 Authorization: Bearer <token>
@@ -37,6 +39,7 @@ Content-Type: application/json
 ```
 
 **Response (unchanged):**
+
 ```typescript
 {
   "id": "pool-uuid",
@@ -52,6 +55,7 @@ Content-Type: application/json
 ```
 
 **Error Responses (new):**
+
 ```typescript
 // Insufficient wallet balance
 {
@@ -64,6 +68,7 @@ Content-Type: application/json
 ### 2. POST `/api/pools/:id/deposit-pledge` (Deposit Pledge)
 
 **New Behavior:**
+
 - The backend now:
   1. Validates creator's wallet balance is sufficient
   2. Deducts the amount from creator's wallet
@@ -71,6 +76,7 @@ Content-Type: application/json
 - Wallet deduction happens atomically with pledge update
 
 **Request (unchanged):**
+
 ```typescript
 POST /api/pools/:id/deposit-pledge
 Authorization: Bearer <token>
@@ -82,6 +88,7 @@ Content-Type: application/json
 ```
 
 **Response (unchanged):**
+
 ```typescript
 {
   "id": "pool-uuid",
@@ -91,6 +98,7 @@ Content-Type: application/json
 ```
 
 **Error Responses (new):**
+
 ```typescript
 // Insufficient wallet balance
 {
@@ -105,19 +113,20 @@ Content-Type: application/json
 ### Before (Old Approach - Two API Calls)
 
 **❌ OLD: Separate calls required**
+
 ```typescript
 // Step 1: Create pool (pledge stored but wallet NOT deducted)
 const pool = await createPool({
   videoId: "uuid",
   question: "Will this reach 10k views?",
   targetViews: 10000,
-  creatorPledge: 50.00
+  creatorPledge: 50.0,
 });
 
 // Step 2: Manually deposit pledge (deduct from wallet)
 // This was required to actually deduct funds
 try {
-  await depositPledge(pool.id, 50.00);
+  await depositPledge(pool.id, 50.0);
 } catch (error) {
   // Pool created but pledge not deposited - inconsistent state!
   console.error("Failed to deposit pledge:", error);
@@ -125,6 +134,7 @@ try {
 ```
 
 **Problems:**
+
 - Two API calls required
 - Potential for inconsistent state (pool created but pledge not deposited)
 - More complex error handling
@@ -133,13 +143,14 @@ try {
 ### After (New Approach - Single API Call)
 
 **✅ NEW: Single atomic operation**
+
 ```typescript
 // Single call - wallet automatically deducted
 const pool = await createPool({
   videoId: "uuid",
   question: "Will this reach 10k views?",
   targetViews: 10000,
-  creatorPledge: 50.00  // Automatically deducted from wallet
+  creatorPledge: 50.0, // Automatically deducted from wallet
 });
 
 // Done! No need for separate deposit-pledge call
@@ -228,7 +239,7 @@ function CreatePoolForm() {
   return (
     <form onSubmit={handleSubmit}>
       {error && <div className="error">{error}</div>}
-      
+
       <div>
         <label>Question</label>
         <input
@@ -316,7 +327,7 @@ function DepositPledgeForm({ poolId, currentWalletBalance }: { poolId: string, c
 
       // Update local wallet balance
       // You may want to refetch user data to get accurate balance
-      
+
       console.log('Pledge deposited:', updatedPool);
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Failed to deposit pledge');
@@ -328,7 +339,7 @@ function DepositPledgeForm({ poolId, currentWalletBalance }: { poolId: string, c
   return (
     <form onSubmit={handleSubmit}>
       {error && <div className="error">{error}</div>}
-      
+
       <div>
         <label>
           Amount
@@ -357,6 +368,7 @@ function DepositPledgeForm({ poolId, currentWalletBalance }: { poolId: string, c
 ### New Error Scenarios
 
 1. **Insufficient Wallet Balance (Create Pool)**
+
    - Status: `400 Bad Request`
    - Message: `"Insufficient wallet balance for pledge"`
    - **Action**: Show error, allow user to reduce pledge or add funds
@@ -374,19 +386,21 @@ async function handleCreatePool(data: CreatePoolRequest) {
     const pool = await createPool(data);
     return pool;
   } catch (error) {
-    if (error.message.includes('Insufficient wallet balance')) {
+    if (error.message.includes("Insufficient wallet balance")) {
       // Handle insufficient balance
-      showError('You don\'t have enough funds. Please reduce your pledge or add funds to your wallet.');
+      showError(
+        "You don't have enough funds. Please reduce your pledge or add funds to your wallet."
+      );
       return null;
     }
-    
-    if (error.message.includes('Video already has an active pool')) {
-      showError('This video already has an active pool.');
+
+    if (error.message.includes("Video already has an active pool")) {
+      showError("This video already has an active pool.");
       return null;
     }
-    
+
     // Handle other errors
-    showError('Failed to create pool. Please try again.');
+    showError("Failed to create pool. Please try again.");
     return null;
   }
 }
@@ -400,7 +414,7 @@ Validate wallet balance on the frontend before making the API call:
 
 ```typescript
 if (creatorPledge > walletBalance) {
-  showError('Insufficient wallet balance');
+  showError("Insufficient wallet balance");
   return;
 }
 ```
@@ -414,7 +428,7 @@ After successful pool creation or pledge deposit, update wallet balance immediat
 ```typescript
 const pool = await createPool(data);
 // Update wallet balance optimistically
-setWalletBalance(prev => prev - data.creatorPledge);
+setWalletBalance((prev) => prev - data.creatorPledge);
 ```
 
 **Why?** Better UX - user sees balance update immediately.
@@ -437,10 +451,13 @@ Provide user-friendly error messages:
 
 ```typescript
 const errorMessages = {
-  'Insufficient wallet balance for pledge': 'You don\'t have enough funds. Please reduce your pledge or add funds.',
-  'Insufficient wallet balance': 'You don\'t have enough funds for this deposit.',
-  'Video already has an active pool': 'This video already has an active pool.',
-  'Only the pool creator can deposit pledge': 'Only the pool creator can deposit pledges.',
+  "Insufficient wallet balance for pledge":
+    "You don't have enough funds. Please reduce your pledge or add funds.",
+  "Insufficient wallet balance":
+    "You don't have enough funds for this deposit.",
+  "Video already has an active pool": "This video already has an active pool.",
+  "Only the pool creator can deposit pledge":
+    "Only the pool creator can deposit pledges.",
 };
 ```
 
@@ -482,12 +499,14 @@ const remainingBalance = walletBalance - creatorPledge;
 ## Testing Scenarios
 
 ### Test Case 1: Create Pool with Sufficient Balance
+
 1. User has $100 in wallet
 2. Create pool with $50 pledge
 3. ✅ Pool created successfully
 4. ✅ Wallet balance reduced to $50
 
 ### Test Case 2: Create Pool with Insufficient Balance
+
 1. User has $30 in wallet
 2. Try to create pool with $50 pledge
 3. ✅ Error: "Insufficient wallet balance for pledge"
@@ -495,12 +514,14 @@ const remainingBalance = walletBalance - creatorPledge;
 5. ✅ Wallet balance unchanged ($30)
 
 ### Test Case 3: Create Pool without Pledge
+
 1. User has $100 in wallet
 2. Create pool with $0 pledge (or omit pledge)
 3. ✅ Pool created successfully
 4. ✅ Wallet balance unchanged ($100)
 
 ### Test Case 4: Deposit Pledge with Sufficient Balance
+
 1. Pool exists with $25 pledge
 2. User has $50 in wallet
 3. Deposit additional $25
@@ -508,6 +529,7 @@ const remainingBalance = walletBalance - creatorPledge;
 5. ✅ Wallet balance reduced to $25
 
 ### Test Case 5: Deposit Pledge with Insufficient Balance
+
 1. Pool exists
 2. User has $20 in wallet
 3. Try to deposit $30
@@ -524,4 +546,3 @@ const remainingBalance = walletBalance - creatorPledge;
 - ✅ **Improved UX** - Immediate feedback on wallet balance
 
 The backend now handles all wallet operations automatically, making the frontend implementation simpler and more reliable.
-

@@ -538,10 +538,3 @@ function CreatorDashboard() {
 - [ ] Verify number formatting (K, M suffixes)
 - [ ] Test with slow network (loading states)
 
-
-
-
-
-
-
-
