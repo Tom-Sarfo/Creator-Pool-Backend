@@ -1,8 +1,13 @@
-import { Injectable, Logger } from "@nestjs/common";
+import { Injectable, Logger, Inject } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { Repository } from "typeorm";
 import { Pool, PoolStatus, PoolResult } from "../../entities/pool.entity";
 import { Video, VideoStatus } from "../../entities/video.entity";
+import { Prediction, PredictionChoice, PredictionResult } from "../../entities/prediction.entity";
+import { User } from "../../entities/user.entity";
+import { ProbabilityService } from "./probability.service";
+import { EscrowService } from "./escrow.service";
+import { TransactionType } from "../../entities/transaction.entity";
 
 @Injectable()
 export class PoolLifecycleService {
@@ -12,7 +17,15 @@ export class PoolLifecycleService {
     @InjectRepository(Pool)
     private poolRepository: Repository<Pool>,
     @InjectRepository(Video)
-    private videoRepository: Repository<Video>
+    private videoRepository: Repository<Video>,
+    @InjectRepository(Prediction)
+    private predictionRepository: Repository<Prediction>,
+    @InjectRepository(User)
+    private userRepository: Repository<User>,
+    @Inject(ProbabilityService)
+    private probabilityService: ProbabilityService,
+    @Inject(EscrowService)
+    private escrowService: EscrowService
   ) {}
 
   /**
@@ -315,19 +328,29 @@ export class PoolLifecycleService {
     this.logger.log(`Settling pool ${pool.id}`);
 
     try {
+      // Load pool with all predictions
+      const poolWithPredictions = await this.poolRepository.findOne({
+        where: { id: pool.id },
+        relations: ["predictions", "predictions.predictor"],
+      });
+
+      if (!poolWithPredictions) {
+        throw new Error("Pool not found");
+      }
+
       // Determine the result based on current views vs target
-      const result = pool.hasMetTarget()
+      const result = poolWithPredictions.hasMetTarget()
         ? PoolResult.YES_WON
         : PoolResult.NO_WON;
 
-      pool.result = result;
-      pool.status = PoolStatus.SETTLED;
-      pool.settledAt = new Date();
+      poolWithPredictions.result = result;
+      poolWithPredictions.status = PoolStatus.SETTLED;
+      poolWithPredictions.settledAt = new Date();
 
-      // Calculate payouts (simplified for now)
-      await this.calculatePayouts(pool);
+      // Calculate and distribute payouts
+      await this.calculatePayouts(poolWithPredictions);
 
-      await this.poolRepository.save(pool);
+      await this.poolRepository.save(poolWithPredictions);
 
       this.logger.log(`Pool ${pool.id} settled with result: ${result}`);
     } catch (error) {
@@ -337,31 +360,127 @@ export class PoolLifecycleService {
   }
 
   /**
-   * Calculate payouts for pool participants
+   * Calculate payouts for pool participants and distribute from escrow
    */
   private async calculatePayouts(pool: Pool): Promise<void> {
-    // This is a simplified payout calculation
-    // In production, you'd implement the full parimutuel betting logic
+    // Get all predictions
+    const predictions = await this.predictionRepository.find({
+      where: { poolId: pool.id },
+      relations: ["predictor"],
+    });
 
-    const winningChoice = pool.result === PoolResult.YES_WON ? "yes" : "no";
-    const losingChoice = pool.result === PoolResult.NO_WON ? "yes" : "no";
+    // Determine winning side
+    const winningChoice =
+      pool.result === PoolResult.YES_WON
+        ? PredictionChoice.YES
+        : PredictionChoice.NO;
 
-    const winningStake = winningChoice === "yes" ? pool.yesStake : pool.noStake;
-    const losingStake = losingChoice === "yes" ? pool.yesStake : pool.noStake;
+    // Filter winning predictions
+    const winningPredictions = predictions.filter(
+      (p) => p.choice === winningChoice
+    );
+
+    // Calculate losing side stake (this is what gets distributed)
+    const losingStake =
+      pool.result === PoolResult.YES_WON
+        ? Number(pool.noStake)
+        : Number(pool.yesStake);
 
     // Calculate platform fee (5%) and creator royalty (1%)
-    const platformFee = Number(losingStake) * 0.05;
-    const creatorRoyalty = Number(losingStake) * 0.01;
-    const netPayout = Number(losingStake) - platformFee - creatorRoyalty;
+    const platformFee = losingStake * 0.05;
+    const creatorRoyalty = losingStake * 0.01;
+    const netPayoutFromLosingSide = losingStake - platformFee - creatorRoyalty;
 
+    // Store fees in pool
+    pool.platformFeeCollected = platformFee;
+    pool.creatorRoyaltyCollected = creatorRoyalty;
     pool.creatorEarnings = creatorRoyalty;
 
+    // Include creator pledge in winning side's total for payout calculation
+    // Creator pledge goes to winners (creator gets no share of their pledge)
+    const creatorPledge = Number(pool.escrowedCreatorPledge) || 0;
+    const totalWinningPredictorStakes = winningPredictions.reduce(
+      (sum, pred) => sum + Number(pred.stake),
+      0
+    );
+    const totalWinningStake = totalWinningPredictorStakes + creatorPledge;
+
+    // Total amount to distribute: netPayout from losing side + creator pledge
+    const totalDistribution = netPayoutFromLosingSide + creatorPledge;
+
+    // Calculate payouts for each winner (proportional share of total distribution)
+    const payoutDetails = winningPredictions.map((prediction) => {
+      if (totalWinningStake === 0) {
+        return { predictionId: prediction.id, payout: 0 };
+      }
+      const share = Number(prediction.stake) / totalWinningStake;
+      const payout = totalDistribution * share;
+      return {
+        predictionId: prediction.id,
+        payout: Number(payout.toFixed(2)),
+      };
+    });
+
+    // Distribute winnings to winners
+    for (const payoutDetail of payoutDetails) {
+      const prediction = winningPredictions.find(
+        (p) => p.id === payoutDetail.predictionId
+      );
+      if (!prediction) continue;
+
+      if (payoutDetail.payout > 0) {
+        // Release funds from escrow to winner's wallet
+        await this.escrowService.releaseFromEscrow(
+          pool.id,
+          prediction.predictorId,
+          payoutDetail.payout,
+          TransactionType.WINNINGS
+        );
+
+        // Update prediction
+        prediction.actualPayout = payoutDetail.payout;
+        prediction.result = PredictionResult.WON;
+        prediction.settledAt = new Date();
+        await this.predictionRepository.save(prediction);
+      }
+    }
+
+    // Distribute creator royalty
+    if (creatorRoyalty > 0) {
+      await this.escrowService.releaseFromEscrow(
+        pool.id,
+        pool.creatorId,
+        creatorRoyalty,
+        TransactionType.ROYALTY
+      );
+    }
+
+    // Mark losing predictions
+    const losingPredictions = predictions.filter(
+      (p) => p.choice !== winningChoice
+    );
+
+    for (const prediction of losingPredictions) {
+      prediction.result = PredictionResult.LOST;
+      prediction.settledAt = new Date();
+      prediction.actualPayout = 0;
+      await this.predictionRepository.save(prediction);
+    }
+
+    // Platform fee is tracked but not distributed (stays in escrow or can be handled separately)
+    // For now, we'll track it but not release it to any user wallet
+
     this.logger.log(`Pool ${pool.id} payout calculation:`, {
-      winningStake: Number(winningStake),
-      losingStake: Number(losingStake),
-      netPayout: Number(netPayout),
-      platformFee: Number(platformFee),
-      creatorRoyalty: Number(creatorRoyalty),
+      winningStake:
+        pool.result === PoolResult.YES_WON
+          ? Number(pool.yesStake)
+          : Number(pool.noStake),
+      losingStake,
+      netPayoutFromLosingSide,
+      totalDistribution,
+      platformFee,
+      creatorRoyalty,
+      winnersCount: winningPredictions.length,
     });
   }
 

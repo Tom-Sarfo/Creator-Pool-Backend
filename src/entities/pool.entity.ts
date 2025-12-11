@@ -111,6 +111,22 @@ export class Pool {
   @Column({ type: "decimal", precision: 10, scale: 2, default: 0 })
   creatorEarnings: number;
 
+  // Escrow tracking
+  @Column({ type: "decimal", precision: 10, scale: 2, default: 0 })
+  escrowedAmount: number; // Total amount held in escrow for this pool
+
+  @Column({ type: "decimal", precision: 10, scale: 2, default: 0 })
+  escrowedCreatorPledge: number; // Creator pledge in escrow
+
+  @Column({ type: "decimal", precision: 10, scale: 2, default: 0 })
+  escrowedPredictorStakes: number; // Total predictor stakes in escrow
+
+  @Column({ type: "decimal", precision: 10, scale: 2, default: 0 })
+  platformFeeCollected: number; // Platform fee collected on settlement
+
+  @Column({ type: "decimal", precision: 10, scale: 2, default: 0 })
+  creatorRoyaltyCollected: number; // Creator royalty collected on settlement
+
   // Timestamps for lifecycle management
   @Column({ type: "timestamp", nullable: true })
   closesAt: Date; // When prediction window closes

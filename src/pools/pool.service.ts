@@ -12,6 +12,8 @@ import { Video, VideoStatus } from "../entities/video.entity";
 import { User } from "../entities/user.entity";
 import { PoolLifecycleService } from "./services/pool-lifecycle.service";
 import { ProbabilityService } from "./services/probability.service";
+import { EscrowService } from "./services/escrow.service";
+import { TransactionType } from "../entities/transaction.entity";
 
 export interface CreatePoolDto {
   videoId: string;
@@ -53,7 +55,9 @@ export class PoolService {
     @Inject(PoolLifecycleService)
     private poolLifecycleService: PoolLifecycleService,
     @Inject(ProbabilityService)
-    private probabilityService: ProbabilityService
+    private probabilityService: ProbabilityService,
+    @Inject(EscrowService)
+    private escrowService: EscrowService
   ) {}
 
   /**
@@ -94,20 +98,7 @@ export class PoolService {
       throw new ConflictException("Video already has an active pool");
     }
 
-    // Validate wallet balance and deduct pledge if provided
-    if (createPoolDto.creatorPledge && createPoolDto.creatorPledge > 0) {
-      const walletBalance = Number(creator.walletBalance) || 0;
-
-      if (createPoolDto.creatorPledge > walletBalance) {
-        throw new BadRequestException("Insufficient wallet balance for pledge");
-      }
-
-      // Deduct pledge from wallet BEFORE creating pool (atomic operation)
-      creator.walletBalance -= createPoolDto.creatorPledge;
-      await this.userRepository.save(creator);
-    }
-
-    // Create pool
+    // Create pool first
     const pool = this.poolRepository.create({
       ...createPoolDto,
       creatorId,
@@ -118,9 +109,33 @@ export class PoolService {
       closesAt: new Date(
         Date.now() + (createPoolDto.predictionWindowMinutes || 15) * 60 * 1000
       ),
+      escrowedAmount: 0,
+      escrowedCreatorPledge: 0,
+      escrowedPredictorStakes: 0,
+      platformFeeCollected: 0,
+      creatorRoyaltyCollected: 0,
     });
 
     const savedPool = await this.poolRepository.save(pool);
+
+    // Move pledge to escrow if provided
+    if (createPoolDto.creatorPledge && createPoolDto.creatorPledge > 0) {
+      const walletBalance = Number(creator.walletBalance) || 0;
+
+      if (createPoolDto.creatorPledge > walletBalance) {
+        // Rollback pool creation
+        await this.poolRepository.remove(savedPool);
+        throw new BadRequestException("Insufficient wallet balance for pledge");
+      }
+
+      // Move funds from wallet to escrow (atomic operation)
+      await this.escrowService.depositToEscrow(
+        savedPool.id,
+        creatorId,
+        createPoolDto.creatorPledge,
+        TransactionType.PLEDGE
+      );
+    }
 
     // Update video to mark it as having an active pool
     video.hasActivePool = true;
@@ -460,9 +475,13 @@ export class PoolService {
       throw new BadRequestException("Insufficient wallet balance");
     }
 
-    // Deduct amount from wallet BEFORE updating pool (atomic operation)
-    creator.walletBalance -= amount;
-    await this.userRepository.save(creator);
+    // Move funds from wallet to escrow (atomic operation)
+    await this.escrowService.depositToEscrow(
+      poolId,
+      creatorId,
+      amount,
+      TransactionType.PLEDGE
+    );
 
     // Update pledge amount (add to existing if any)
     const currentPledge = Number(pool.creatorPledge) || 0;

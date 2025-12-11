@@ -11,6 +11,7 @@ import * as bcrypt from "bcrypt";
 import { Video } from "./video.entity";
 import { Pool } from "./pool.entity";
 import { Prediction } from "./prediction.entity";
+import { Transaction } from "./transaction.entity";
 
 export enum UserRole {
   USER = "user", // Default role for all users (predictors)
@@ -79,8 +80,8 @@ export class User {
   @OneToMany(() => Prediction, (prediction) => prediction.predictor)
   predictions: Prediction[];
 
-  // @OneToMany(() => Transaction, (transaction) => transaction.user)
-  // transactions: Transaction[];
+  @OneToMany(() => Transaction, (transaction) => transaction.user)
+  transactions: Transaction[];
 
   @BeforeInsert()
   async hashPassword() {

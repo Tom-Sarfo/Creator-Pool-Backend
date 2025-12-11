@@ -10,6 +10,7 @@ import { User } from "./entities/user.entity";
 import { Video } from "./entities/video.entity";
 import { Pool } from "./entities/pool.entity";
 import { Prediction } from "./entities/prediction.entity";
+import { Transaction } from "./entities/transaction.entity";
 import { AuthModule } from "./auth/auth.module";
 import { YouTubeModule } from "./youtube/youtube.module";
 import { PoolModule } from "./pools/pool.module";
@@ -65,7 +66,7 @@ import { VideoModule } from "./videos/video.module";
           return {
             type: "postgres" as const,
             url: databaseUrl,
-            entities: [User, Video, Pool, Prediction],
+            entities: [User, Video, Pool, Prediction, Transaction],
             synchronize: configService.get<string>("NODE_ENV") !== "production",
             logging: configService.get<string>("NODE_ENV") === "development",
             ssl: {

@@ -16,6 +16,8 @@ import {
 import { Pool, PoolStatus } from "../entities/pool.entity";
 import { User } from "../entities/user.entity";
 import { ProbabilityService } from "../pools/services/probability.service";
+import { EscrowService } from "../pools/services/escrow.service";
+import { TransactionType } from "../entities/transaction.entity";
 
 export interface CreatePredictionDto {
   poolId: string;
@@ -43,7 +45,9 @@ export class PredictionService {
     @InjectRepository(User)
     private userRepository: Repository<User>,
     @Inject(ProbabilityService)
-    private probabilityService: ProbabilityService
+    private probabilityService: ProbabilityService,
+    @Inject(EscrowService)
+    private escrowService: EscrowService
   ) {}
 
   /**
@@ -134,9 +138,13 @@ export class PredictionService {
     // Update pool statistics (this updates stakes and probabilities)
     await this.updatePoolStats(pool, createPredictionDto);
 
-    // Deduct stake from user wallet
-    predictor.walletBalance -= createPredictionDto.stake;
-    await this.userRepository.save(predictor);
+    // Move funds from wallet to escrow (atomic operation)
+    await this.escrowService.depositToEscrow(
+      createPredictionDto.poolId,
+      predictorId,
+      createPredictionDto.stake,
+      TransactionType.STAKE
+    );
 
     // Get updated pool with new probabilities
     const updatedPool = await this.poolRepository.findOne({
